@@ -12,7 +12,7 @@ class Database
             if ($this->isLocal) {
                 $conn = new PDO('mysql:host=localhost;dbname=inventoryiodb', 'root', '');
             } else {
-                $conn = new PDO('mysql:host=127.0.0.1;dbname=voafuiqa_qa', 'voafuiqa_qa', 'Harder01!');
+                $conn = new PDO('mysql:host=127.0.0.1;dbname=mnqmryug_dev', 'mnqmryug_dev', 'Harder01!');
             }
 
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
