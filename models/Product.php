@@ -15,9 +15,11 @@ class Product
     public function add(
         $BrandId,
         $CatergoryId,
+        $CompanyId,
         $Name,
         $Description,
         $UnitPrice,
+        $UnitCost,
         $Code,
         $SKU,
         $Quantity,
@@ -35,9 +37,11 @@ class Product
             ProductId,
             BrandId,
             CatergoryId,
+            CompanyId,
             Name,
             Description,
             UnitPrice,
+            UnitCost,
             Code,
             SKU,
             Quantity,
@@ -47,7 +51,7 @@ class Product
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
         )
 ";
         try {
@@ -56,9 +60,11 @@ class Product
                 $ProductId,
                 $BrandId,
                 $CatergoryId,
+                $CompanyId,
                 $Name,
                 $Description,
                 $UnitPrice,
+                $UnitCost,
                 $Code,
                 $SKU,
                 $Quantity,
@@ -138,6 +144,18 @@ class Product
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+
+    public function getCampanyById($CompanyId)
+    {
+        $query = "SELECT * FROM product WHERE CompanyId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 }

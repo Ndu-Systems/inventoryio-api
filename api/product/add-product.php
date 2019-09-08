@@ -7,9 +7,11 @@ $data = json_decode(file_get_contents("php://input"));
 // create user data only
 $BrandId = $data->BrandId;
 $CatergoryId = $data->CatergoryId;
+$CompanyId = $data->CompanyId;
 $Name = $data->Name;
 $Description = $data->Description;
 $UnitPrice = $data->UnitPrice;
+$UnitCost = $data->UnitCost;
 $Code = $data->Code;
 $SKU = $data->SKU;
 $Quantity = $data->Quantity;
@@ -28,9 +30,11 @@ $product = new Product($db);
 $result = $product->add(
     $BrandId,
     $CatergoryId,
+    $CompanyId,
     $Name,
     $Description,
     $UnitPrice,
+    $UnitCost,
     $Code,
     $SKU,
     $Quantity,
