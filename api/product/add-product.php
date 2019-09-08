@@ -5,12 +5,13 @@ include_once '../../models/Product.php';
 $data = json_decode(file_get_contents("php://input"));
 
 // create user data only
+$BrandId = $data->BrandId;
+$CatergoryId = $data->CatergoryId;
 $Name = $data->Name;
 $Description = $data->Description;
 $UnitPrice = $data->UnitPrice;
 $Code = $data->Code;
 $SKU = $data->SKU;
-$StockPrice = $data->StockPrice;
 $Quantity = $data->Quantity;
 $LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
@@ -25,12 +26,13 @@ $db = $database->connect();
 $product = new Product($db);
 
 $result = $product->add(
+    $BrandId,
+    $CatergoryId,
     $Name,
     $Description,
     $UnitPrice,
     $Code,
     $SKU,
-    $StockPrice,
     $Quantity,
     $LowStock,
     $CreateUserId,

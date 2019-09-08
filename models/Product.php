@@ -13,12 +13,13 @@ class Product
 
     //Add user
     public function add(
+        $BrandId,
+        $CatergoryId,
         $Name,
         $Description,
         $UnitPrice,
         $Code,
         $SKU,
-        $StockPrice,
         $Quantity,
         $LowStock,
         $CreateUserId,
@@ -32,12 +33,13 @@ class Product
         $query = "
         INSERT INTO product(
             ProductId,
+            BrandId,
+            CatergoryId,
             Name,
             Description,
             UnitPrice,
             Code,
             SKU,
-            StockPrice,
             Quantity,
             LowStock,
             CreateUserId,
@@ -45,19 +47,20 @@ class Product
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?
         )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $ProductId,
+                $BrandId,
+                $CatergoryId,
                 $Name,
                 $Description,
                 $UnitPrice,
                 $Code,
                 $SKU,
-                $StockPrice,
                 $Quantity,
                 $LowStock,
                 $CreateUserId,
@@ -81,7 +84,6 @@ class Product
         $UnitPrice,
         $Code,
         $SKU,
-        $StockPrice,
         $Quantity,
         $LowStock,
         $ModifyUserId,
@@ -95,7 +97,6 @@ class Product
         UnitPrice = ?,
         Code = ?,
         SKU = ?,
-        StockPrice = ?,
         Quantity = ?,
         LowStock = ?,
         ModifyDate = NOW(),
@@ -113,7 +114,6 @@ class Product
                 $UnitPrice,
                 $Code,
                 $SKU,
-                $StockPrice,
                 $Quantity,
                 $LowStock,
                 $ModifyUserId,
