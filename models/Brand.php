@@ -33,7 +33,7 @@ class Brand
             StatusId
         )
         VALUES(
-        ,?,?,?,?,?,?
+        ?,?,?,?,?,?
          )
 ";
         try {
