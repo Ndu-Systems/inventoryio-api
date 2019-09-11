@@ -158,4 +158,42 @@ class Product
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
+
+    public function getDetailedProduct($CompanyId)
+    {
+        $query = "SELECT 
+        p.ProductId,
+        p.BrandId,
+        p.CatergoryId,
+        p.CompanyId,
+        p.SupplierId,
+        p.Name,
+        p.Description,
+        p.UnitPrice,
+        p.UnitCost,
+        p.Code,
+        p.SKU,
+        p.Quantity,
+        p.LowStock,
+        p.CreateDate,
+        p.CreateUserId,
+        p.ModifyDate,
+        p.ModifyUserId,
+        p.StatusId,
+        c.Name as Catergory,
+        b.Name as Brand
+        FROM product p
+        left join brand b on p.BrandId = b.BrandId
+        left join catergory c on p.CatergoryId = c.CatergoryId
+        WHERE p.CompanyId = ?
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }
