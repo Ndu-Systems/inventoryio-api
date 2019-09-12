@@ -181,11 +181,13 @@ class Product
         p.ModifyDate,
         p.ModifyUserId,
         p.StatusId,
+        i.Url,
         c.Name as Catergory,
         b.Name as Brand
         FROM product p
         left join brand b on p.BrandId = b.BrandId
         left join catergory c on p.CatergoryId = c.CatergoryId
+        left join image i on i.OtherId =  p.ProductId
         WHERE p.CompanyId = ?
         ";
 
