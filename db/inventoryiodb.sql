@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2019 at 10:33 PM
+-- Generation Time: Sep 13, 2019 at 10:36 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.7
 
@@ -247,7 +247,7 @@ CREATE TABLE `product` (
   `CompanyId` varchar(225) DEFAULT NULL,
   `SupplierId` varchar(225) DEFAULT NULL,
   `Name` varchar(100) NOT NULL,
-  `Description` text DEFAULT current_timestamp(),
+  `Description` text DEFAULT NULL,
   `UnitPrice` varchar(20) DEFAULT NULL,
   `UnitCost` decimal(10,0) DEFAULT 0,
   `Code` varchar(50) DEFAULT NULL,
