@@ -189,6 +189,7 @@ class Product
         left join catergory c on p.CatergoryId = c.CatergoryId
         left join image i on i.OtherId =  p.ProductId
         WHERE p.CompanyId = ?
+        group by p.ProductId
         ";
 
         $stmt = $this->conn->prepare($query);
