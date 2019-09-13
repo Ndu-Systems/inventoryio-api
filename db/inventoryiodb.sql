@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2019 at 10:30 PM
+-- Generation Time: Sep 13, 2019 at 10:33 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.7
 
@@ -156,9 +156,9 @@ CREATE TABLE `image` (
   `CompanyId` varchar(225) NOT NULL,
   `OtherId` varchar(225) NOT NULL,
   `Url` text NOT NULL,
-  `CreateDate` date NOT NULL DEFAULT current_timestamp(),
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` date NOT NULL DEFAULT current_timestamp(),
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -168,14 +168,14 @@ CREATE TABLE `image` (
 --
 
 INSERT INTO `image` (`ImageId`, `CompanyId`, `OtherId`, `Url`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
-('469f8e4c-d630-11e9-b692-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '0f507307-d630-11e9-b692-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568383844620x349 (1).webp', '2019-09-13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('883d48d4-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323395Volkswagen-Polo-2.0-GTI-DSG-Automaat-200-PK.jpg', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('b253c1cd-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '4e9d1dab-d65f-11e9-857f-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/156840421114572328_1105784546208763_379747298283873589_n.jpg', '2019-09-13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c2a4fdd9-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '4e9d1dab-d65f-11e9-857f-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568404238carvela-kurt-geiger-Dark-blue-Loafer.jpeg', '2019-09-13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c5582f19-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'a707c2c4-d584-11e9-a017-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323497xriderfront.jpg', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c597a75c-d5a2-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323068vw-polo-1-2tsi-comfortline-2017-id-53550238-type-main.jpg', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('cb24cb3a-d5a0-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568322219620x349.webp', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('f3926ae1-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '15489da7-d458-11e9-9269-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323575vw-up-gti-by-bb-automobiltechnik.jpg', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
+('469f8e4c-d630-11e9-b692-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '0f507307-d630-11e9-b692-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568383844620x349 (1).webp', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('883d48d4-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323395Volkswagen-Polo-2.0-GTI-DSG-Automaat-200-PK.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('b253c1cd-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '4e9d1dab-d65f-11e9-857f-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/156840421114572328_1105784546208763_379747298283873589_n.jpg', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('c2a4fdd9-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '4e9d1dab-d65f-11e9-857f-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568404238carvela-kurt-geiger-Dark-blue-Loafer.jpeg', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('c5582f19-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'a707c2c4-d584-11e9-a017-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323497xriderfront.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('c597a75c-d5a2-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323068vw-polo-1-2tsi-comfortline-2017-id-53550238-type-main.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('cb24cb3a-d5a0-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568322219620x349.webp', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('f3926ae1-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '15489da7-d458-11e9-9269-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323575vw-up-gti-by-bb-automobiltechnik.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 
 -- --------------------------------------------------------
 
