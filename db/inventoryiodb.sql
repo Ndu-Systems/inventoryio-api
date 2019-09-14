@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2019 at 10:36 PM
+-- Generation Time: Sep 14, 2019 at 02:47 PM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.7
 
@@ -116,6 +116,7 @@ INSERT INTO `catergory` (`CatergoryId`, `CompanyId`, `Name`, `CreateDate`, `Crea
 ('3dd53c98-d663-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '324', '2019-09-13 22:15:33', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 22:15:33', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('84b84ba4-d3f5-11e9-9f95-48f17f8d4d88', '4c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'VW', '2019-09-10 20:05:05', 'postman', '2019-09-10 20:05:05', 'postman', 1),
 ('8aa30563-d3f5-11e9-9f95-48f17f8d4d88', '4c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'Hatchback', '2019-09-10 20:05:15', 'postman', '2019-09-10 20:05:15', 'postman', 1),
+('a42e206b-d668-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'DDDDDDDD', '2019-09-13 22:54:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 22:54:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('cc7fc05c-d662-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'sam', '2019-09-13 22:12:23', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 22:12:23', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 
 -- --------------------------------------------------------
@@ -168,32 +169,43 @@ CREATE TABLE `image` (
 --
 
 INSERT INTO `image` (`ImageId`, `CompanyId`, `OtherId`, `Url`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
-('469f8e4c-d630-11e9-b692-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '0f507307-d630-11e9-b692-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568383844620x349 (1).webp', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('883d48d4-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323395Volkswagen-Polo-2.0-GTI-DSG-Automaat-200-PK.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('b253c1cd-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '4e9d1dab-d65f-11e9-857f-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/156840421114572328_1105784546208763_379747298283873589_n.jpg', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c2a4fdd9-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '4e9d1dab-d65f-11e9-857f-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568404238carvela-kurt-geiger-Dark-blue-Loafer.jpeg', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c5582f19-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'a707c2c4-d584-11e9-a017-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323497xriderfront.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c597a75c-d5a2-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323068vw-polo-1-2tsi-comfortline-2017-id-53550238-type-main.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('cb24cb3a-d5a0-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568322219620x349.webp', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('f3926ae1-d5a3-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '15489da7-d458-11e9-9269-48f17f8d4d88', 'http://localhost:8200/inventoryiodb-api/api/upload/uploads/1568323575vw-up-gti-by-bb-automobiltechnik.jpg', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 00:00:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
+('0c6b5479-d6d2-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '46fd465c-d40e-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568453325620x349.webp', '2019-09-14 11:28:45', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 11:28:45', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('110f83ef-d6ca-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '0f507307-d630-11e9-b692-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568449896620x349 (1).webp', '2019-09-14 10:31:36', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 10:31:36', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('3076ad51-d6e0-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '341a62c9-d38d-11e9-a3ca-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568459398200803-xl-irish-brown-bread.jpg', '2019-09-14 13:09:58', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 13:09:58', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('3aabb151-d6e0-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '19d5d8ff-d256-11e9-b97c-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568459415a04cd3bceaa922890686dbe27220e115_1024x1024.webp', '2019-09-14 13:10:15', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 13:10:15', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('446e1bfc-d6e0-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '271800b9-d256-11e9-b97c-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568459431Coke-2L-Bottle.jpg', '2019-09-14 13:10:32', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 13:10:32', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('5a03690b-d6e3-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '1028ac34-d253-11e9-b97c-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/156846075661-08aEJS8L._SX679_.jpg', '2019-09-14 13:32:36', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 13:32:36', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('7726e185-d6dd-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '159bb35f-d4ce-11e9-9492-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568458228maxresdefault.jpg', '2019-09-14 12:50:28', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 12:50:28', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('7c60b540-d6dd-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '159bb35f-d4ce-11e9-9492-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568458237volkswagen-polo-2015-961l.jpg', '2019-09-14 12:50:37', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 12:50:37', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('c613679c-d681-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '0b03b46c-d40a-11e9-9f95-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568418847620x349.webp', '2019-09-14 01:54:07', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 01:54:07', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('f9b7e24c-d6c9-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '15489da7-d458-11e9-9269-48f17f8d4d88', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1568449857vw-up-gti-by-bb-automobiltechnik.jpg', '2019-09-14 10:30:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 10:30:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `order`
+-- Table structure for table `orders`
 --
 
-CREATE TABLE `order` (
-  `OrderId` varchar(225) NOT NULL,
+CREATE TABLE `orders` (
+  `OrdersId` varchar(225) NOT NULL,
+  `CompanyId` varchar(225) NOT NULL,
   `ParntersId` varchar(225) DEFAULT NULL,
   `OrderType` varchar(100) NOT NULL,
-  `ExpectedDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `Total` decimal(10,0) NOT NULL,
+  `ExpectedDate` text DEFAULT NULL,
   `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
   `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`OrdersId`, `CompanyId`, `ParntersId`, `OrderType`, `Total`, `ExpectedDate`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
+('c5028951-d6ed-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1000', '', '2019-09-14 14:47:11', 'postman', '2019-09-14 14:47:11', 'postman', 1);
 
 -- --------------------------------------------------------
 
@@ -206,6 +218,7 @@ CREATE TABLE `order_products` (
   `OrderId` varchar(225) NOT NULL,
   `ProductId` varchar(225) NOT NULL,
   `Quantity` varchar(225) NOT NULL,
+  `subTotal` decimal(10,0) NOT NULL,
   `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
   `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
@@ -283,12 +296,15 @@ INSERT INTO `product` (`ProductId`, `BrandId`, `CatergoryId`, `CompanyId`, `Supp
 ('4e9d1dab-d65f-11e9-857f-48f17f8d4d88', '', '157d625f-d65f-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'Carvella', 'Black carvela  cago', '1200', '750', '787382131', '7832', 0, 0, '2019-09-13 21:47:24', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 21:47:24', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('5013b0ea-d245-11e9-b97c-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, '2L Sprite', '', '20', '0', '111', '111', 20, 20, '2019-09-08 16:30:09', 'postman', '2019-09-08 16:30:09', 'postman', 1),
 ('535942fd-d253-11e9-b97c-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'WQ', '', '1', '0', 'DS', 'DS', 0, 0, '2019-09-08 18:10:28', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-08 18:10:28', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('57fbb27a-d668-11e9-857f-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'test333', 'test333', '444', '344', '32', '243', 0, 0, '2019-09-13 22:52:05', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 22:52:05', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('58320d0e-d630-11e9-b692-48f17f8d4d88', '256f9dc6-d58b-11e9-a017-48f17f8d4d88', '2f1dd86d-d409-11e9-9f95-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'sasas', 's', '2', '1', '2', '2', 0, 0, '2019-09-13 16:11:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 16:11:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('8127ec68-d331-11e9-8a1a-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'Polo Vivo', '', '2000000', '1580000', '4455555 45451 4545 4545', '154545', 0, 0, '2019-09-09 20:41:58', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-09 20:41:58', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('831f0928-d664-11e9-857f-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'test11', 'test1', '22', '11', '222', '11', 0, 0, '2019-09-13 22:24:39', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 22:24:39', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('8ae4a833-d38e-11e9-a3ca-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'eew', '', '222', '222', '2222 434', '22', 0, 0, '2019-09-10 07:47:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-10 07:47:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('9283553a-d604-11e9-a3ca-48f17f8d4d88', '7057ccf3-d40d-11e9-9f95-48f17f8d4d88', '066130f0-d40e-11e9-9f95-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'test aboservable', 'test', '55', '0', '0', '0', 0, 0, '2019-09-13 10:57:53', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 10:57:53', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('a707c2c4-d584-11e9-a017-48f17f8d4d88', '8c143c75-d584-11e9-a017-48f17f8d4d88', '066130f0-d40e-11e9-9f95-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'KB', '', '250000', '18000', ' ', ' ', 0, 0, '2019-09-12 19:42:12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 19:42:12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
+('a707c2c4-d584-11e9-a017-48f17f8d4d88', '8c143c75-d584-11e9-a017-48f17f8d4d88', '066130f0-d40e-11e9-9f95-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'KB', '', '250000', '18000', ' ', ' ', 0, 0, '2019-09-12 19:42:12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 19:42:12', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('b57bc683-d66f-11e9-857f-48f17f8d4d88', '', '', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'tesy', 'tesy', '33', '12', '31312c 23423', '1212', 0, 0, '2019-09-13 23:44:48', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 23:44:48', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('eb1a5f1a-d666-11e9-857f-48f17f8d4d88', '256f9dc6-d58b-11e9-a017-48f17f8d4d88', '283c46c3-d40e-11e9-9f95-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', NULL, 'test22', 'test22', '222', '22', '2', '2', 0, 0, '2019-09-13 22:41:53', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-13 22:41:53', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 
 -- --------------------------------------------------------
 
@@ -466,6 +482,12 @@ ALTER TABLE `company`
 --
 ALTER TABLE `image`
   ADD PRIMARY KEY (`ImageId`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`OrdersId`);
 
 --
 -- Indexes for table `order_products`
