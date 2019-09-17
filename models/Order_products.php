@@ -1,7 +1,7 @@
 <?php
 
 
-class Orders
+class Order_products
 {
     //DB Stuff
     private $conn;
@@ -13,25 +13,25 @@ class Orders
 
     //Add user
     public function add(
-        $CompanyId,
-        $ParntersId,
-        $OrderType,
-        $Total,
+        $OrderId,
+        $ProductId,
+        $Quantity,
+        $subTotal,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
 
     ) {
 
-        $OrdersId = getUuid($this->conn);
+        $Id = getUuid($this->conn);
 
         $query = "
-        INSERT INTO orders(
-            OrdersId,
-            CompanyId,
-            ParntersId,
-            OrderType,
-            Total,
+        INSERT INTO order_products(
+            Id,
+            OrderId,
+            ProductId,
+            Quantity,
+            subTotal,
             CreateUserId,
             ModifyUserId,
             StatusId
@@ -43,16 +43,16 @@ class Orders
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $OrdersId,
-                $CompanyId,
-                $ParntersId,
-                $OrderType,
-                $Total,
+                $Id,
+                $OrderId,
+                $ProductId,
+                $Quantity,
+                $subTotal,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($OrdersId);
+                return $this->getById($Id);
             }
         } catch (Exception $e) {
             return $e;
@@ -62,8 +62,8 @@ class Orders
 
 
 
-    public function updateOrders(
-        $OrdersId,
+    public function updateorder_products(
+        $Id,
         $Name,
         $Description,
         $UnitPrice,
@@ -75,7 +75,7 @@ class Orders
         $StatusId
     ) {
         $query = "UPDATE
-        orders
+        order_products
     SET
         Name = ?,
         Description = ?,
@@ -88,7 +88,7 @@ class Orders
         ModifyUserId = ?,
         StatusId = ?
     WHERE
-    OrdersId = ?
+    Id = ?
          ";
 
         try {
@@ -103,35 +103,35 @@ class Orders
                 $LowStock,
                 $ModifyUserId,
                 $StatusId,
-                $OrdersId
+                $Id
 
 
             ))) {
-                return $this->getUserById($OrdersId);
+                return $this->getUserById($Id);
             }
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    public function getById($OrdersId)
+    public function getById($Id)
     {
-        $query = "SELECT * FROM orders WHERE OrdersId =?";
+        $query = "SELECT * FROM order_products WHERE Id =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OrdersId));
+        $stmt->execute(array($Id));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 
-    public function getCampanyById($CompanyId)
+    public function getBOrderIdId($OrderId)
     {
-        $query = "SELECT * FROM orders WHERE CompanyId =?";
+        $query = "SELECT * FROM order_products WHERE OrderId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($CompanyId));
+        $stmt->execute(array($OrderId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -1,14 +1,13 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Orders.php';
+include_once '../../models/Order_products.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$CompanyId = $data->CompanyId;
-$ParntersId = $data->ParntersId;
-$OrderType = $data->OrderType;
-$Total = $data->Total;
-$Total = $data->Total;
+$OrderId = $data->OrderId;
+$ProductId = $data->ProductId;
+$Quantity = $data->Quantity;
+$subTotal = $data->subTotal;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -18,13 +17,13 @@ $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-$orders = new Orders($db);
+$order_products = new Order_products($db);
 
-$result = $orders->add(
-    $CompanyId,
-    $ParntersId,
-    $OrderType,
-    $Total,
+$result = $order_products->add(
+    $OrderId,
+    $ProductId,
+    $Quantity,
+    $subTotal,
     $CreateUserId,
     $ModifyUserId,
     $StatusId
