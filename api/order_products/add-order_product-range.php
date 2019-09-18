@@ -18,6 +18,8 @@ foreach ($products as $product) {
     $result = $order_products->add(
         $product->OrderId,
         $product->ProductId,
+        $product->ProductName,
+        $product->UnitPrice,
         $product->Quantity,
         $product->subTotal,
         $product->CreateUserId,

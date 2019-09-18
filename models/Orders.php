@@ -128,7 +128,7 @@ class Orders
 
     public function getCampanyById($CompanyId)
     {
-        $query = "SELECT * FROM orders WHERE CompanyId =?";
+        $query = "SELECT * FROM orders WHERE CompanyId =? order by CreateDate desc";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));

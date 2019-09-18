@@ -15,6 +15,8 @@ class Order_products
     public function add(
         $OrderId,
         $ProductId,
+        $ProductName,
+        $UnitPrice,
         $Quantity,
         $subTotal,
         $CreateUserId,
@@ -30,6 +32,8 @@ class Order_products
             Id,
             OrderId,
             ProductId,
+            ProductName,
+            UnitPrice,
             Quantity,
             subTotal,
             CreateUserId,
@@ -37,7 +41,7 @@ class Order_products
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
@@ -46,6 +50,8 @@ class Order_products
                 $Id,
                 $OrderId,
                 $ProductId,
+                $ProductName,
+                $UnitPrice,
                 $Quantity,
                 $subTotal,
                 $CreateUserId,
@@ -128,7 +134,7 @@ class Order_products
 
     public function getBOrderIdId($OrderId)
     {
-        $query = "SELECT * FROM order_products WHERE OrderId =?";
+        $query = "SELECT * FROM order_products WHERE OrderId = ?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($OrderId));
