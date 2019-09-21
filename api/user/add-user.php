@@ -11,7 +11,6 @@ $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
 $Password = $data->Password; 
 $CompanyId = $data->CompanyId; 
-$RoleId = $data->RoleId; 
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -31,7 +30,6 @@ $result = $user->add(
     $CellphoneNumber,
     $Password,
     $CompanyId,
-    $RoleId,
     $CreateUserId,
     $ModifyUserId,
     $StatusId

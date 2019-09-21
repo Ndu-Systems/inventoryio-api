@@ -20,13 +20,10 @@ class Roles
         $ModifyUserId,
         $StatusId
 
-    ) {
-
-        $RoleId = getUuid($this->conn);
+    ) {   
 
         $query = "
-        INSERT INTO company(
-            RoleId,
+        INSERT INTO roles(         
             CompanyId,
             Name,
             CreateUserId,
@@ -36,11 +33,10 @@ class Roles
         VALUES(
         ?,?,?,?,?,?
         )
-";
+        ";
         try {
             $stmt = $this->conn->prepare($query);
-            if ($stmt->execute(array(
-                $RoleId,
+            if ($stmt->execute(array(       
                 $CompanyId,
                 $Name,
                 $CreateUserId,

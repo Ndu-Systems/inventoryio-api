@@ -20,7 +20,6 @@ class Users
         $CellphoneNumber,
         $Password,
         $CompanyId,
-        $RoleId,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -40,13 +39,13 @@ class Users
             CellphoneNumber,
             Password,
             CompanyId,
-            RoleId,
+          
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-           ?,?,?,?,?,?,?,?,?,?,?
+           ?,?,?,?,?,?,?,?,?,?
         )
 ";
         try {
@@ -58,8 +57,7 @@ class Users
                 $Surname,
                 $CellphoneNumber,
                 $Password,
-                $CompanyId,
-                $RoleId,
+                $CompanyId,          
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -92,7 +90,6 @@ class Users
         $CellphoneNumber,
         $Password,
         $CompanyId,
-        $RoleId,
         $ModifyUserId,
         $StatusId,
         $UserId
@@ -105,8 +102,7 @@ class Users
         Surname = ?,
         CellphoneNumber = ?,
         Password = ?,
-        CompanyId = ?,
-        RoleId = ?,
+        CompanyId = ?,      
         ModifyDate = NOW(),
         ModifyUserId = ?,
         StatusId = ?
@@ -122,8 +118,7 @@ class Users
                 $Surname,
                 $CellphoneNumber,
                 $Password,
-                $CompanyId,
-                $RoleId,
+                $CompanyId,              
                 $ModifyUserId,
                 $StatusId,
                 $UserId

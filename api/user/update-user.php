@@ -11,7 +11,6 @@ $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
 $Password = $data->Password; 
 $CompanyId = $data->CompanyId; 
-$RoleId = $data->RoleId; 
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
 $UserId = $data->UserId;
@@ -29,8 +28,7 @@ $result = $user->updateUser(
     $Surname,
     $CellphoneNumber,
     $Password,
-    $CompanyId,
-    $RoleId,
+    $CompanyId,  
     $ModifyUserId,
     $StatusId,
     $UserId
