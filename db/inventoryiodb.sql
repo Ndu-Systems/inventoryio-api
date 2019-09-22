@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 21, 2019 at 07:51 PM
--- Server version: 10.1.35-MariaDB
--- PHP Version: 7.2.9
+-- Generation Time: Sep 22, 2019 at 08:07 AM
+-- Server version: 10.3.16-MariaDB
+-- PHP Version: 7.3.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -31,9 +31,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `attribute` (
   `AttributeId` varchar(225) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -48,9 +48,9 @@ CREATE TABLE `attribute_item` (
   `Id` int(11) NOT NULL,
   `AttributeId` varchar(225) NOT NULL,
   `AttributeValue` varchar(200) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -65,9 +65,9 @@ CREATE TABLE `brand` (
   `BrandId` varchar(225) NOT NULL,
   `CompanyId` varchar(225) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -100,9 +100,9 @@ CREATE TABLE `catergory` (
   `CatergoryId` varchar(225) NOT NULL,
   `CompanyId` varchar(225) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -137,9 +137,9 @@ CREATE TABLE `company` (
   `Name` varchar(100) NOT NULL,
   `Website` varchar(100) NOT NULL,
   `TelephoneNumber` varchar(20) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -164,9 +164,9 @@ CREATE TABLE `image` (
   `CompanyId` varchar(225) NOT NULL,
   `OtherId` varchar(225) NOT NULL,
   `Url` text NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -199,14 +199,17 @@ INSERT INTO `image` (`ImageId`, `CompanyId`, `OtherId`, `Url`, `CreateDate`, `Cr
 
 CREATE TABLE `orders` (
   `OrdersId` varchar(225) NOT NULL,
+  `OrderId` varchar(50) DEFAULT NULL,
   `CompanyId` varchar(225) NOT NULL,
   `ParntersId` varchar(225) DEFAULT NULL,
   `OrderType` varchar(100) NOT NULL,
   `Total` decimal(10,0) NOT NULL,
-  `ExpectedDate` text,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Paid` decimal(10,0) DEFAULT 0,
+  `Due` decimal(10,0) DEFAULT NULL,
+  `ExpectedDate` text DEFAULT NULL,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -215,52 +218,11 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`OrdersId`, `CompanyId`, `ParntersId`, `OrderType`, `Total`, `ExpectedDate`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
-('01d48028-d995-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:49:21', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:49:21', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('04c3fad2-dc88-11e9-9da6-c8f7501047dc', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '500000', NULL, '2019-09-21 17:53:56', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-21 17:53:56', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('0b28f5bc-d991-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:20:59', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:20:59', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('0d48d07f-d991-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:21:02', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:21:02', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('0fdbe861-d991-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:21:07', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:21:07', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('15bf9de3-db0d-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '750000', NULL, '2019-09-19 20:41:25', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:41:25', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('1756ce88-d995-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:49:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:49:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('195cda23-d9d7-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '57', NULL, '2019-09-18 07:42:27', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-18 07:42:27', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('196d945f-d9d8-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '57', NULL, '2019-09-18 07:49:36', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-18 07:49:36', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('19c0ca1c-d98f-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '40', NULL, '2019-09-17 23:07:04', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:07:04', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('1d51c1d0-da45-11e9-8f19-48f17f8d4d88', '857f1d2c-da41-11e9-8f19-48f17f8d4d88', '', 'Sell', '445', NULL, '2019-09-18 20:49:59', 'b069dca0-da19-11e9-87f9-48f17f8d4d88', '2019-09-18 20:49:59', 'b069dca0-da19-11e9-87f9-48f17f8d4d88', 1),
-('22147e50-dc7d-11e9-84fb-c8f7501047dc', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '500000', NULL, '2019-09-21 16:36:01', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-21 16:36:01', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('2774d9ad-d9d8-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '57', NULL, '2019-09-18 07:50:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-18 07:50:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('27ffbdec-db17-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '100', NULL, '2019-09-19 21:53:31', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 21:53:31', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('28a96cf8-db09-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1596', NULL, '2019-09-19 20:13:19', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:13:19', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('29c62aec-d6ef-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1000', NULL, '2019-09-14 14:57:09', 'postman', '2019-09-14 14:57:09', 'postman', 1),
-('32e432b2-db0c-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '500000', NULL, '2019-09-19 20:35:05', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:35:05', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('40b55fa8-d9d7-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '57', NULL, '2019-09-18 07:43:33', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-18 07:43:33', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('494779ff-db0d-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1000000', NULL, '2019-09-19 20:42:52', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:42:52', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('4f9881ed-d988-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '0', NULL, '2019-09-17 22:18:28', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 22:18:28', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('50e8d91b-d988-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '0', NULL, '2019-09-17 22:18:30', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 22:18:30', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('5c75d725-db0e-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '500000', NULL, '2019-09-19 20:50:33', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:50:33', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('5dc76c45-d991-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:23:17', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:23:17', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('5fcec4b0-d991-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:23:21', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:23:21', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('620450c7-d991-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:23:24', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:23:24', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('68e3a143-d986-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1000', NULL, '2019-09-17 22:04:52', 'postman', '2019-09-17 22:04:52', 'postman', 1),
-('749c9235-da52-11e9-8f19-48f17f8d4d88', '857f1d2c-da41-11e9-8f19-48f17f8d4d88', '', 'Sell', '75', NULL, '2019-09-18 22:25:29', 'b069dca0-da19-11e9-87f9-48f17f8d4d88', '2019-09-18 22:25:29', 'b069dca0-da19-11e9-87f9-48f17f8d4d88', 1),
-('91572e59-d9d6-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '57', NULL, '2019-09-18 07:38:39', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-18 07:38:39', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('9e8ec07e-db15-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '95', NULL, '2019-09-19 21:42:31', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 21:42:31', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('9f4b6f09-d995-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:53:45', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:53:45', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('a7bc20db-d987-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '750000', NULL, '2019-09-17 22:13:46', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 22:13:46', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('a9bbb992-d9d7-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '57', NULL, '2019-09-18 07:46:29', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-18 07:46:29', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('aa508ac6-dc97-11e9-9da6-c8f7501047dc', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '50000', NULL, '2019-09-21 19:45:56', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-21 19:45:56', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('aad24cd3-d994-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:46:55', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:46:55', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c33faac2-db0e-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '750000', NULL, '2019-09-19 20:53:26', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:53:26', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('c5028951-d6ed-11e9-857f-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1000', NULL, '2019-09-14 14:47:11', 'postman', '2019-09-14 14:47:11', 'postman', 1),
-('cbb04cdc-db0f-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '2902624', NULL, '2019-09-19 21:00:49', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 21:00:49', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('d976c564-d994-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:48:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:48:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('e4e6444a-d988-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '250000', NULL, '2019-09-17 22:22:39', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 22:22:39', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('e592db2d-dc7b-11e9-84fb-c8f7501047dc', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '50000', NULL, '2019-09-21 16:27:10', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-21 16:27:10', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('e748ba7b-db0c-11e9-889b-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1000000', NULL, '2019-09-19 20:40:07', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-19 20:40:07', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('eacfd91e-da44-11e9-8f19-48f17f8d4d88', '857f1d2c-da41-11e9-8f19-48f17f8d4d88', '', 'Sell', '125', NULL, '2019-09-18 20:48:34', 'b069dca0-da19-11e9-87f9-48f17f8d4d88', '2019-09-18 20:48:34', 'b069dca0-da19-11e9-87f9-48f17f8d4d88', 1),
-('f5cf0d0d-d98f-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:13:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:13:13', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('f7aa6cf0-d990-11e9-87f9-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '46', NULL, '2019-09-17 23:20:26', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-17 23:20:26', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
-('fe82e06e-dc7b-11e9-84fb-c8f7501047dc', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '100000', NULL, '2019-09-21 16:27:52', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-21 16:27:52', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
+INSERT INTO `orders` (`OrdersId`, `OrderId`, `CompanyId`, `ParntersId`, `OrderType`, `Total`, `Paid`, `Due`, `ExpectedDate`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
+('7077f065-dcfa-11e9-ab6c-48f17f8d4d88', 'O22', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '2400000', '0', '2400000', NULL, '2019-09-22 07:32:59', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-22 07:32:59', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('75ce7aa3-dcfa-11e9-ab6c-48f17f8d4d88', 'O22', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '749990', '0', '749990', NULL, '2019-09-22 07:33:08', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-22 07:33:08', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('79743c1a-dcfd-11e9-ab6c-48f17f8d4d88', 'O22', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '50000', '50000', '0', NULL, '2019-09-22 07:54:43', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-22 08:03:24', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('f0001543-dcf8-11e9-ab6c-48f17f8d4d88', 'O22', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '', 'Sell', '1200000', '0', '1200000', NULL, '2019-09-22 07:22:14', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-22 07:22:14', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 
 -- --------------------------------------------------------
 
@@ -272,13 +234,13 @@ CREATE TABLE `order_products` (
   `Id` varchar(225) NOT NULL,
   `OrderId` varchar(225) NOT NULL,
   `ProductId` varchar(225) NOT NULL,
-  `ProductName` text,
+  `ProductName` text DEFAULT NULL,
   `UnitPrice` decimal(10,0) DEFAULT NULL,
   `Quantity` varchar(225) NOT NULL,
   `subTotal` decimal(10,0) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -342,9 +304,9 @@ CREATE TABLE `parnter` (
   `CellphoneNumber` varchar(20) NOT NULL,
   `EmailAddress` varchar(225) NOT NULL,
   `Address` varchar(225) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -360,9 +322,9 @@ CREATE TABLE `permision_actions` (
   `PermissionId` varchar(225) NOT NULL,
   `Action` varchar(50) NOT NULL,
   `Section` varchar(50) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -377,9 +339,9 @@ CREATE TABLE `permissions` (
   `PermissionId` varchar(225) NOT NULL,
   `Name` varchar(50) NOT NULL,
   `CompanyId` varchar(225) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -405,16 +367,16 @@ CREATE TABLE `product` (
   `CompanyId` varchar(225) DEFAULT NULL,
   `SupplierId` varchar(225) DEFAULT NULL,
   `Name` varchar(100) NOT NULL,
-  `Description` text,
+  `Description` text DEFAULT NULL,
   `UnitPrice` varchar(20) DEFAULT NULL,
-  `UnitCost` decimal(10,0) DEFAULT '0',
+  `UnitCost` decimal(10,0) DEFAULT 0,
   `Code` varchar(50) DEFAULT NULL,
   `SKU` varchar(20) DEFAULT NULL,
   `Quantity` int(11) DEFAULT NULL,
   `LowStock` int(10) DEFAULT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -446,9 +408,9 @@ CREATE TABLE `product_attribute` (
   `ProductId` varchar(225) NOT NULL,
   `AttributeId` varchar(225) NOT NULL,
   `AttributeValue` varchar(200) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -464,9 +426,9 @@ CREATE TABLE `product_item` (
   `ProductId` varchar(225) NOT NULL,
   `Code` varchar(100) NOT NULL,
   `Scanned` int(1) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -481,9 +443,9 @@ CREATE TABLE `roles` (
   `RoleId` int(10) NOT NULL,
   `CompanyId` varchar(225) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -505,9 +467,9 @@ CREATE TABLE `role_permission` (
   `Id` int(10) NOT NULL,
   `RoleId` int(10) NOT NULL,
   `PermissionId` varchar(225) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -524,9 +486,9 @@ CREATE TABLE `stores` (
   `Address` varchar(100) NOT NULL,
   `TelephoneNumber` varchar(20) NOT NULL,
   `CompanyId` varchar(225) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -545,9 +507,9 @@ CREATE TABLE `users` (
   `CellphoneNumber` varchar(225) NOT NULL,
   `Password` varchar(25) NOT NULL,
   `CompanyId` varchar(225) DEFAULT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -571,9 +533,9 @@ CREATE TABLE `user_roles` (
   `Id` int(11) NOT NULL,
   `UserId` varchar(225) NOT NULL,
   `RoleId` int(11) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -588,9 +550,9 @@ CREATE TABLE `user_store` (
   `Id` int(10) NOT NULL,
   `UserId` varchar(225) NOT NULL,
   `StoreId` varchar(225) NOT NULL,
-  `CreateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
-  `ModifyDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
