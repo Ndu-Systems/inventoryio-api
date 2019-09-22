@@ -4,10 +4,9 @@ include_once '../../models/Roles.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-// create user data only
+$RoleId = $data->RoleId;
 $CompanyId = $data->CompanyId;
-$Name = $data->Name; 
-$CreateUserId = $data->CreateUserId;
+$Name = $data->Name;  
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
 
@@ -16,21 +15,14 @@ $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-// create user first to get UserId
 $roles = new Roles($db);
 
-$result = $roles->add(
+$result = $roles->updateRole(
+    $RoleId,
     $CompanyId,
-    $Name,
-    $CreateUserId,
+    $Name,    
     $ModifyUserId,
-    $StatusId   
+    $StatusId  
 );
 
-    
-    echo json_encode($result);
-
- 
- 
-
-
+echo json_encode($result);
