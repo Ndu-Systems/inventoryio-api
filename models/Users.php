@@ -255,7 +255,7 @@ class Users
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
-            return array();
+             
         } catch (Exception $e) {
             return $e;
         }

@@ -204,5 +204,24 @@ class Roles
       
     }
 
+    public function getRolesByUserId($UserId)
+    {
+        $query = "
+        SELECT r.* FROM users u 
+        JOIN user_roles ur on u.UserId = ur.UserId
+        JOIN roles r on ur.RoleId = r.RoleId
+        WHERE ur.UserId = ?
+        ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($UserId));
+            if($stmt->rowCount()){
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+        }  catch (Exception $e) {
+            return $e;
+        }
+    }
+
 
 }
