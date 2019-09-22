@@ -13,10 +13,13 @@ class Orders
 
     //Add user
     public function add(
+        $OrderId,
         $CompanyId,
         $ParntersId,
         $OrderType,
         $Total,
+        $Paid,
+        $Due,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -28,26 +31,32 @@ class Orders
         $query = "
         INSERT INTO orders(
             OrdersId,
+            OrderId,
             CompanyId,
             ParntersId,
             OrderType,
             Total,
+            Paid,
+            Due,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $OrdersId,
+                $OrderId,
                 $CompanyId,
                 $ParntersId,
                 $OrderType,
                 $Total,
+                $Paid,
+                $Due,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -62,31 +71,33 @@ class Orders
 
 
 
-    public function updateOrders(
+    public function update(
         $OrdersId,
-        $Name,
-        $Description,
-        $UnitPrice,
-        $Code,
-        $SKU,
-        $Quantity,
-        $LowStock,
+        $OrderId,
+        $CompanyId,
+        $ParntersId,
+        $OrderType,
+        $Total,
+        $Paid,
+        $Due,
+        $CreateUserId,
         $ModifyUserId,
         $StatusId
     ) {
         $query = "UPDATE
         orders
     SET
-        Name = ?,
-        Description = ?,
-        UnitPrice = ?,
-        Code = ?,
-        SKU = ?,
-        Quantity = ?,
-        LowStock = ?,
+        OrderId = ?,
+        CompanyId = ?,
+        ParntersId = ?,
+        OrderType = ?,
+        Total = ?,
+        Paid = ?,
+        Due = ?,
+        CreateUserId = ?,
         ModifyDate = NOW(),
         ModifyUserId = ?,
-        StatusId = ?
+        StatusId  = ?
     WHERE
     OrdersId = ?
          ";
@@ -94,20 +105,19 @@ class Orders
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $Name,
-                $Description,
-                $UnitPrice,
-                $Code,
-                $SKU,
-                $Quantity,
-                $LowStock,
+                $OrderId,
+                $CompanyId,
+                $ParntersId,
+                $OrderType,
+                $Total,
+                $Paid,
+                $Due,
+                $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
                 $OrdersId
-
-
             ))) {
-                return $this->getUserById($OrdersId);
+                return $this->getById($OrdersId);
             }
         } catch (Exception $e) {
             return $e;
