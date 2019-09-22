@@ -26,7 +26,7 @@ class Users
 
     ) {
         if ($this->getByEmail($Email) > 0) {
-            return json_encode("user already exists");
+            return "user already exists";
         }
         $UserId = getUuid($this->conn);
 
@@ -57,7 +57,7 @@ class Users
                 $Surname,
                 $CellphoneNumber,
                 $Password,
-                $CompanyId,          
+                $CompanyId,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -118,7 +118,7 @@ class Users
                 $Surname,
                 $CellphoneNumber,
                 $Password,
-                $CompanyId,              
+                $CompanyId,
                 $ModifyUserId,
                 $StatusId,
                 $UserId
@@ -142,6 +142,7 @@ class Users
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
+
     public function getByEmail($Email)
     {
         $query = "SELECT * FROM users WHERE Email =?";
@@ -151,6 +152,185 @@ class Users
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+
+    public function getByCompanyId($CompanyId)
+    {
+        $query = "SELECT * FROM users WHERE CompanyId =?";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($CompanyId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return array();
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getUsers($StatusId)
+    {
+        $query = "SELECT * FROM users WHERE StatusId =?";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($StatusId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return array();
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function addUserStore(
+        $UserId,
+        $StoreId,
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    ) {
+        // avoid duplicates ekuseni
+        if ($this->getUserForStore($UserId, $StoreId) > 0) {
+            return "user has been allocated to this store";
+        }
+        $query = "
+        INSERT INTO user_store(
+            UserId, 
+            StoreId,             
+            CreateUserId,          
+            ModifyUserId, 
+            StatusId) VALUES 
+            (?,?,?,?,?)
+       ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            if ($stmt->execute(array(
+                $UserId,
+                $StoreId,
+                $CreateUserId,
+                $ModifyUserId,
+                $StatusId
+            ))) {
+                return $this->getUsersByStoreId($StoreId);
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getUsersByStoreId($StoreId)
+    {
+        $query = "
+        SELECT u.* from users u
+        JOIN user_store us on u.UserId = us.UserId
+        WHERE us.StoreId = ?
+        ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($StoreId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return array();
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getUserForStore($UserId, $StoreId)
+    {
+        $query = "
+        SELECT u.* from users u
+        JOIN user_store us on u.UserId = us.UserId
+        WHERE us.UserId = ? AND us.StoreId = ?
+        ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($UserId, $StoreId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return array();
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function addUserRole(
+        $UserId,
+        $RoleId,
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    ) {
+        // avoid duplicates ekuseni
+        if ($this->getUserForRole($UserId, $RoleId) > 0) {
+            return "user has been allocated to this role";
+        }
+        $query = "
+        INSERT INTO user_roles(
+            UserId, 
+            RoleId,             
+            CreateUserId,          
+            ModifyUserId, 
+            StatusId) VALUES 
+            (?,?,?,?,?)
+       ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            if ($stmt->execute(array(
+                $UserId,
+                $RoleId,
+                $CreateUserId,
+                $ModifyUserId,
+                $StatusId
+            ))) {
+                return $this->getUsersByRoleId($RoleId);
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getUsersByRoleId($RoleId)
+    {
+        $query = "
+        SELECT u.* FROM users u 
+        JOIN user_roles ur on u.UserId = ur.UserId
+        WHERE ur.RoleId = ?
+       ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($RoleId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return array();
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+    public function getUserForRole($UserId, $RoleId)
+    {
+        $query = "
+        SELECT u.* FROM users u 
+        JOIN user_roles ur on u.UserId = ur.UserId
+        WHERE ur.UserId = ? AND ur.RoleId = ?
+       ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($UserId, $RoleId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            }
+        
+        } catch (Exception $e) {
+            return $e;
         }
     }
 }
