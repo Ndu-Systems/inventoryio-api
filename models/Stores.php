@@ -74,18 +74,17 @@ class Stores
        ";
         try {
             $stmt = $this->conn->prepare($query);
-           if($stmt->execute(array(
-            $Name,
-            $Address,
-            $TelephoneNumber,
-            $CompanyId,
-            $ModifyUserId,
-            $StatusId,
-            $StoreId
-           ))){
-            return $this->getById($StoreId, $CompanyId);
-           }
-            
+            if ($stmt->execute(array(
+                $Name,
+                $Address,
+                $TelephoneNumber,
+                $CompanyId,
+                $ModifyUserId,
+                $StatusId,
+                $StoreId
+            ))) {
+                return $this->getById($StoreId, $CompanyId);
+            }
         } catch (Exception $e) {
             return $e;
         }
@@ -116,6 +115,25 @@ class Stores
         try {
             $stmt = $this->conn->prepare($query);
             $stmt->execute(array($CompanyId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return array();
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getByUserId($UserId)
+    {
+        $query = "
+        SELECT * FROM stores s 
+        JOIN user_store us on s.StoreId = us.StoreId
+        where us.UserId = ?                        
+        ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($UserId));
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
