@@ -4,7 +4,6 @@ include_once '../../models/Orders.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$OrderId = $data->OrderId;
 $CompanyId = $data->CompanyId;
 $ParntersId = $data->ParntersId;
 $OrderType = $data->OrderType;
@@ -23,7 +22,6 @@ $db = $database->connect();
 $orders = new Orders($db);
 
 $result = $orders->add(
-    $OrderId,
     $CompanyId,
     $ParntersId,
     $OrderType,
