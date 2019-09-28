@@ -26,14 +26,30 @@ class Permissions
         }
     }
 
-    public function getById($PermissionId)
+    public function getById($PermissionId, $CompanyId)
     {
         $query = "
-            SELECT * FROM permissions WHERE PermissionId = ?
+            SELECT * FROM permissions WHERE CompanyId = ? AND  PermissionId = ?
         ";
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($PermissionId));
+            $stmt->execute(array($CompanyId,$PermissionId));
+            if ($stmt->rowCount()) {
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+    }
+
+    public function getByKey($Name)
+    {
+        $query ="
+        SELECT * FROM permissions WHERE Name = ?
+        ";
+        try {
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($Name));
             if ($stmt->rowCount()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
@@ -49,6 +65,9 @@ class Permissions
         $ModifyUserId,
         $StatusId
     ) {
+        if($this->getByKey($Name) > 0){
+            return 'permission already exists';
+        }
         $PermissionId = getUuid($this->conn);
         $query = "
         INSERT INTO permissions(
@@ -70,7 +89,7 @@ class Permissions
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($PermissionId);
+                return $this->getById($PermissionId, $CompanyId);
             }
         } catch (Exception $e) {
             return $e;
