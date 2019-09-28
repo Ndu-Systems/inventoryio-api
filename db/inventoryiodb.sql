@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2019 at 09:13 PM
+-- Generation Time: Sep 28, 2019 at 09:54 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.7
 
@@ -91,7 +91,10 @@ INSERT INTO `brand` (`BrandId`, `CompanyId`, `Name`, `CreateDate`, `CreateUserId
 ('8c143c75-d584-11e9-a017-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'Isuzu', '2019-09-12 19:41:27', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-12 19:41:27', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('9f32cf78-d737-11e9-a568-c8f7501047dc', '4523af94-d172-11e9-b97c-48f17f8d4d88', 'Marvel', '2019-09-14 23:35:50', 'ba6257ea-d307-11e9-a45b-0050569fd205', '2019-09-14 23:35:50', 'ba6257ea-d307-11e9-a45b-0050569fd205', 1),
 ('a0549079-d71b-11e9-a568-c8f7501047dc', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'Audi', '2019-09-14 20:15:26', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-14 20:15:26', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('a322b855-e175-11e9-9302-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'TEst1', '2019-09-28 00:24:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-28 00:24:57', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('c48bbf2e-e175-11e9-9302-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'testqqq', '2019-09-28 00:25:53', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-28 00:25:53', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('c57b6b5d-e159-11e9-9302-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'Bluesil', '2019-09-27 21:05:29', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-27 21:05:29', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
+('d7983423-e175-11e9-9302-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'da', '2019-09-28 00:26:25', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-28 00:26:25', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('d82d1c4d-e12f-11e9-9302-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'New bb', '2019-09-27 16:05:21', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-27 16:05:21', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1),
 ('ff011748-d40d-11e9-9f95-48f17f8d4d88', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', 'BMW', '2019-09-10 23:00:18', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-10 23:00:18', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 
@@ -169,24 +172,14 @@ INSERT INTO `company` (`CompanyId`, `Name`, `Website`, `TelephoneNumber`, `Creat
 CREATE TABLE `config` (
   `ConfigId` int(10) NOT NULL,
   `CompanyId` varchar(225) NOT NULL,
-  `OrderPrefix` varchar(100) NOT NULL,
-  `InvoicePrefix` varchar(100) NOT NULL,
-  `InvoiceFooter` varchar(100) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Value` varchar(100) NOT NULL,
   `CreateDate` datetime NOT NULL DEFAULT current_timestamp(),
   `CreateUserId` varchar(225) NOT NULL,
   `ModifyDate` datetime NOT NULL DEFAULT current_timestamp(),
   `ModifyUserId` varchar(225) NOT NULL,
   `StatusId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `config`
---
-
-INSERT INTO `config` (`ConfigId`, `CompanyId`, `OrderPrefix`, `InvoicePrefix`, `InvoiceFooter`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
-(1, 'postman', 'ORD', 'INV22-', 'Thanks for shopping with us, call again', '2019-09-27 14:58:16', 'postman', '2019-09-27 15:13:17', 'postman', 1),
-(2, 'postman', 'ORD-', 'INV-', 'thanks for shopping with us', '2019-09-27 14:58:17', 'postman', '2019-09-27 14:58:17', 'postman', 1),
-(3, 'postman', 'ORD-', 'INV-', 'thanks for shopping with us', '2019-09-27 14:58:18', 'postman', '2019-09-27 14:58:18', 'postman', 1);
 
 -- --------------------------------------------------------
 
@@ -647,8 +640,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`UserId`, `Email`, `Name`, `Surname`, `CellphoneNumber`, `Password`, `CompanyId`, `CreateDate`, `CreateUserId`, `ModifyDate`, `ModifyUserId`, `StatusId`) VALUES
-('81de5b36-d170-11e9-b97c-48f17f8d4d88', 'ndu@mail.com', 'Ndumiso', '', '26784545', '1111', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '2019-09-07 15:07:58', 'web', '2019-09-07 15:07:34', 'web', 1),
+('81de5b36-d170-11e9-b97c-48f17f8d4d88', 'ndu@mail.com', 'Ndumiso', '', '26784545', '111111', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '2019-09-07 15:07:58', 'web', '2019-09-27 23:24:09', 'web', 1),
 ('ba6257ea-d307-11e9-a45b-0050569fd205', 'freedom.khanyile1@gmail.com', 'Freedom', '', '0746958064', '1111', '4523af94-d172-11e9-b97c-48f17f8d4d88', '2019-09-09 15:42:55', 'web', '2019-09-09 15:42:55', 'web', 1),
+('fc3b79be-e161-11e9-9302-48f17f8d4d88', 'tebaza@mai.com', 'Tebza', '', '787878787', '6666', '', '2019-09-27 22:04:17', 'web', '2019-09-27 22:04:17', 'web', 1),
 ('fe045d55-dc80-11e9-84fb-c8f7501047dc', 'ndu.systems@gmail.com', 'Zwide', 'Nxumalo', '27746958064', '12345', NULL, '2019-09-21 17:03:38', 'web', '2019-09-21 17:03:38', 'web', 1),
 ('fe806151-e09b-11e9-993f-48f17f8d4d88', 'test@mail', 'Test', 'test', '713821321', '1111', '94c5b3cf-d170-11e9-b97c-48f17f8d4d88', '2019-09-26 22:27:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', '2019-09-26 22:27:00', '81de5b36-d170-11e9-b97c-48f17f8d4d88', 1);
 

@@ -14,9 +14,8 @@ class Config
     //Add user
     public function add(
         $CompanyId,
-        $OrderPrefix,
-        $InvoicePrefix,
-        $InvoiceFooter,
+        $Name,
+        $Value,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -28,24 +27,22 @@ class Config
         $query = "
         INSERT INTO config(
             CompanyId,
-            OrderPrefix,
-            InvoicePrefix,
-            InvoiceFooter,
+            Name,
+            Value,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?
+        ?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $CompanyId,
-                $OrderPrefix,
-                $InvoicePrefix,
-                $InvoiceFooter,
+                $Name,
+                $Value,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -64,9 +61,8 @@ class Config
     public function update(
         $ConfigId,
         $CompanyId,
-        $OrderPrefix,
-        $InvoicePrefix,
-        $InvoiceFooter,
+        $Name,
+        $Value,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -75,9 +71,8 @@ class Config
         config
         SET
         CompanyId = ?,
-        OrderPrefix = ?,
-        InvoicePrefix = ?,
-        InvoiceFooter = ?,
+        Name = ?,
+        Value = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
         StatusId = ?,
@@ -91,9 +86,8 @@ class Config
             if ($stmt->execute(array(
 
                 $CompanyId,
-                $OrderPrefix,
-                $InvoicePrefix,
-                $InvoiceFooter,
+                $Name,
+                $Value,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,

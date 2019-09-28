@@ -5,9 +5,8 @@ include_once '../../models/Config.php';
 $data = json_decode(file_get_contents("php://input"));
 
 $CompanyId = $data->CompanyId;
-$OrderPrefix = $data->OrderPrefix;
-$InvoicePrefix = $data->InvoicePrefix;
-$InvoiceFooter = $data->InvoiceFooter;
+$Name = $data->Name;
+$Value = $data->Value;
 
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
@@ -22,9 +21,8 @@ $config = new Config($db);
 
 $result = $config->add(
     $CompanyId,
-    $OrderPrefix,
-    $InvoicePrefix,
-    $InvoiceFooter,
+    $Name,
+    $Value,
     $CreateUserId,
     $ModifyUserId,
     $StatusId
