@@ -13,7 +13,7 @@ class Permissions
     public function read($CompanyId)
     {
         $query = "
-            SELECT * FROM permissions WHERE CompanyId =? 
+            SELECT * FROM permissions WHERE CompanyId = ? 
         ";
         try {
             $stmt = $this->conn->prepare($query);

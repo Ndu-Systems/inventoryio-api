@@ -93,7 +93,7 @@ class Stores
     public function getById($StoreId, $CompanyId)
     {
         $query = "
-            SELECT * FROM stores where StoreId = ? AND CompanyId =?
+            SELECT * FROM stores where StoreId = ? AND CompanyId = ? ORDER BY CreateDate DESC
         ";
         try {
             $stmt = $this->conn->prepare($query);
@@ -110,7 +110,7 @@ class Stores
     public function getByCompanyId($CompanyId)
     {
         $query = "
-            SELECT * FROM stores where CompanyId = ?
+            SELECT * FROM stores where CompanyId = ? ORDER BY CreateDate DESC
         ";
         try {
             $stmt = $this->conn->prepare($query);
@@ -129,7 +129,8 @@ class Stores
         $query = "
         SELECT * FROM stores s 
         JOIN user_store us on s.StoreId = us.StoreId
-        where us.UserId = ?                        
+        where us.UserId = ? 
+        ORDER BY us.CreateDate DESC                       
         ";
         try {
             $stmt = $this->conn->prepare($query);
