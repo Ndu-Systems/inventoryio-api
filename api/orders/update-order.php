@@ -5,7 +5,6 @@ include_once '../../models/Orders.php';
 $data = json_decode(file_get_contents("php://input"));
 
 $OrdersId = $data->OrdersId;
-$OrderId = $data->OrderId;
 $CompanyId = $data->CompanyId;
 $ParntersId = $data->ParntersId;
 $OrderType = $data->OrderType;
@@ -25,7 +24,6 @@ $orders = new Orders($db);
 
 $result = $orders->update(
     $OrdersId,
-    $OrderId,
     $CompanyId,
     $ParntersId,
     $OrderType,

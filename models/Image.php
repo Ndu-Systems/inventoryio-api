@@ -60,30 +60,24 @@ class Image
 
 
     public function updateImage(
-        $ImageId,
-        $Name,
-        $Description,
-        $UnitPrice,
-        $Code,
-        $SKU,
-        $Quantity,
-        $LowStock,
+        $CompanyId,
+        $OtherId,
+        $Url,
+        $CreateUserId,
         $ModifyUserId,
-        $StatusId
+        $StatusId,
+        $ImageId
     ) {
         $query = "UPDATE
-        Image
+        image
     SET
-        Name = ?,
-        Description = ?,
-        UnitPrice = ?,
-        Code = ?,
-        SKU = ?,
-        Quantity = ?,
-        LowStock = ?,
-        ModifyDate = NOW(),
+        CompanyId = ?,
+        OtherId = ?,
+        Url = ?,
+        CreateUserId = ?,
         ModifyUserId = ?,
-        StatusId = ?
+        StatusId = ?,
+        ModifyDate = NOW()
     WHERE
     ImageId = ?
          ";
@@ -91,20 +85,17 @@ class Image
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $Name,
-                $Description,
-                $UnitPrice,
-                $Code,
-                $SKU,
-                $Quantity,
-                $LowStock,
+                $CompanyId,
+                $OtherId,
+                $Url,
+                $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
                 $ImageId
 
 
             ))) {
-                return $this->getUserById($ImageId);
+                return $this->getById($ImageId);
             }
         } catch (Exception $e) {
             return $e;
@@ -113,7 +104,7 @@ class Image
 
     public function getById($ImageId)
     {
-        $query = "SELECT * FROM Image WHERE ImageId =?";
+        $query = "SELECT * FROM image WHERE ImageId =?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($ImageId));
@@ -125,10 +116,10 @@ class Image
 
     public function getParentIdById($OtherId)
     {
-        $query = "SELECT * FROM image WHERE OtherId =?";
+        $query = "SELECT * FROM image WHERE OtherId =? AND StatusId = ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OtherId));
+        $stmt->execute(array($OtherId, 1));
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

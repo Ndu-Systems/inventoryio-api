@@ -6,6 +6,8 @@ $data = json_decode(file_get_contents("php://input"));
 
 $OrderId = $data->OrderId;
 $ProductId = $data->ProductId;
+$ProductName = $data->ProductName;
+$UnitPrice = $data->UnitPrice;
 $Quantity = $data->Quantity;
 $subTotal = $data->subTotal;
 $CreateUserId = $data->CreateUserId;
@@ -22,6 +24,8 @@ $order_products = new Order_products($db);
 $result = $order_products->add(
     $OrderId,
     $ProductId,
+    $ProductName,
+    $UnitPrice,
     $Quantity,
     $subTotal,
     $CreateUserId,
