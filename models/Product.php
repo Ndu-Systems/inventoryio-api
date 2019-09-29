@@ -200,6 +200,7 @@ class Product
         i.StatusId as ImageStatusId,
         c.Name as Catergory,
         b.Name as Brand,
+        (p.UnitPrice-p.UnitCost) as Profit,
         round((100-(p.UnitCost / p.UnitPrice)*100), 2) as Margin,
 
         CASE 
