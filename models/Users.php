@@ -157,7 +157,7 @@ class Users
 
     public function getByCompanyId($CompanyId)
     {
-        $query = "SELECT * FROM users WHERE CompanyId =?";
+        $query = "SELECT * FROM users WHERE CompanyId = ? ORDER BY CreateDate DESC";
 
         try {
             $stmt = $this->conn->prepare($query);
@@ -173,7 +173,7 @@ class Users
 
     public function getUsers($StatusId)
     {
-        $query = "SELECT * FROM users WHERE StatusId =?";
+        $query = "SELECT * FROM users WHERE StatusId = ? ORDER BY CreateDate DESC";
 
         try {
             $stmt = $this->conn->prepare($query);

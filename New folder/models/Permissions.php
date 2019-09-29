@@ -70,7 +70,7 @@ class Permissions
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($PermissionId);
+                return $this->getById($PermissionId,  $CompanyId);
             }
         } catch (Exception $e) {
             return $e;
