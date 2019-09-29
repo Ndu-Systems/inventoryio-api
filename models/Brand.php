@@ -57,51 +57,39 @@ class Brand
 
 
     public function updateBrand(
-        $brandId,
+        $BrandId,
+        $CompanyId,
         $Name,
-        $Description,
-        $UnitPrice,
-        $Code,
-        $SKU,
-        $Quantity,
-        $LowStock,
+        $CreateUserId,
         $ModifyUserId,
         $StatusId
     ) {
         $query = "UPDATE
         brand
     SET
+        CompanyId = ?,
         Name = ?,
-        Description = ?,
-        UnitPrice = ?,
-        Code = ?,
-        SKU = ?,
-        Quantity = ?,
-        LowStock = ?,
-        ModifyDate = NOW(),
+        CreateUserId = ?,
         ModifyUserId = ?,
         StatusId = ?
-    WHERE
-    brandId = ?
+        ModifyDate = NOW()
+        WHERE
+        BrandId = ?
          ";
 
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+                $BrandId,
+                $CompanyId,
                 $Name,
-                $Description,
-                $UnitPrice,
-                $Code,
-                $SKU,
-                $Quantity,
-                $LowStock,
+                $CreateUserId,
                 $ModifyUserId,
-                $StatusId,
-                $brandId
+                $StatusId
 
 
             ))) {
-                return $this->getUserById($brandId);
+                return $this->getById($BrandId);
             }
         } catch (Exception $e) {
             return $e;
@@ -122,7 +110,19 @@ class Brand
 
     public function getCampanyById($CompanyId)
     {
-        $query = "SELECT * FROM brand WHERE CompanyId =?";
+        $query = "SELECT
+        BrandId,
+        CompanyId,
+        Name,
+        CreateDate,
+        CreateUserId,
+        ModifyDate,
+        ModifyUserId,
+        StatusId,
+        CASE WHEN StatusId = 1 THEN 'true' WHEN StatusId = 0 THEN 'false'
+        END AS Status
+        FROM
+            brand WHERE CompanyId =?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
