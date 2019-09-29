@@ -200,7 +200,7 @@ class Product
         i.StatusId as ImageStatusId,
         c.Name as Catergory,
         b.Name as Brand,
-        (p.UnitCost / p.UnitPrice)*100 as Margin,
+        round((100-(p.UnitCost / p.UnitPrice)*100), 2) as Margin,
 
         CASE 
         WHEN p.Quantity > p.LowStock THEN 'stock good' 
