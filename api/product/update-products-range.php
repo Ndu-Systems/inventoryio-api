@@ -13,9 +13,9 @@ $database = new Database();
 $db = $database->connect();
 
 foreach ($products as $product) {
-    $product = new Product($db);
+    $prod = new Product($db);
 
-    $result = $product->update(
+    $result = $prod->update(
         $product->ProductId,
         $product->BrandId,
         $product->CatergoryId,
