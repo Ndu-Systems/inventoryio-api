@@ -199,7 +199,14 @@ class Product
         i.Url,
         i.StatusId as ImageStatusId,
         c.Name as Catergory,
-        b.Name as Brand
+        b.Name as Brand,
+        (p.UnitCost / p.UnitPrice)*100 as Margin,
+
+        CASE 
+        WHEN p.Quantity > p.LowStock THEN 'stock good' 
+        WHEN p.Quantity <= p.LowStock THEN 'stock warn' 
+        WHEN p.Quantity <= 0  THEN 'stock error' 
+        END AS Class
         FROM product p
         left join brand b on p.BrandId = b.BrandId
         left join catergory c on p.CatergoryId = c.CatergoryId
