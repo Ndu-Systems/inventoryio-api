@@ -1,15 +1,22 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Order_products.php';
+include_once '../../models/Product.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$OrderId = $data->OrderId;
+// create user data only
 $ProductId = $data->ProductId;
-$ProductName = $data->ProductName;
+$BrandId = $data->BrandId;
+$CatergoryId = $data->CatergoryId;
+$CompanyId = $data->CompanyId;
+$Name = $data->Name;
+$Description = $data->Description;
 $UnitPrice = $data->UnitPrice;
+$UnitCost = $data->UnitCost;
+$Code = $data->Code;
+$SKU = $data->SKU;
 $Quantity = $data->Quantity;
-$subTotal = $data->subTotal;
+$LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -19,18 +26,24 @@ $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-$order_products = new Order_products($db);
+$product = new Product($db);
 
-$result = $order_products->add(
-    $OrderId,
+$result = $product->update(
     $ProductId,
-    $ProductName,
+    $BrandId,
+    $CatergoryId,
+    $CompanyId,
+    $Name,
+    $Description,
     $UnitPrice,
+    $UnitCost,
+    $Code,
+    $SKU,
     $Quantity,
-    $subTotal,
+    $LowStock,
     $CreateUserId,
     $ModifyUserId,
-    $StatusId
+    $StatusId 
 );
 
     

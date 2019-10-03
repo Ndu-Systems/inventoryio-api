@@ -1,7 +1,7 @@
 <?php
 
 
-class Image
+class Parnter
 {
     //DB Stuff
     private $conn;
@@ -14,42 +14,39 @@ class Image
     //Add user
     public function add(
         $CompanyId,
-        $OtherId,
-        $Url,
+        $Name,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
 
     ) {
 
-        $ImageId = getUuid($this->conn);
+        $BrandId = getUuid($this->conn);
 
         $query = "
-        INSERT INTO image(
-            ImageId,
+        INSERT INTO parnter(
+            BrandId,
             CompanyId,
-            OtherId,
-            Url,
+            Name,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?
+        ?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $ImageId,
+                $BrandId,
                 $CompanyId,
-                $OtherId,
-                $Url,
+                $Name,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($ImageId);
+                return $this->getById($BrandId);
             }
         } catch (Exception $e) {
             return $e;
@@ -59,67 +56,76 @@ class Image
 
 
 
-    public function updateImage(
+    public function updateBrand(
+        $BrandId,
         $CompanyId,
-        $OtherId,
-        $Url,
+        $Name,
         $CreateUserId,
         $ModifyUserId,
-        $StatusId,
-        $ImageId
+        $StatusId
     ) {
         $query = "UPDATE
-        image
+        parnter
     SET
         CompanyId = ?,
-        OtherId = ?,
-        Url = ?,
+        Name = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
-        StatusId = ?,
+        StatusId = ?
         ModifyDate = NOW()
-    WHERE
-    ImageId = ?
+        WHERE
+        BrandId = ?
          ";
 
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+                $BrandId,
                 $CompanyId,
-                $OtherId,
-                $Url,
+                $Name,
                 $CreateUserId,
                 $ModifyUserId,
-                $StatusId,
-                $ImageId
+                $StatusId
 
 
             ))) {
-                return $this->getById($ImageId);
+                return $this->getById($BrandId);
             }
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    public function getById($ImageId)
+    public function getById($brandId)
     {
-        $query = "SELECT * FROM image WHERE ImageId =?";
+        $query = "SELECT * FROM parnter WHERE BrandId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($ImageId));
+        $stmt->execute(array($brandId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 
-    public function getParentIdById($OtherId)
+    public function getCampanyById($CompanyId)
     {
-        $query = "SELECT * FROM image WHERE OtherId =? AND StatusId = ?";
+        $query = "SELECT
+        BrandId,
+        CompanyId,
+        Name,
+        CreateDate,
+        CreateUserId,
+        ModifyDate,
+        ModifyUserId,
+        StatusId,
+        CASE WHEN StatusId = 1 THEN 'true' WHEN StatusId = 0 THEN 'false'
+        END AS Status
+        FROM
+            parnter WHERE CompanyId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OtherId, 1));
+        $stmt->execute(array($CompanyId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

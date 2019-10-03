@@ -1,7 +1,7 @@
 <?php
 
 
-class Image
+class Config
 {
     //DB Stuff
     private $conn;
@@ -14,42 +14,41 @@ class Image
     //Add user
     public function add(
         $CompanyId,
-        $OtherId,
-        $Url,
+        $Name,
+        $Value,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
 
     ) {
 
-        $ImageId = getUuid($this->conn);
+        $OrdersId = getUuid($this->conn);
 
         $query = "
-        INSERT INTO image(
-            ImageId,
+        INSERT INTO config(
             CompanyId,
-            OtherId,
-            Url,
+            Name,
+            Value,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?
+        ?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $ImageId,
                 $CompanyId,
-                $OtherId,
-                $Url,
+                $Name,
+                $Value,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($ImageId);
+                $ConfigId = $this->conn->lastInsertId();
+                return $this->getById($ConfigId);
             }
         } catch (Exception $e) {
             return $e;
@@ -59,70 +58,70 @@ class Image
 
 
 
-    public function updateImage(
+    public function update(
+        $ConfigId,
         $CompanyId,
-        $OtherId,
-        $Url,
+        $Name,
+        $Value,
         $CreateUserId,
         $ModifyUserId,
-        $StatusId,
-        $ImageId
+        $StatusId
     ) {
         $query = "UPDATE
-        image
-    SET
+        config
+        SET
         CompanyId = ?,
-        OtherId = ?,
-        Url = ?,
+        Name = ?,
+        Value = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
         StatusId = ?,
-        ModifyDate = NOW()
+    ModifyDate = NOW()
     WHERE
-    ImageId = ?
+    ConfigId = ?
          ";
 
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+
                 $CompanyId,
-                $OtherId,
-                $Url,
+                $Name,
+                $Value,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
-                $ImageId
-
-
+                $ConfigId
             ))) {
-                return $this->getById($ImageId);
+
+                return $this->getById($ConfigId);
             }
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    public function getById($ImageId)
+    public function getById($ConfigId)
     {
-        $query = "SELECT * FROM image WHERE ImageId =?";
+        $query = "SELECT * FROM config WHERE ConfigId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($ImageId));
+        $stmt->execute(array($ConfigId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 
-    public function getParentIdById($OtherId)
+    public function getCampanyById($CompanyId)
     {
-        $query = "SELECT * FROM image WHERE OtherId =? AND StatusId = ?";
+        $query = "SELECT * FROM config WHERE CompanyId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OtherId, 1));
+        $stmt->execute(array($CompanyId));
 
         if ($stmt->rowCount()) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
 }

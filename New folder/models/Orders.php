@@ -30,7 +30,6 @@ class Orders
         $query = "
         INSERT INTO orders(
             OrdersId,
-            OrderId,
             CompanyId,
             ParntersId,
             OrderType,
@@ -42,14 +41,13 @@ class Orders
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $OrdersId,
-                $OrderId,
                 $CompanyId,
                 $ParntersId,
                 $OrderType,
@@ -72,7 +70,6 @@ class Orders
 
     public function update(
         $OrdersId,
-        $OrderId,
         $CompanyId,
         $ParntersId,
         $OrderType,
@@ -86,7 +83,6 @@ class Orders
         $query = "UPDATE
         orders
     SET
-        OrderId = ?,
         CompanyId = ?,
         ParntersId = ?,
         OrderType = ?,
@@ -104,7 +100,6 @@ class Orders
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $OrderId,
                 $CompanyId,
                 $ParntersId,
                 $OrderType,

@@ -1,16 +1,13 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Orders.php';
+include_once '../../models/Image.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$OrdersId = $data->OrdersId;
+$ImageId = $data->ImageId;
 $CompanyId = $data->CompanyId;
-$ParntersId = $data->ParntersId;
-$OrderType = $data->OrderType;
-$Total = $data->Total;
-$Paid = $data->Paid;
-$Due = $data->Due;
+$OtherId = $data->OtherId;
+$Url = $data->Url;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -20,19 +17,16 @@ $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-$orders = new Orders($db);
+$image = new Image($db);
 
-$result = $orders->update(
-    $OrdersId,
+$result = $image->updateImage(
     $CompanyId,
-    $ParntersId,
-    $OrderType,
-    $Total,
-    $Paid,
-    $Due,
+    $OtherId,
+    $Url,
     $CreateUserId,
     $ModifyUserId,
-    $StatusId
+    $StatusId,
+    $ImageId
 );
 
     

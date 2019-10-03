@@ -83,52 +83,67 @@ class Product
 
 
 
-    public function updateUser(
+    public function update(
         $ProductId,
+        $BrandId,
+        $CatergoryId,
+        $CompanyId,
         $Name,
         $Description,
         $UnitPrice,
+        $UnitCost,
         $Code,
         $SKU,
         $Quantity,
         $LowStock,
+        $CreateUserId,
         $ModifyUserId,
         $StatusId
     ) {
         $query = "UPDATE
         product
-    SET
-        Name = ?,
-        Description = ?,
-        UnitPrice = ?,
-        Code = ?,
-        SKU = ?,
-        Quantity = ?,
-        LowStock = ?,
-        ModifyDate = NOW(),
-        ModifyUserId = ?,
-        StatusId = ?
-    WHERE
-    ProductId = ?
+        SET
+        BrandId = ? ,
+        CatergoryId = ? ,
+        CompanyId = ? ,
+        Name = ? ,
+        Description = ? ,
+        UnitPrice = ? ,
+        UnitCost = ? ,
+        Code = ? ,
+        SKU = ? ,
+        Quantity = ? ,
+        LowStock = ? ,
+        CreateUserId = ? ,
+        ModifyUserId = ? ,
+        StatusId = ? ,
+        ModifyDate = NOW()
+        WHERE
+        ProductId = ?
          ";
 
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+                $BrandId,
+                $CatergoryId,
+                $CompanyId,
                 $Name,
                 $Description,
                 $UnitPrice,
+                $UnitCost,
                 $Code,
                 $SKU,
                 $Quantity,
                 $LowStock,
+                $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
                 $ProductId
 
 
             ))) {
-                return $this->getUserById($ProductId);
+                return $this->getById($ProductId);
             }
         } catch (Exception $e) {
             return $e;
@@ -182,13 +197,22 @@ class Product
         p.ModifyUserId,
         p.StatusId,
         i.Url,
+        i.StatusId as ImageStatusId,
         c.Name as Catergory,
-        b.Name as Brand
+        b.Name as Brand,
+        (p.UnitPrice-p.UnitCost) as Profit,
+        round((100-(p.UnitCost / p.UnitPrice)*100), 2) as Margin,
+
+        CASE 
+        WHEN p.Quantity > p.LowStock THEN 'stock good' 
+        WHEN p.Quantity <= p.LowStock THEN 'stock warn' 
+        WHEN p.Quantity <= 0  THEN 'stock error' 
+        END AS Class
         FROM product p
         left join brand b on p.BrandId = b.BrandId
         left join catergory c on p.CatergoryId = c.CatergoryId
         left join image i on i.OtherId =  p.ProductId
-        WHERE p.CompanyId = ?
+        WHERE p.CompanyId = ? 
         group by p.ProductId
         ";
 

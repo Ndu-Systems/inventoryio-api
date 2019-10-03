@@ -91,7 +91,7 @@ class Roles
 
     public function getById($RoleId, $CompanyId)
     {
-        $query = "SELECT * FROM roles WHERE RoleId =? AND CompanyId=?";
+        $query = "SELECT * FROM roles WHERE RoleId =? AND CompanyId=? ORDER BY CreateDate DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($RoleId, $CompanyId));
@@ -103,7 +103,7 @@ class Roles
 
     public function getByCompanyId($CompanyId)
     {
-        $query = "SELECT * FROM roles WHERE CompanyId =?";
+        $query = "SELECT * FROM roles WHERE CompanyId =? ORDER BY CreateDate DESC";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
@@ -156,7 +156,8 @@ class Roles
         SELECT p.* FROM 
         permissions AS p 
         JOIN role_permission rp on p.PermissionId = rp.PermissionId
-        WHERE rp.RoleId = ?
+        WHERE rp.RoleId = ? 
+        ORDER BY p.CreateDate DESC
         ";
 
         try {
@@ -174,7 +175,7 @@ class Roles
     {
         $query = "
         SELECT * from role_permission 
-        WHERE RoleId = ? AND PermissionId = ?
+        WHERE RoleId = ? AND PermissionId = ? ORDER BY CreateDate DESC
         ";
         try {
             $stmt = $this->conn->prepare($query);
@@ -210,7 +211,8 @@ class Roles
         SELECT r.* FROM users u 
         JOIN user_roles ur on u.UserId = ur.UserId
         JOIN roles r on ur.RoleId = r.RoleId
-        WHERE ur.UserId = ?
+        WHERE ur.UserId = ? 
+        ORDER BY r.CreateDate DESC
         ";
         try {
             $stmt = $this->conn->prepare($query);
