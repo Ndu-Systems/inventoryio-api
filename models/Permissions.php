@@ -42,14 +42,14 @@ class Permissions
         }
     }
 
-    public function getByKey($Name)
+    public function getByKey($Name, $CompanyId)
     {
         $query ="
-        SELECT * FROM permissions WHERE Name = ?
+        SELECT * FROM permissions WHERE Name = ? AND CompanyId = ?
         ";
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($Name));
+            $stmt->execute(array($Name, $CompanyId));
             if ($stmt->rowCount()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
@@ -65,7 +65,7 @@ class Permissions
         $ModifyUserId,
         $StatusId
     ) {
-        if($this->getByKey($Name) > 0){
+        if($this->getByKey($Name, $CompanyId) > 0){
             return 'permission already exists';
         }
         $PermissionId = getUuid($this->conn);
