@@ -107,14 +107,16 @@ class Stores
         }
     }
 
-    public function getByCompanyId($CompanyId)
+    public function getByCompanyId($CompanyId, $StatusId)
     {
         $query = "
-            SELECT * FROM stores where CompanyId = ? ORDER BY CreateDate DESC
+            SELECT * FROM stores WHERE CompanyId = ? 
+            AND StatusId = ?
+            ORDER BY CreateDate DESC
         ";
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($CompanyId));
+            $stmt->execute(array($CompanyId, $StatusId));
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }

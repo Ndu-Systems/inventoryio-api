@@ -155,13 +155,16 @@ class Users
         }
     }
 
-    public function getByCompanyId($CompanyId)
+    public function getByCompanyId($CompanyId, $StatusId)
     {
-        $query = "SELECT * FROM users WHERE CompanyId = ? ORDER BY CreateDate DESC";
+        $query = "SELECT * FROM users 
+        WHERE CompanyId = ? 
+        AND StatusId=?        
+        ORDER BY CreateDate DESC";
 
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($CompanyId));
+            $stmt->execute(array($CompanyId, $StatusId));
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
@@ -216,23 +219,24 @@ class Users
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getUsersByStoreId($StoreId);
+                return $this->getUsersByStoreId($StoreId, $StatusId);
             }
         } catch (Exception $e) {
             return $e;
         }
     }
 
-    public function getUsersByStoreId($StoreId)
+    public function getUsersByStoreId($StoreId, $StatusId)
     {
         $query = "
         SELECT u.* from users u
         JOIN user_store us on u.UserId = us.UserId
         WHERE us.StoreId = ?
+        AND u.StatusId = ? 
         ";
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($StoreId));
+            $stmt->execute(array($StoreId, $StatusId));
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }

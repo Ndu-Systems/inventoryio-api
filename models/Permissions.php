@@ -10,14 +10,14 @@ class Permissions
         $this->conn = $db;
     }
 
-    public function read($CompanyId)
+    public function read($CompanyId, $StatusId)
     {
         $query = "
-            SELECT * FROM permissions WHERE CompanyId = ? 
+            SELECT * FROM permissions WHERE CompanyId = ? AND StatusId = ?
         ";
         try {
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($CompanyId));
+            $stmt->execute(array($CompanyId, $StatusId));
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
@@ -122,7 +122,7 @@ class Permissions
                 $StatusId,
                 $PermissionId
             ))){
-                return $this->getById($PermissionId);
+                return $this->getById($PermissionId, $CompanyId);
             }
         } catch (Exception $e) {
             return $e;

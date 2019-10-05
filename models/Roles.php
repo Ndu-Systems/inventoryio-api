@@ -101,12 +101,15 @@ class Roles
         }
     }
 
-    public function getByCompanyId($CompanyId)
+    public function getByCompanyId($CompanyId, $StatusId)
     {
-        $query = "SELECT * FROM roles WHERE CompanyId =? ORDER BY CreateDate DESC";
+        $query = "SELECT * FROM roles 
+        WHERE CompanyId =? 
+        AND StatusId =?
+        ORDER BY CreateDate DESC";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($CompanyId));
+        $stmt->execute(array($CompanyId, $StatusId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
