@@ -22,7 +22,7 @@ $image = new Image($db);
 $result = $user->getUserByEmailandPassword($Email,$Password);
 
 $userCompany = $company->getById($result["CompanyId"] );
-$dp = $image->getById($result["UserId"] );
+$dp = $image->getParentIdByIdSigle($result["UserId"] );
 
 $result["DP"] = $dp;
 $result["Company"] = $userCompany;

@@ -125,4 +125,15 @@ class Image
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+    public function getParentIdByIdSigle($OtherId)
+    {
+        $query = "SELECT * FROM image WHERE OtherId =? AND StatusId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($OtherId, 1));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
 }
