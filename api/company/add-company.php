@@ -25,9 +25,7 @@ $result = $company->add(
     $TelephoneNumber,
     $CreateUserId,
     $ModifyUserId,
-    $StatusId
-
-     
+    $StatusId     
 );
 
     
