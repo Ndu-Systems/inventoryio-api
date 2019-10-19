@@ -20,6 +20,7 @@ class Users
         $CellphoneNumber,
         $Password,
         $CompanyId,
+        $RoleId,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -39,13 +40,13 @@ class Users
             CellphoneNumber,
             Password,
             CompanyId,
-          
+            RoleId,          
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-           ?,?,?,?,?,?,?,?,?,?
+           ?,?,?,?,?,?,?,?,?,?,?
         )
 ";
         try {
@@ -58,6 +59,7 @@ class Users
                 $CellphoneNumber,
                 $Password,
                 $CompanyId,
+                $RoleId,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId

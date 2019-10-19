@@ -1,35 +1,43 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Company.php';
-
+include_once '../../models/Users.php'; 
+ 
 $data = json_decode(file_get_contents("php://input"));
-
 // create user data only
+$Email = $data->Email;
 $Name = $data->Name;
-$Website = $data->Website;
-$TelephoneNumber = $data->TelephoneNumber;
+$Surname = $data->Surname;
+$CellphoneNumber = $data->CellphoneNumber;
+$Password = $data->Password; 
+$CompanyId = $data->CompanyId; 
+$RoleId = $data->RoleId; 
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
+
 
 //connect to db
 $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-$company = new Company($db);
+$user = new Users($db);
+ 
 
-$result = $company->add(
+$result = $user->add(
+    $Email,
     $Name,
-    $Website,
-    $TelephoneNumber,
+    $Surname,
+    $CellphoneNumber,
+    $Password,
+    $CompanyId,
+    $RoleId,
     $CreateUserId,
     $ModifyUserId,
     $StatusId     
 );
 
-    
-    echo json_encode($result);
+echo json_encode($result);
 
  
  

@@ -24,11 +24,11 @@ $result = $users->getUserById($UserId);
 $userCompany = $company->getById($result["CompanyId"]);
 $dp = $image->getParentIdByIdSigle($result["UserId"]);
 $stores = $store->getByUserId($result["UserId"]);
-$roles = $role->getRolesByUserId($result["UserId"]);
+$role = $role->getById($result["RoleId"], $result["CompanyId"]);
 
 $result["DP"] = $dp;
 $result["Company"] = $userCompany;
 $result["Stores"] = $stores;
-$result["Roles"] = $roles;
+$result["Role"] = $role;
 
 echo json_encode($result);
