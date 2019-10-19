@@ -15,7 +15,11 @@ $db = $database->connect();
 // create user first to get UserId
 $product = new Product($db);
 
-$result = $product->getDetailedProduct(
+// $result = $product->getDetailedProduct(
+//     $CompanyId
+// );
+
+$result = $product->getDetailedProductWithImages(
     $CompanyId
 );
 
