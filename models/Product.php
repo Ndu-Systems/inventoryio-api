@@ -272,9 +272,9 @@ class Product
             foreach ($products as $product) {
 
                 $images = $image->getParentIdById($product["ProductId"]);
-               // $dp = $image->getParentIdByIdSigle($product["ProductId"]);
                 $product["images"] = $images;
-                //$product["Company"] = $userCompany;
+                $product["Brand"] = $brand->getById($product["BrandId"]);
+                $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
                 array_push($productsWithImages, $product);
 
 
