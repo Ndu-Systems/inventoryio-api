@@ -78,7 +78,7 @@ class Product
                 return $this->getById($ProductId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

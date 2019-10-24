@@ -52,7 +52,7 @@ class Image
                 return $this->getById($ImageId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
