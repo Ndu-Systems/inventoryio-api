@@ -127,7 +127,7 @@ class Image
     }
     public function getParentIdByIdSigle($OtherId)
     {
-        $query = "SELECT * FROM image WHERE OtherId =? AND StatusId = ?";
+        $query = "SELECT * FROM image WHERE OtherId =? AND StatusId = ? order by CreateDate desc";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($OtherId, 1));
