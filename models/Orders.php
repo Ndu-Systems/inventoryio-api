@@ -61,7 +61,7 @@ class Orders
                 return $this->getById($OrdersId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -114,7 +114,7 @@ class Orders
                 return $this->getById($OrdersId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

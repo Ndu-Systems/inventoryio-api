@@ -49,7 +49,7 @@ class Brand
                 return $this->getById($BrandId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -92,7 +92,7 @@ class Brand
                 return $this->getById($BrandId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

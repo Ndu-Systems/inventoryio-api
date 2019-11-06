@@ -51,7 +51,7 @@ class Config
                 return $this->getById($ConfigId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -97,7 +97,7 @@ class Config
                 return $this->getById($ConfigId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

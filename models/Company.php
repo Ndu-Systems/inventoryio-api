@@ -53,7 +53,7 @@ class Company
                 return $this->getById($CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -104,7 +104,7 @@ class Company
                 return $this->getUserById($UserId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

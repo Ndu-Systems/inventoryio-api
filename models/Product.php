@@ -75,7 +75,7 @@ class Product
                 $ModifyUserId,
                 $StatusId
             ))) {
-                return $this->getById($ProductId);
+                return $this->getSigleProductWithImages($ProductId);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);
@@ -145,10 +145,10 @@ class Product
 
 
             ))) {
-                return $this->getById($ProductId);
+                return $this->getSigleProductWithImages($ProductId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -281,5 +281,61 @@ class Product
             }
         }
         return  $productsWithImages;
+    }
+    public function getSigleProductWithImages($ProductId)
+    {
+        $query = "SELECT 
+        p.ProductId,
+        p.BrandId,
+        p.CatergoryId,
+        p.CompanyId,
+        p.SupplierId,
+        p.Name,
+        p.Description,
+        p.UnitPrice,
+        p.UnitCost,
+        p.Code,
+        p.SKU,
+        p.Quantity,
+        p.LowStock,
+        p.CreateDate,
+        p.CreateUserId,
+        p.ModifyDate,
+        p.ModifyUserId,
+        p.StatusId,
+        (p.UnitPrice-p.UnitCost) as Profit,
+        round((100-(p.UnitCost / p.UnitPrice)*100), 2) as Margin,
+
+        CASE 
+        WHEN p.Quantity > p.LowStock THEN 'stock good' 
+        WHEN p.Quantity <= p.LowStock THEN 'stock warn' 
+        WHEN p.Quantity <= 0  THEN 'stock error' 
+        END AS Class
+        FROM product p
+        WHERE p.ProductId = ? 
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($ProductId));
+
+        $productsWithImages = Array();
+        $image = new Image($this->conn);
+        $brand = new Brand($this->conn);
+        $catergory = new Catergory($this->conn);
+
+        if ($stmt->rowCount()) {
+            $product =  $stmt->fetch(PDO::FETCH_ASSOC);
+         //   foreach ($products as $product) {
+
+                $images = $image->getParentIdById($product["ProductId"]);
+                $product["images"] = $images;
+                $product["Brand"] = $brand->getById($product["BrandId"]);
+                $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+                //array_push($productsWithImages, $product);
+
+
+          //  }
+        }
+        return  $product;
     }
 }

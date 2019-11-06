@@ -49,7 +49,7 @@ class Catergory
                 return $this->getById($CatergoryId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -104,7 +104,7 @@ class Catergory
                 return $this->getUserById($CatergoryId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

@@ -22,7 +22,7 @@ class Permissions
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -38,7 +38,7 @@ class Permissions
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -54,7 +54,7 @@ class Permissions
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -92,7 +92,7 @@ class Permissions
                 return $this->getById($PermissionId, $CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -125,7 +125,7 @@ class Permissions
                 return $this->getById($PermissionId, $CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 }
