@@ -129,7 +129,7 @@ class Users
                 return $this->getUserById($UserId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -172,7 +172,7 @@ class Users
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -188,7 +188,7 @@ class Users
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -224,7 +224,7 @@ class Users
                 return $this->getUsersByStoreId($StoreId, $StatusId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -244,7 +244,7 @@ class Users
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -261,9 +261,8 @@ class Users
             if ($stmt->rowCount()) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
-             
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -299,7 +298,7 @@ class Users
                 return $this->getUsersByRoleId($RoleId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -318,7 +317,7 @@ class Users
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
     public function getUserForRole($UserId, $RoleId)
@@ -334,9 +333,8 @@ class Users
             if ($stmt->rowCount()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
-        
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 }
