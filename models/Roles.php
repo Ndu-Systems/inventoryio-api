@@ -47,7 +47,7 @@ class Roles
                 return $this->getById($RoleId, $CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -85,7 +85,7 @@ class Roles
                 return $this->getById($RoleId, $CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -149,7 +149,7 @@ class Roles
                 return $this->getRolePermissions($RoleId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -170,7 +170,7 @@ class Roles
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -187,7 +187,7 @@ class Roles
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
     
@@ -203,7 +203,7 @@ class Roles
                return true;
            }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
       
     }
@@ -224,7 +224,7 @@ class Roles
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         }  catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

@@ -48,7 +48,7 @@ class Stores
                 return $this->getById($StoreId, $CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -86,7 +86,7 @@ class Stores
                 return $this->getById($StoreId, $CompanyId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -103,7 +103,7 @@ class Stores
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -122,7 +122,7 @@ class Stores
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -142,7 +142,7 @@ class Stores
             }
             return array();
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 }

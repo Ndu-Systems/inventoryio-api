@@ -61,7 +61,7 @@ class Order_products
                 return $this->getById($Id);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
@@ -116,7 +116,7 @@ class Order_products
                 return $this->getUserById($Id);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 

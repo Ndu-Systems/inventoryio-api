@@ -67,7 +67,7 @@ class Users
                 return $this->getUserById($UserId);
             }
         } catch (Exception $e) {
-            return $e;
+            return array("ERROR", $e);
         }
     }
 
