@@ -1,6 +1,6 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Parnter.php';
+include_once '../../models/Partner.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -13,9 +13,9 @@ $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-$parnter = new Parnter($db);
+$partner = new Partner($db);
 
-$result = $parnter->getCampanyById(
+$result = $partner->getCampanyById(
     $CompanyId
 );
  

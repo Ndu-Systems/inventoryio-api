@@ -13,6 +13,7 @@ $Paid = $data->Paid;
 $Due = $data->Due;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
+$Status = $data->Status;
 $StatusId = $data->StatusId;
 
 //connect to db
@@ -32,6 +33,7 @@ $result = $orders->update(
     $Due,
     $CreateUserId,
     $ModifyUserId,
+    $Status,
     $StatusId
 );
 

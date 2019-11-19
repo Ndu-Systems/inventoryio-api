@@ -15,7 +15,7 @@ $db = $database->connect();
 // create user first to get UserId
 $orders = new Orders($db);
 
-$result = $orders->getCampanyById(
+$result = $orders->getDetailedCampanyById(
     $CompanyId
 );
  

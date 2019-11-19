@@ -1,4 +1,5 @@
 <?php
+include_once 'Image.php';
 
 
 class Order_products
@@ -139,8 +140,23 @@ class Order_products
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($OrderId));
 
+        // if ($stmt->rowCount()) {
+        //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // }
+        $productsWithImages = Array();
+        $image = new Image($this->conn);
+
         if ($stmt->rowCount()) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($products as $product) {
+
+                $images = $image->getParentIdById($product["ProductId"]);
+                $product["Images"] = $images;
+                array_push($productsWithImages, $product);
+
+
+            }
         }
+        return  $productsWithImages;
     }
 }
