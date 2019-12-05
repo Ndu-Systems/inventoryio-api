@@ -135,6 +135,7 @@ class Orders
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
+        return null;
     }
 
     public function getCampanyById($CompanyId)
