@@ -114,7 +114,7 @@ class Order_products
 
 
             ))) {
-                return $this->getUserById($Id);
+                return $this->getById($Id);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);

@@ -1,5 +1,7 @@
 <?php
 include_once 'Partner.php';
+include_once 'Order_products.php';
+include_once 'Company.php';
 
 
 class Orders
@@ -156,7 +158,7 @@ class Orders
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
-        $ordersWithCustomers = Array();
+        $ordersWithCustomers = array();
         $partner = new Partner($this->conn);
 
         if ($stmt->rowCount()) {
@@ -167,9 +169,34 @@ class Orders
                 $order["Customer"] = $customer;
                 $order["CardClass"] = ['card'];
                 array_push($ordersWithCustomers, $order);
-
-
             }
+        }
+        return $ordersWithCustomers;
+    }
+
+    public function getDetailedSingleCampanyById($OrdersId)
+    {
+        $query = "SELECT * FROM orders WHERE OrdersId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($OrdersId));
+        $ordersWithCustomers = null;
+        $partner = new Partner($this->conn);
+        $order_products = new Order_products($this->conn);
+        $company = new Company($this->conn);
+
+
+        if ($stmt->rowCount()) {
+            $order =  $stmt->fetch(PDO::FETCH_ASSOC);
+            $customer = $partner->getById($order["ParntersId"]);
+            $products = $order_products->getBOrderIdId(
+                $OrdersId
+            );
+            $order["Customer"] = $customer;
+            $order["Products"] = $products;
+            $order["Company"] = $company->getById($order["CompanyId"]);
+            $order["CardClass"] = ['card'];
+            $ordersWithCustomers = $order;
         }
         return $ordersWithCustomers;
     }
