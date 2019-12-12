@@ -3,24 +3,19 @@
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+$data = json_decode(file_get_contents("php://input"));
+if (isset($data)){
 
-if (!empty($_POST)){
+    $CompanyName = $data->CompanyName;
+     $Email = $data->Email;
+     $ContactNumber = $data->ContactNumber;
+     $Subject = $data->Subject;
+     $Message = $data->Message;
+     $DownloadLink = $data->DownloadLink;
+     $InvoiceDate = $data->InvoiceDate;
+     $Customer = $data->Customer;
 
-    // $CompanyName = $data->CompanyName;
-    // $Email = $data->Email;
-    // $ContactNumber = $data->ContactNumber;
-    // $Subject = $data->Subject;
-    // $Message = $data->Message;
-    // $DownloadLink = $data->DownloadLink;
-    // $InvoiceDate = $data->InvoiceDate;
-
-    $CompanyName = $_POST['CompanyName'];
-    $Email = $_POST['Email'];
-    $ContactNumber = $_POST['ContactNumber'];
-    $Subject = $_POST['Subject'];
-    $Message = $_POST['Message'];
-    $DownloadLink = $_POST['DownloadLink'];
-    $InvoiceDate = $_POST['InvoiceDate'];
+  
 
     $msg = '
 <body style="font-family: "Calibri";">
@@ -37,7 +32,7 @@ if (!empty($_POST)){
 
             <div class="body" style="padding: 4rem 6rem;">
                 <p>
-                    Dear Ndumiso
+                    Dear '. $Customer.'
                 </p>
 
                 <p>
@@ -68,7 +63,7 @@ if (!empty($_POST)){
     $headers  = 'MIME-Version: 1.0' . "\r\n";
     $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
-    $headers .= 'From: ' . $CompanyName . "\r\n" .
+    $headers .= 'From: ' . $from . "\r\n" .
         'Reply-To: ' . $from . "\r\n" .
         'X-Mailer: PHP/' . phpversion();
 
