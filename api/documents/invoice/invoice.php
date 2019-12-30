@@ -44,6 +44,7 @@ $prefix = 'INV';
 $heading = 'Invoice';
 $clientName = 'SADMA SA';
 $dateIssued = '12 Dec 2019';
+$dueBy = '09 Jan 2020';
 $invoiceNo =  $prefix.$order["OrderId"];
 $companyName = $company["Name"];
 $companyCell = $company["TelephoneNumber"];
@@ -53,12 +54,12 @@ $companyAddressL2 = '57 Sloane St &, Main Rd, Bryanston, 2021';
 $currency = 'R ';
 
 $accountNumber = '62737294455';
-$bankName = '62737294455';
+$bankName = 'FNB';
 $accountHolder = 'Ndu Systems';
 $PaymentReference = $clientName.$invoiceNo;
-$branchCode = 'Ndu Systems';
+$branchCode = '254005';
 
-$hideBorder = 1;
+$hideBorder = 0;
 $fontSizeSmall = 10;
 $fontSizeMed = 12;
 $fontSizeLarge = 16;
@@ -136,42 +137,46 @@ $headeCellWidth = 62;
 $lineHeight = 5;
 $pdf->Ln(80);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($headeCellWidth,  10, 'BANK INFO', $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  10, 'DUE BY', $hideBorder, 0);
+$pdf->Cell($headeCellWidth*1.40,  10, 'BANK INFO', $hideBorder, 0);
+$pdf->Cell($headeCellWidth*0.88,  10, 'DUE BY', $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  10, 'TOTAL DUE', $hideBorder, 1);
 
+$headeCellWidth = 55;
+$bankLabelFraction = 0.58;
+
 $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, 'Account No :', $hideBorder, 0);
+$pdf->Cell($headeCellWidth*$bankLabelFraction,  $lineHeight, 'Account No :', $hideBorder, 0);
 $pdf->SetFont('Arial', '', $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, $accountNumber, $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  $lineHeight, $accountNumber, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, 'Bank Name :', $hideBorder, 0);
+$pdf->Cell($headeCellWidth*$bankLabelFraction,  $lineHeight, 'Bank Name :', $hideBorder, 0);
 $pdf->SetFont('Arial', '', $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, $bankName, $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
+$pdf->SetFont('Arial', '', 18);
+$pdf->Cell($headeCellWidth,  $lineHeight, $dueBy, $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  $lineHeight,$currency.$order["Total"], $hideBorder, 1);
+
+$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
+$pdf->Cell($headeCellWidth*$bankLabelFraction,  $lineHeight, 'Account Holder :', $hideBorder, 0);
+$pdf->SetFont('Arial', '', $fontSizeSmall); // value small
+$pdf->Cell($headeCellWidth,  $lineHeight, $accountHolder, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, 'Account Holder :', $hideBorder, 0);
+$pdf->Cell($headeCellWidth*$bankLabelFraction,  $lineHeight, 'Branch Code : ', $hideBorder, 0);
 $pdf->SetFont('Arial', '', $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, $accountHolder, $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  $lineHeight, $branchCode, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, 'Branch Code : ', $hideBorder, 0);
+$pdf->Cell($headeCellWidth*$bankLabelFraction,  $lineHeight, 'Reference :', $hideBorder, 0);
 $pdf->SetFont('Arial', '', $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, $branchCode, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 1);
-
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, 'Reference :', $hideBorder, 0);
-$pdf->SetFont('Arial', '', $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth*0.5,  $lineHeight, $PaymentReference, $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  $lineHeight, $PaymentReference, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, '', $hideBorder, 1);
 
