@@ -1,129 +1,120 @@
 <?php
-//https://www.youtube.com/watch?v=XD8OOSwjMDs
+require('../../../config/dbInvoice.php');
+require('../../../models/Partner.php');
+require('../../../models/Order_products.php');
+require('../../../models/Company.php');
 require('inc/fpdf.php');
+// connect to db
+//connect to db
+$database = new Database();
+$db = $database->connect();
 
-class PDF extends FPDF
+function getDetailedSingleCampanyById($OrdersId, $db)
 {
-// Page header
+    $query = "SELECT * FROM orders WHERE OrdersId =?";
 
-function Header()
-{
-    $heading = 'Invoice';
-    $clientName = 'SADMA SA';
-    $dateIssued = '12 Dec 2019';
-    $invoiceNo = '1236';
-    $companyName ='Dell South Africa';
-    $companyCell ='011 224 1454';
-    $companyEmail ='info@dell.co.za';
-    $companyAddressL1 ='The Campus, Wembley Building';
-    $companyAddressL2 ='57 Sloane St &, Main Rd, Bryanston, 2021';
-   
-    
-
-    // Logo
-    $this->Ln(20);
-    $this->Image('img/Ellipse 1.png',10,25,20);
-    //$this->Image('img/banner.png',0,10,210);
-    $this->Image('img/footer.png',0,210,210);
-    // Arial bold 15
-    $this->SetFont('Arial','B',30);
-    
-    //$this->SetTextColor(220,50,50);
-    $this->Cell(30);
-    $this->Cell(30,10,$heading);
-
-    $this->SetFont('Arial','',25);
-    $this->Cell(-180);
-    $this->Cell(10,100,$clientName);
-
-    $this->Cell(-10);
-    $this->SetFont('Arial','B',15);
-    $this->Cell(0,120,'Date Issued : ');
-
-    $this->Cell(-157);
-    $this->SetFont('Arial','',14);
-    $this->Cell(0,120, $dateIssued);
-
-    $this->Cell(-190);
-    $this->SetFont('Arial','B',15);
-    $this->Cell(0,140,'Invoice No : ');
-
-    $this->Cell(-157);
-    $this->SetFont('Arial','',14);
-    $this->Cell(0,140, $invoiceNo);
-
-    // company
-    $companyLeft = -70;
-
-    $this->Cell($companyLeft);
-    $this->SetFont('Arial','B',16);
-    $this->Cell(0,90,$companyName);
-
-    $this->Cell($companyLeft);
-    $this->SetFont('Arial','',10);
-    $this->Cell(0,110,$companyAddressL1);
-    $this->Cell($companyLeft);
-    $this->SetFont('Arial','',10);
-    $this->Cell(0,120,$companyAddressL2);
-
-    $this->Cell($companyLeft);
-    $this->SetFont('Arial','',12);
-    $this->Cell(0,135,$companyCell);
-    
-    $this->Cell($companyLeft);
-    $this->Cell(0,145,$companyEmail);
-
-    //table
-
-    // $tableLeft = -185;
-    // $cellWidth = 100;
-    // $this->Cell($tableLeft);
-    // $this->Cell($cellWidth,10,'Title',1,0,'C');
+    $stmt = $db->prepare($query);
+    $stmt->execute(array($OrdersId));
+    $ordersWithCustomers = null;
+    $partner = new Partner($db);
+    $order_products = new Order_products($db);
+    $company = new Company($db);
 
 
-    
-    // Line break
-    $this->Ln(90);
-  
-    $header = array('Country', 'Capital', 'Area (sq km)', 'Pop. (thousands)');
-    $this->BasicTable($header,Array());
-
-}
-
-// Page footer
-function Footer()
-{
-    // Position at 1.5 cm from bottom
-    $this->SetY(-15);
-    // Arial italic 8
-    $this->SetFont('Arial','I',8);
-    // Page number
-    $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-}
-function BasicTable($header, $data)
-{
-    // Header
-    // $this->setY(120);
-    foreach($header as $col)
-        $this->Cell(40,7,$col,1);
-    $this->Ln();
-    // Data
-    foreach($data as $row)
-    {
-        foreach($row as $col)
-            $this->Cell(40,6,$col,1);
-        $this->Ln();
+    if ($stmt->rowCount()) {
+        $order =  $stmt->fetch(PDO::FETCH_ASSOC);
+        $customer = $partner->getById($order["ParntersId"]);
+        $products = $order_products->getBOrderIdId(
+            $OrdersId
+        );
+        $order["Customer"] = $customer;
+        $order["Products"] = $products;
+        $order["Company"] = $company->getById($order["CompanyId"]);
+        $order["CardClass"] = ['card'];
+        $ordersWithCustomers = $order;
     }
-}
+    return $ordersWithCustomers;
 }
 
+// values
+$heading = 'Invoice';
+$heading = 'Invoice';
+$clientName = 'SADMA SA';
+$dateIssued = '12 Dec 2019';
+$invoiceNo = '1236';
+$companyName = 'Dell South Africa';
+$companyCell = '011 224 1454';
+$companyEmail = 'info@dell.co.za';
+$companyAddressL1 = 'The Campus, Wembley Building';
+$companyAddressL2 = '57 Sloane St &, Main Rd, Bryanston, 2021';
 
-// Instanciation of inherited class
-$pdf = new PDF();
-$pdf->AliasNbPages();
+$hideBorder = 1;
+$fontSizeMed = 12;
+$fontSizeLarge = 16;
+
+
+$pdf = new FPDF('p', 'mm', 'A4');
 $pdf->AddPage();
-$pdf->SetFont('Times','',12);
-// for($i=1;$i<=40;$i++)
-//     $pdf->Cell(0,10,'Printing line number '.$i,0,1);
+
+// add logo and heading
+$pdf->Image('img/Ellipse 1.png', 10, 25, 20);
+$pdf->Ln(20);
+$pdf->SetFont('Arial', 'B', 30);
+$pdf->Cell(30, 10, '', $hideBorder, 0);
+$pdf->Cell(100, 10, $heading, $hideBorder, 1);
+
+// add client details and company
+$pdf->Ln(30);
+$pdf->SetFont('Arial', '', $fontSizeLarge);
+$pdf->Cell(85, 10, $clientName, $hideBorder, 1);
+// row top
+$rowTopSpaceMiddle = 40;
+$firstColSize = 30;
+$lastColSize = 90;
+$rowHeigth = 5;
+$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
+$pdf->Cell($firstColSize, $rowHeigth, 'Date Issued :', $hideBorder, 0);
+$pdf->SetFont('Arial', '', $fontSizeMed); // value small
+$pdf->Cell($firstColSize,  $rowHeigth, $dateIssued, $hideBorder, 0);
+$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
+$pdf->Cell($lastColSize,  $rowHeigth, $companyName, $hideBorder, 1);
+// row  top
+$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
+$pdf->Cell($firstColSize,  $rowHeigth, 'Invoice No :', $hideBorder, 0);
+$pdf->SetFont('Arial', '', $fontSizeMed); // value small
+$pdf->Cell($firstColSize,  $rowHeigth, $invoiceNo, $hideBorder, 0);
+$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
+$pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL1, $hideBorder, 1);
+// row  top
+$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
+$pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
+$pdf->SetFont('Arial', '', $fontSizeMed); // value small
+$pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
+$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
+$pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL2, $hideBorder, 1);
+
+
+// add details headers
+$headeCellWidth = 47;
+$pdf->Ln(20);
+$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
+$pdf->Cell($headeCellWidth,  10, 'DESCRIPTION', $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  10, 'UNIT PRICE', $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  10, 'QUANTITY', $hideBorder, 0);
+$pdf->Cell($headeCellWidth,  10, 'TOTAL', $hideBorder, 0);
+
+$orders = getDetailedSingleCampanyById('', $db);
+
+
+
+
+
+
+
+$pdf->SetFont('Arial', 'B', 30);
+// Cell(w,h, context, border, newline, [align])
+// $pdf->Cell()
 $pdf->Output();
-?>
+
+
+
