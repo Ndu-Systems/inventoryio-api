@@ -1,5 +1,5 @@
 <?php
-
+require 'Config.php';
 
 class Users
 {
@@ -80,7 +80,7 @@ class Users
         $stmt->execute(array($email, $password));
 
         if ($stmt->rowCount()) {
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            return $stmt->fetch(PDO::FETCH_ASSOC);;
         }
     }
 

@@ -15,34 +15,48 @@ class Config
     public function add(
         $CompanyId,
         $Name,
+        $Type,
+        $Label,
         $Value,
+        $IsRequired,
+        $FieldType,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
 
     ) {
 
-        $OrdersId = getUuid($this->conn);
+        $ConfigId = getUuid($this->conn);
 
         $query = "
         INSERT INTO config(
+            ConfigId,
             CompanyId,
             Name,
+            Type,
+            Label,
             Value,
+            IsRequired,
+            FieldType,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
+                $ConfigId,
                 $CompanyId,
                 $Name,
+                $Type,
+                $Label,
                 $Value,
+                $IsRequired,
+                $FieldType,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -62,7 +76,11 @@ class Config
         $ConfigId,
         $CompanyId,
         $Name,
+        $Type,
+        $Label,
         $Value,
+        $IsRequired,
+        $FieldType,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -70,15 +88,19 @@ class Config
         $query = "UPDATE
         config
         SET
-        CompanyId = ?,
-        Name = ?,
-        Value = ?,
-        CreateUserId = ?,
-        ModifyUserId = ?,
-        StatusId = ?,
-    ModifyDate = NOW()
-    WHERE
-    ConfigId = ?
+        CompanyId   =  ?,
+        Name   =  ?,
+        Type   =  ?,
+        Label   =  ?,
+        Value   =  ?,
+        IsRequired = ?,
+        FieldType = ?,
+        CreateUserId   =  ?,
+        ModifyUserId   =  ?,
+        StatusId   =  ?,
+        ModifyDate = NOW()
+            WHERE
+            ConfigId = ?
          ";
 
         try {
@@ -87,11 +109,16 @@ class Config
 
                 $CompanyId,
                 $Name,
+                $Type,
+                $Label,
                 $Value,
+                $IsRequired,
+                $FieldType,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
                 $ConfigId
+
             ))) {
 
                 return $this->getById($ConfigId);
@@ -116,6 +143,20 @@ class Config
     public function getCampanyById($CompanyId)
     {
         $query = "SELECT * FROM config WHERE CompanyId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+
+
+    public function getCampanyConfigCount($CompanyId)
+    {
+        $query = "SELECT COUNT(*) FROM config WHERE CompanyId =?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
