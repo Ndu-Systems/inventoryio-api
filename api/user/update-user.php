@@ -10,6 +10,7 @@ $Name = $data->Name;
 $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
 $Password = $data->Password; 
+$RoleId = $data->RoleId; 
 $CompanyId = $data->CompanyId; 
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -28,6 +29,7 @@ $result = $user->updateUser(
     $Surname,
     $CellphoneNumber,
     $Password,
+    $RoleId,
     $CompanyId,  
     $ModifyUserId,
     $StatusId,

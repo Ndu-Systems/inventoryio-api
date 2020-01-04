@@ -1,9 +1,10 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Brand.php';
+include_once '../../models/Catergory.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
+$CatergoryId = $data->CatergoryId;
 $CompanyId = $data->CompanyId;
 $Name = $data->Name;
 $CreateUserId = $data->CreateUserId;
@@ -15,9 +16,10 @@ $database = new Database();
 $db = $database->connect();
 
 // create user first to get UserId
-$brand = new Brand($db);
+$Catergory = new Catergory($db);
 
-$result = $brand->add(
+$result = $Catergory->updateCatergory(
+    $CatergoryId,
     $CompanyId,
     $Name,
     $CreateUserId,
