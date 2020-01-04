@@ -77,6 +77,16 @@ if (isset($bankDetials)) {
     $accountHolder = $bankDetials[3]["Value"];
     $PaymentReference = $clientName . $invoiceNo;
 }
+// colors  details
+$bankColors = $company["Colors"];
+$bgColors ="189,195,199";
+$ftColors ="0,0,0";
+if (isset($bankColors)) {
+    $bgColors = $bankColors[0]["Value"];
+    $ftColors = $bankColors[1]["Value"];
+}
+$bgColorsArray = explode(",",$bgColors);
+$ftColorsArray = explode(",",$ftColors);
 
 //Logo Url
 $image = $company["Images"];
@@ -117,7 +127,10 @@ if (isset($logoUrl)) {
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', 30);
 $pdf->Cell(60, 10, '', $hideBorder, 0);
+$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(100, 10, $heading, $hideBorder, 1);
+$pdf->SetTextColor(0, 0, 0);
+
 
 // add client details and company
 $pdf->Ln(15);
@@ -148,9 +161,9 @@ $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL2, $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($firstColSize,  $rowHeigth, 'Date Issued :', $hideBorder, 0);
+$pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
 $pdf->SetFont('Arial', '', $fontSizeMed); // value small
-$pdf->Cell($firstColSize,  $rowHeigth, $dateIssued, $hideBorder, 0);
+$pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL3, $hideBorder, 1);
 
@@ -175,12 +188,14 @@ $headeCellWidth = 47;
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 // $pdf->SetFillColor(192, 192, 192); rgb(189, 195, 199)
-$pdf->SetFillColor(189, 195, 199);
+$pdf->SetFillColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
+$pdf->SetTextColor($ftColorsArray[0], $ftColorsArray[1], $ftColorsArray[2]);
 
 $pdf->Cell($headeCellWidth,  10, 'DESCRIPTION', $hideBorder, 0, '', true);
 $pdf->Cell($headeCellWidth,  10, 'UNIT PRICE', $hideBorder, 0, '', true);
 $pdf->Cell($headeCellWidth,  10, 'QUANTITY', $hideBorder, 0, '', true);
 $pdf->Cell($headeCellWidth,  10, 'TOTAL', $hideBorder, 1, '', true);
+$pdf->SetTextColor(0, 0, 0);
 
 
 // add list of products
@@ -228,6 +243,7 @@ $pdf->SetFont('Arial', '', $fontSizeSmall); // value small
 $pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
 $pdf->SetFont('Arial', 'B', 18);
 // $pdf->SetTextColor(0, 204, 0);
+$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Total"], $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);

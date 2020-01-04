@@ -124,9 +124,11 @@ class Company
             $images = $image->getParentIdById($CompanyId);
             $bankings = $config->getCampanyByIdAndType($CompanyId,'bank');
             $address = $config->getCampanyByIdAndType($CompanyId,'address');
+            $colors = $config->getCampanyByIdAndType($CompanyId,'colors');
             $result["Images"] = $images;
             $result["Bankings"] = $bankings;
             $result["Address"] = $address;
+            $result["Colors"] = $colors;
             return $result;
         }
     }
