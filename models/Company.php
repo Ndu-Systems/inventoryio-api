@@ -1,4 +1,6 @@
 <?php
+include_once 'Image.php';
+include_once 'Config.php';
 
 
 class Company
@@ -101,7 +103,7 @@ class Company
                 $UserId
 
             ))) {
-                return $this->getUserById($UserId);
+                return $this->getById($UserId); // temp fix
             }
         } catch (Exception $e) {
             return array("ERROR", $e);
@@ -116,7 +118,16 @@ class Company
         $stmt->execute(array($CompanyId));
 
         if ($stmt->rowCount()) {
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $image = new Image($this->conn);
+            $config = new Config($this->conn);
+            $images = $image->getParentIdById($CompanyId);
+            $bankings = $config->getCampanyByIdAndType($CompanyId,'bank');
+            $address = $config->getCampanyByIdAndType($CompanyId,'address');
+            $result["Images"] = $images;
+            $result["Bankings"] = $bankings;
+            $result["Address"] = $address;
+            return $result;
         }
     }
 }

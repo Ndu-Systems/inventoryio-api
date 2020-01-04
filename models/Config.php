@@ -153,6 +153,18 @@ class Config
     }
 
 
+    public function getCampanyByIdAndType($CompanyId, $Type)
+    {
+        $query = "SELECT * FROM config WHERE CompanyId =? and Type = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId,$Type));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
 
     public function getCampanyConfigCount($CompanyId)
     {
