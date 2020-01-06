@@ -58,27 +58,19 @@ class Catergory
 
     public function updateCatergory(
         $CatergoryId,
+        $CompanyId,
         $Name,
-        $Description,
-        $UnitPrice,
-        $Code,
-        $SKU,
-        $Quantity,
-        $LowStock,
+        $CreateUserId,
         $ModifyUserId,
         $StatusId
     ) {
         $query = "UPDATE
         Catergory
     SET
-        Name = ?,
-        Description = ?,
-        UnitPrice = ?,
-        Code = ?,
-        SKU = ?,
-        Quantity = ?,
-        LowStock = ?,
+        CompanyId = ?,
+        Name = ?,        
         ModifyDate = NOW(),
+        CreateUserId = ?,
         ModifyUserId = ?,
         StatusId = ?
     WHERE
@@ -88,20 +80,14 @@ class Catergory
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $Name,
-                $Description,
-                $UnitPrice,
-                $Code,
-                $SKU,
-                $Quantity,
-                $LowStock,
+                $CompanyId,
+                $Name,               
+                $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
                 $CatergoryId
-
-
             ))) {
-                return $this->getUserById($CatergoryId);
+                return $this->getById($CatergoryId);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);

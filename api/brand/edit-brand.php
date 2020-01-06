@@ -4,6 +4,7 @@ include_once '../../models/Brand.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
+$BrandId = $data->BrandId;
 $CompanyId = $data->CompanyId;
 $Name = $data->Name;
 $CreateUserId = $data->CreateUserId;
@@ -17,7 +18,8 @@ $db = $database->connect();
 // create user first to get UserId
 $brand = new Brand($db);
 
-$result = $brand->add(
+$result = $brand->updateBrand(
+    $BrandId,
     $CompanyId,
     $Name,
     $CreateUserId,
@@ -25,6 +27,7 @@ $result = $brand->add(
     $StatusId
 );
 
+    
 echo json_encode($result);
 
  

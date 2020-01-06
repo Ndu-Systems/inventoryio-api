@@ -71,7 +71,7 @@ class Brand
         Name = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
-        StatusId = ?
+        StatusId = ?,
         ModifyDate = NOW()
         WHERE
         BrandId = ?
@@ -79,14 +79,13 @@ class Brand
 
         try {
             $stmt = $this->conn->prepare($query);
-            if ($stmt->execute(array(
-                $BrandId,
+            if ($stmt->execute(array(               
                 $CompanyId,
                 $Name,
                 $CreateUserId,
                 $ModifyUserId,
-                $StatusId
-
+                $StatusId,
+                $BrandId
 
             ))) {
                 return $this->getById($BrandId);
