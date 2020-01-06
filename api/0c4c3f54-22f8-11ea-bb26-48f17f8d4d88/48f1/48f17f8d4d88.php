@@ -46,17 +46,54 @@ $prefix = 'INV';
 $heading = 'Invoice';
 $invoiceNo =  $prefix . $order["OrderId"];
 $companyName = $company["Name"];
-$companyCell = $company["TelephoneNumber"];
-$companyEmail = 'info@dell.co.za';
-$companyAddressL1 = 'The Campus, Wembley Building';
-$companyAddressL2 = '57 Sloane St &, Main Rd, Bryanston, 2021';
 $currency = 'R ';
 
 // customer 
+$billedToLabel = '';
+$clientName = '';
 $customer = $order["Customer"];
-$clientName = $customer['Name'];
+if (isset($customer['Name'])) {
+    $clientName = $customer['Name'];
+    $billedToLabel = 'BILLED TO';
+}
 $dateIssued = date('d M Y', strtotime($order["CreateDate"]));
 
+// company address details
+$addressDetials = $company["Address"];
+if (isset($addressDetials)) {
+    $companyAddressL1 = $addressDetials[0]["Value"];
+    $companyAddressL2 = $addressDetials[1]["Value"];
+    $companyAddressL3 = $addressDetials[2]["Value"];
+    $companyCell = $addressDetials[3]["Value"];
+    $companyEmail = $addressDetials[4]["Value"];
+}
+
+// company banking details
+$bankDetials = $company["Bankings"];
+if (isset($bankDetials)) {
+    $bankName = $bankDetials[0]["Value"];
+    $accountNumber = $bankDetials[1]["Value"];
+    $branchCode = $bankDetials[2]["Value"];
+    $accountHolder = $bankDetials[3]["Value"];
+    $PaymentReference = $clientName . $invoiceNo;
+}
+// colors  details
+$bankColors = $company["Colors"];
+$bgColors ="189,195,199";
+$ftColors ="0,0,0";
+if (isset($bankColors)) {
+    $bgColors = $bankColors[0]["Value"];
+    $ftColors = $bankColors[1]["Value"];
+}
+$bgColorsArray = explode(",",$bgColors);
+$ftColorsArray = explode(",",$ftColors);
+
+//Logo Url
+$image = $company["Images"];
+$logoUrl = null;
+if (isset($image)) {
+    $logoUrl = $image[0]["Url"];
+}
 
 $dueDate = '';
 $dueDateLabel = '';
@@ -71,11 +108,6 @@ if (isset($order["ExpectedDate"])) {
 
 
 
-$accountNumber = '62737294455';
-$bankName = 'FNB';
-$accountHolder = 'Ndu Systems';
-$PaymentReference = $clientName . $invoiceNo;
-$branchCode = '254005';
 
 $hideBorder = 0;
 $fontSizeSmall = 10;
@@ -89,16 +121,21 @@ $pdf->AddPage();
 // add logo and heading
 // $pdf->Image('img/logo.png', 10, 25, 20);
 //  $pdf->Image('img/ndu systems dp.png', 10, 25, 20);
-$pdf->Image('img/Group 10.png', 10, 25, 25);
+if (isset($logoUrl)) {
+    $pdf->Image($logoUrl, 10, 25, 25);
+}
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', 30);
 $pdf->Cell(60, 10, '', $hideBorder, 0);
+$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(100, 10, $heading, $hideBorder, 1);
+$pdf->SetTextColor(0, 0, 0);
+
 
 // add client details and company
 $pdf->Ln(15);
 $pdf->SetFont('Arial', '', $fontSizeLarge / 2);
-$pdf->Cell(100, 5, 'BILLED TO', $hideBorder, 0);
+$pdf->Cell(100, 5, $billedToLabel, $hideBorder, 0);
 $pdf->Cell(85, 5, 'BILLED BY', $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'BU', $fontSizeLarge);
@@ -123,6 +160,13 @@ $pdf->Cell($firstColSize,  $rowHeigth, $dateIssued, $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL2, $hideBorder, 1);
 
+$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
+$pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
+$pdf->SetFont('Arial', '', $fontSizeMed); // value small
+$pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
+$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
+$pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL3, $hideBorder, 1);
+
 // row  top
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize,  $rowHeigth, $dueDateLabel, $hideBorder, 0);
@@ -144,12 +188,14 @@ $headeCellWidth = 47;
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 // $pdf->SetFillColor(192, 192, 192); rgb(189, 195, 199)
-$pdf->SetFillColor(189, 195, 199);
+$pdf->SetFillColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
+$pdf->SetTextColor($ftColorsArray[0], $ftColorsArray[1], $ftColorsArray[2]);
 
 $pdf->Cell($headeCellWidth,  10, 'DESCRIPTION', $hideBorder, 0, '', true);
 $pdf->Cell($headeCellWidth,  10, 'UNIT PRICE', $hideBorder, 0, '', true);
 $pdf->Cell($headeCellWidth,  10, 'QUANTITY', $hideBorder, 0, '', true);
 $pdf->Cell($headeCellWidth,  10, 'TOTAL', $hideBorder, 1, '', true);
+$pdf->SetTextColor(0, 0, 0);
 
 
 // add list of products
@@ -197,6 +243,7 @@ $pdf->SetFont('Arial', '', $fontSizeSmall); // value small
 $pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
 $pdf->SetFont('Arial', 'B', 18);
 // $pdf->SetTextColor(0, 204, 0);
+$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Total"], $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
