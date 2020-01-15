@@ -4,7 +4,7 @@ include_once 'Order_products.php';
 include_once 'Company.php';
 
 
-class Orders
+class Quotation
 {
     //DB Stuff
     private $conn;
@@ -29,16 +29,14 @@ class Orders
 
     ) {
 
-        $OrdersId = getUuid($this->conn);
+        $QuotationId = getUuid($this->conn);
         $Total = number_format((float) $Total, 2, '.', '');
         $Paid = number_format((float) $Paid, 2, '.', '');
         $Due = number_format((float) $Due, 2, '.', '');
 
-
-
         $query = "
-        INSERT INTO orders(
-            OrdersId,
+        INSERT INTO quotation(
+            QuotationId,
             CompanyId,
             ParntersId,
             OrderType,
@@ -57,7 +55,7 @@ class Orders
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
-                $OrdersId,
+                $QuotationId,
                 $CompanyId,
                 $ParntersId,
                 $OrderType,
@@ -69,7 +67,7 @@ class Orders
                 $Status,
                 $StatusId
             ))) {
-                return $this->getById($OrdersId);
+                return $this->getById($QuotationId);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);
@@ -80,7 +78,7 @@ class Orders
 
 
     public function update(
-        $OrdersId,
+        $QuotationId,
         $CompanyId,
         $ParntersId,
         $OrderType,
@@ -95,9 +93,8 @@ class Orders
         $Total = number_format((float) $Total, 2, '.', '');
         $Paid = number_format((float) $Paid, 2, '.', '');
         $Due = number_format((float) $Due, 2, '.', '');
-
         $query = "UPDATE
-        orders
+        quotation
     SET
         CompanyId = ?,
         ParntersId = ?,
@@ -111,7 +108,7 @@ class Orders
         Status = ?,
         StatusId  = ?
     WHERE
-    OrdersId = ?
+    QuotationId = ?
          ";
 
         try {
@@ -127,21 +124,21 @@ class Orders
                 $ModifyUserId,
                 $Status,
                 $StatusId,
-                $OrdersId
+                $QuotationId
             ))) {
-                return $this->getById($OrdersId);
+                return $this->getById($QuotationId);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);
         }
     }
 
-    public function getById($OrdersId)
+    public function getById($QuotationId)
     {
-        $query = "SELECT * FROM orders WHERE OrdersId =?";
+        $query = "SELECT * FROM quotation WHERE QuotationId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OrdersId));
+        $stmt->execute(array($QuotationId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -151,7 +148,7 @@ class Orders
 
     public function getCampanyById($CompanyId)
     {
-        $query = "SELECT * FROM orders WHERE CompanyId =? order by CreateDate desc";
+        $query = "SELECT * FROM quotation WHERE CompanyId =? order by CreateDate desc";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
@@ -163,33 +160,33 @@ class Orders
 
     public function getDetailedCampanyById($CompanyId)
     {
-        $query = "SELECT * FROM orders WHERE CompanyId =? order by CreateDate desc";
+        $query = "SELECT * FROM quotation WHERE CompanyId =? order by CreateDate desc";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
-        $ordersWithCustomers = array();
+        $quotationWithCustomers = array();
         $partner = new Partner($this->conn);
 
         if ($stmt->rowCount()) {
-            $orders =  $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($orders as $order) {
+            $quotation =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($quotation as $order) {
 
                 $customer = $partner->getById($order["ParntersId"]);
                 $order["Customer"] = $customer;
                 $order["CardClass"] = ['card'];
-                array_push($ordersWithCustomers, $order);
+                array_push($quotationWithCustomers, $order);
             }
         }
-        return $ordersWithCustomers;
+        return $quotationWithCustomers;
     }
 
-    public function getDetailedSingleCampanyById($OrdersId)
+    public function getDetailedSingleCampanyById($QuotationId)
     {
-        $query = "SELECT * FROM orders WHERE OrdersId =?";
+        $query = "SELECT * FROM quotation WHERE QuotationId =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OrdersId));
-        $ordersWithCustomers = null;
+        $stmt->execute(array($QuotationId));
+        $quotationWithCustomers = null;
         $partner = new Partner($this->conn);
         $order_products = new Order_products($this->conn);
         $company = new Company($this->conn);
@@ -199,14 +196,14 @@ class Orders
             $order =  $stmt->fetch(PDO::FETCH_ASSOC);
             $customer = $partner->getById($order["ParntersId"]);
             $products = $order_products->getBOrderIdId(
-                $OrdersId
+                $QuotationId
             );
             $order["Customer"] = $customer;
             $order["Products"] = $products;
             $order["Company"] = $company->getById($order["CompanyId"]);
             $order["CardClass"] = ['card'];
-            $ordersWithCustomers = $order;
+            $quotationWithCustomers = $order;
         }
-        return $ordersWithCustomers;
+        return $quotationWithCustomers;
     }
 }

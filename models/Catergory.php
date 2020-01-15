@@ -117,4 +117,17 @@ class Catergory
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
+
+    public function getByName($Name)
+    {
+        $query = "SELECT * FROM catergory WHERE Name =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($Name));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return null;
+    }
 }
