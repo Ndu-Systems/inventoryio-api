@@ -16,5 +16,4 @@ $result = $company->getById(
     $CompanyId   
 );
 
-    
-    echo json_encode($result);
+echo json_encode($result);
