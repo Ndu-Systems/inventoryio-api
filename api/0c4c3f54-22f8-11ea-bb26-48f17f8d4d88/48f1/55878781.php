@@ -1,7 +1,7 @@
 <?php
 require('../../../config/dbInvoice.php');
 require('../../../models/Partner.php');
-require('../../../models/Order_products.php');
+require('../../../models/Quotation_products.php');
 require('../../../models/Company.php');
 require('inc/fpdf.php');
 // connect to db
@@ -11,20 +11,20 @@ $db = $database->connect();
 
 function getDetailedSingleCampanyById($OrdersId, $db)
 {
-    $query = "SELECT * FROM orders WHERE OrdersId =?";
+    $query = "SELECT * FROM quotation WHERE QuotationId =?";
 
     $stmt = $db->prepare($query);
     $stmt->execute(array($OrdersId));
     $ordersWithCustomers = null;
     $partner = new Partner($db);
-    $order_products = new Order_products($db);
+    $quotation_products = new Quotation_products($db);
     $company = new Company($db);
 
 
     if ($stmt->rowCount()) {
         $order =  $stmt->fetch(PDO::FETCH_ASSOC);
         $customer = $partner->getById($order["ParntersId"]);
-        $products = $order_products->getBOrderIdId(
+        $products = $quotation_products->getBQuotationId(
             $OrdersId
         );
         $order["Customer"] = $customer;
@@ -42,9 +42,9 @@ $OrdersId = $_GET['guid'];
 
 $order = getDetailedSingleCampanyById($OrdersId, $db);
 $company = $order["Company"];
-$prefix = 'INV';
-$heading = 'Invoice';
-$invoiceNo =  $prefix . $order["OrderId"];
+$prefix = 'QT';
+$heading = 'Quotation';
+$invoiceNo =  $prefix . $order["QuoteId"];
 $companyName = $company["Name"];
 $currency = 'R ';
 
@@ -293,7 +293,7 @@ $pdf->SetFont('Arial', 'B', 18);
 // $pdf->SetTextColor(0, 204, 0);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Due"], $hideBorder, 1);
+$pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Total"], $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
 
 
@@ -302,13 +302,7 @@ $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountHolderLab
 $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
 $pdf->Cell($headeCellWidth,  $lineHeight, $accountHolder, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-
-
-
-$pdf->SetFont('Arial', 'I', 10);
-$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-$pdf->Cell($headeCellWidth,  $lineHeight,  'Amount Paid: '.$currency . $order["Paid"] , $hideBorder, 1);
-$pdf->SetTextColor(0, 0, 0);
+$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
 $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $branchCodeLabel, $hideBorder, 0);

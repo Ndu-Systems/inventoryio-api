@@ -2,7 +2,7 @@
 include_once 'Image.php';
 
 
-class Order_products
+class Quotation_products
 {
     //DB Stuff
     private $conn;
@@ -14,7 +14,7 @@ class Order_products
 
     //Add user
     public function add(
-        $OrderId,
+        $QuotationId,
         $ProductId,
         $ProductName,
         $UnitPrice,
@@ -31,9 +31,9 @@ class Order_products
         $subTotal = number_format((float) $subTotal, 2, '.', '');
 
         $query = "
-        INSERT INTO order_products(
+        INSERT INTO quotation_products(
             Id,
-            OrderId,
+            QuotationId,
             ProductId,
             ProductName,
             UnitPrice,
@@ -51,7 +51,7 @@ class Order_products
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $Id,
-                $OrderId,
+                $QuotationId,
                 $ProductId,
                 $ProductName,
                 $UnitPrice,
@@ -71,7 +71,7 @@ class Order_products
 
 
 
-    public function updateorder_products(
+    public function updatequotation_products(
         $Id,
         $Name,
         $Description,
@@ -85,7 +85,7 @@ class Order_products
     ) {
         $UnitPrice = number_format((float) $UnitPrice, 2, '.', '');
         $query = "UPDATE
-        order_products
+        quotation_products
     SET
         Name = ?,
         Description = ?,
@@ -126,7 +126,7 @@ class Order_products
 
     public function getById($Id)
     {
-        $query = "SELECT * FROM order_products WHERE Id =?";
+        $query = "SELECT * FROM quotation_products WHERE Id =?";
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($Id));
@@ -136,12 +136,12 @@ class Order_products
         }
     }
 
-    public function getBOrderIdId($OrderId)
+    public function getBQuotationId($QuotationId)
     {
-        $query = "SELECT * FROM order_products WHERE OrderId = ?";
+        $query = "SELECT * FROM quotation_products WHERE QuotationId = ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($OrderId));
+        $stmt->execute(array($QuotationId));
 
         // if ($stmt->rowCount()) {
         //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
