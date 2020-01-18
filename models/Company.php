@@ -58,7 +58,43 @@ class Company
             return array("ERROR", $e);
         }
     }
+    public function updateCompany(
+        $CompanyId,
+        $Name,
+        $Website,
+        $TelephoneNumber,
+        $ModifyUserId,
+        $StatusId
+    ) {
+        $query = "UPDATE company
+        SET  
+        Name = ?, 
+        Website =?, 
+        TelephoneNumber =?,       
+        ModifyDate = NOW(),
+        ModifyUserId = ?, 
+        StatusId =? 
+        WHERE CompanyId =?
+         ";
 
+        try {
+            $stmt = $this->conn->prepare($query);
+            if ($stmt->execute(array(
+                $Name,
+                $Website,
+                $TelephoneNumber,
+                $ModifyUserId,
+                $StatusId,
+                $CompanyId
+            ))) {
+                return $this->getById($CompanyId);
+            }
+        } catch (Exception $e) {
+            return array("ERROR", $e);
+        }
+    }
+
+    
 
 
 
@@ -122,9 +158,9 @@ class Company
             $image = new Image($this->conn);
             $config = new Config($this->conn);
             $images = $image->getParentIdById($CompanyId);
-            $bankings = $config->getCampanyByIdAndType($CompanyId,'bank');
-            $address = $config->getCampanyByIdAndType($CompanyId,'address');
-            $colors = $config->getCampanyByIdAndType($CompanyId,'logocolors');
+            $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
+            $address = $config->getCampanyByIdAndType($CompanyId, 'address');
+            $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
             $result["Images"] = $images;
             $result["Bankings"] = $bankings;
             $result["Address"] = $address;
