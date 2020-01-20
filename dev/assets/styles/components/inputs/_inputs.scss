@@ -1,0 +1,347 @@
+// VARIABLES // ============================== //
+@import '../../variables';
+$bg-color: #424242;
+$hl-color: #2196F3;
+$muted-color: mix(white, $bg-color, 70%);
+$trans-time: 300ms;
+$width: 100%;
+
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+
+// FORM // ============================== //
+form {
+  width: $width;
+  margin: 45px auto;
+  border-radius: 10px;
+}
+
+.group {
+  position: relative;
+  margin: 19px 0;
+  border-radius: 10px;
+}
+
+// INPUTS // ============================== //
+textarea {
+  resize: none;
+}
+
+input,
+select,
+textarea {
+  background: none;
+  color: #000;
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: $width;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid $muted-color;
+  margin-top: 1rem;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus~label,
+  &:valid~label {
+    top: -18px;
+    font-size: 12px;
+    color: $hl-color;
+  }
+
+  &:focus~.bar:before {
+    width: $width;
+  }
+}
+
+textarea {
+  height: 7rem;
+}
+
+input[type="password"] {
+  letter-spacing: 0.3em;
+}
+
+label {
+  color: #7B8C98;
+  font-size: 16px;
+  font-weight: 400;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: $trans-time ease all;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: $width;
+
+  &:before {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 0px;
+    position: absolute;
+    background: $hl-color;
+    transition: $trans-time ease all;
+    left: 0%;
+  }
+}
+
+// BUTTONS // ============================== //
+.btn {
+  background: $primary-bg-color;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  text-transform: capitalize;
+  text-decoration: none;
+  font-weight: 600;
+  outline: none;
+  margin: 0 .3rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  cursor: pointer;
+
+  &:disabled {
+    background: $muted-color;
+    cursor: none;
+
+    &:hover {
+      box-shadow: none;
+      cursor: no-drop;
+      background: $muted-color;
+
+    }
+  }
+
+  &:hover {
+    color: mix(white, $hl-color, 85%);
+    box-shadow: 0 7px 14px rgba(0, 0, 0, 0.18), 0 5px 5px rgba(0, 0, 0, 0.12);
+  }
+
+  &.btn-link {
+    background: $hl-color;
+    color: mix(white, $hl-color, 80%);
+
+    &:hover {
+      background: darken($hl-color, 5%);
+      color: mix(white, $hl-color, 85%);
+    }
+  }
+
+  &.btn-submit {
+    background: $hl-color;
+    color: mix(white, $hl-color, 70%);
+
+    &:hover {
+      background: darken($hl-color, 5%);
+      color: mix(white, $hl-color, 85%);
+    }
+  }
+
+  &.btn-cancel {
+    background: #eee;
+
+    &:hover {
+      background: darken(#eee, 5%);
+      color: mix(black, $muted-color, 30%);
+    }
+  }
+}
+
+.btn-box {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.btn-transparent {
+  background: #fff;
+  color: #000;
+
+  &:hover {
+    background: darken(#eee, 5%);
+    color: mix(black, $muted-color, 30%);
+  }
+}
+
+.alert {
+  padding: 0.255rem 2.5rem;
+  font-size: .7rem;
+  text-align: left;
+  color: #e74c3c;
+}
+
+.input-box {
+  padding: 10px 20px;
+  border-radius: 3px;
+}
+
+.form {
+  text-align: right;
+  background: #ffffff;
+  width: 70%;
+  margin: auto;
+  padding: 2rem;
+  margin-top: 8rem;
+
+  &.sign-up {
+    padding: 0;
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 90%;
+    margin-top: 2%;
+    margin-bottom: 0%;
+  }
+
+  h1 {
+    width: 80%;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #7B8C98;
+    text-align: left;
+    margin: 0rem 2.5rem;
+    text-transform: capitalize;
+
+    @media only screen and (max-width: 600px) {
+      font-size: 1.1rem;
+      width: 100%;
+      margin-bottom: 0%;
+    }
+  }
+
+  input[type=submit] {
+    border: none;
+  }
+
+  .checkbox {
+    display: grid;
+    grid-template-columns: 20% auto;
+
+    input[type=checkbox] {
+      height: 25px;
+      cursor: pointer;
+    }
+  }
+
+  input[type=text],
+  input[type=password],
+  input[type=checkbox] {
+    border: none;
+    width: 80%;
+    margin: 1rem;
+
+    @media only screen and (max-width: 600px) {
+      width: 80%;
+    }
+  }
+
+  input[type=text] {
+    @media only screen and (max-width: 600px) {}
+  }
+
+  select {
+    margin: 1rem;
+  }
+
+  .group {
+    background: #ECF2F4;
+    width: 85%;
+    margin: 1.8rem auto;
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      margin: 0;
+    }
+
+    label {
+      color: #656D88;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  }
+
+  .reset-pass {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      margin-bottom: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    a {
+      padding-top: 2rem;
+      padding: 5rem;
+      font-weight: 500;
+      color: #656D88;
+
+      @media only screen and (max-width: 600px) {
+        padding: 0%;
+      }
+    }
+  }
+
+  .actions {
+    text-align: left;
+    width: 80%;
+    margin: auto;
+    margin-bottom: 2rem;
+
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      font-size: .8rem;
+    }
+
+    a {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-left: .5rem;
+      margin-top: .5rem;
+
+      @media only screen and (max-width: 600px) {
+        font-size: 1rem;
+        font-weight: 800;
+      }
+    }
+
+    h3 {
+      display: none;
+    }
+
+    @media only screen and (max-width: 600px) {
+      width: 100%;
+      margin: 0%;
+
+      h5 {
+        display: none;
+      }
+    }
+  }
+}
+
+.roundInput {
+  background: none;
+  width: 15rem;
+  display: inline-block;
+  margin: .5rem;
+  border: 1px solid #B1B5BD;
+  border-radius: .2rem;
+  padding: .2rem 1rem;
+}
