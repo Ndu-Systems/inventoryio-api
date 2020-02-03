@@ -15,6 +15,7 @@ $UnitPrice = $data->UnitPrice;
 $UnitCost = $data->UnitCost;
 $Code = $data->Code;
 $SKU = $data->SKU;
+$TrackInventory = $data->TrackInventory;
 $Quantity = $data->Quantity;
 $LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
@@ -39,6 +40,7 @@ $result = $product->update(
     $UnitCost,
     $Code,
     $SKU,
+    $TrackInventory,
     $Quantity,
     $LowStock,
     $CreateUserId,

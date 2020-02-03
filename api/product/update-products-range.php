@@ -26,6 +26,7 @@ foreach ($products as $product) {
         $product->UnitCost,
         $product->Code,
         $product->SKU,
+        $product->TrackInventory,
         $product->Quantity,
         $product->LowStock,
         $product->CreateUserId,

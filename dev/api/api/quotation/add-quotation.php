@@ -1,19 +1,13 @@
 <?php
 include_once '../../config/Database.php';
 include_once '../../models/Quotation.php';
+include_once '../../models/Quotation_products.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$CompanyId = $data->CompanyId;
-$ParntersId = $data->ParntersId;
-$OrderType = $data->OrderType;
-$Total = $data->Total;
-$Paid = $data->Paid;
-$Due = $data->Due;
-$CreateUserId = $data->CreateUserId;
-$ModifyUserId = $data->ModifyUserId;
-$Status = $data->Status;
-$StatusId = $data->StatusId;
+$products = $data->products;
+$quote = $data->quote;
+
 
 //connect to db
 $database = new Database();
@@ -23,22 +17,36 @@ $db = $database->connect();
 $quotation = new Quotation($db);
 
 $result = $quotation->add(
-    $CompanyId,
-    $ParntersId,
-    $OrderType,
-    $Total,
-    $Paid,
-    $Due,
-    $CreateUserId,
-    $ModifyUserId,
-    $Status,
-    $StatusId
+    $quote->CompanyId,
+    $quote->ParntersId,
+    $quote->OrderType,
+    $quote->Total,
+    $quote->Paid,
+    $quote->Due,
+    $quote->CreateUserId,
+    $quote->ModifyUserId,
+    $quote->Status,
+    $quote->StatusId
 );
 
-    
-    echo json_encode($result);
 
- 
- 
+$QuotationId = $result['QuotationId'];
+foreach ($products as $product) {
+    $quotation_products = new Quotation_products($db);
+
+    $result = $quotation_products->add(
+        $QuotationId,
+        $product->ProductId,
+        $product->ProductName,
+        $product->UnitPrice,
+        $product->Quantity,
+        $product->subTotal,
+        $product->CreateUserId,
+        $product->ModifyUserId,
+        $product->StatusId
+    );
+}
 
 
+$allQuotations = $quotation->getDetailedCampanyById($quote->CompanyId);
+echo json_encode($allQuotations);

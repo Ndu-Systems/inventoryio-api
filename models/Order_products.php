@@ -141,6 +141,23 @@ class Order_products
     public function getByCompanyId($CompanyId)
     {
         $query = "
+        SELECT * 
+        FROM
+            order_products
+        WHERE
+            CompanyId = ?
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+    public function getTopSellingByCompanyId($CompanyId)
+    {
+        $query = "
         SELECT
         `ProductId`,
         `ProductName`,

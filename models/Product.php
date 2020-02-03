@@ -24,6 +24,7 @@ class Product
         $UnitCost,
         $Code,
         $SKU,
+        $TrackInventory,
         $Quantity,
         $LowStock,
         $CreateUserId,
@@ -46,6 +47,7 @@ class Product
             UnitCost,
             Code,
             SKU,
+            TrackInventory,
             Quantity,
             LowStock,
             CreateUserId,
@@ -53,7 +55,7 @@ class Product
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
         )
 ";
         try {
@@ -69,6 +71,7 @@ class Product
                 $UnitCost,
                 $Code,
                 $SKU,
+                $TrackInventory,
                 $Quantity,
                 $LowStock,
                 $CreateUserId,
@@ -96,6 +99,7 @@ class Product
         $UnitCost,
         $Code,
         $SKU,
+        $TrackInventory,
         $Quantity,
         $LowStock,
         $CreateUserId,
@@ -114,6 +118,7 @@ class Product
         UnitCost = ? ,
         Code = ? ,
         SKU = ? ,
+        TrackInventory = ? ,
         Quantity = ? ,
         LowStock = ? ,
         CreateUserId = ? ,
@@ -136,6 +141,7 @@ class Product
                 $UnitCost,
                 $Code,
                 $SKU,
+                $TrackInventory,
                 $Quantity,
                 $LowStock,
                 $CreateUserId,
@@ -296,6 +302,7 @@ class Product
         p.UnitCost,
         p.Code,
         p.SKU,
+        p.TrackInventory,
         p.Quantity,
         p.LowStock,
         p.CreateDate,

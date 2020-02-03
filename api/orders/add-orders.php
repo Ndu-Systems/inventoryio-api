@@ -1,19 +1,12 @@
 <?php
 include_once '../../config/Database.php';
 include_once '../../models/Orders.php';
+include_once '../../models/Order_products.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
-$CompanyId = $data->CompanyId;
-$ParntersId = $data->ParntersId;
-$OrderType = $data->OrderType;
-$Total = $data->Total;
-$Paid = $data->Paid;
-$Due = $data->Due;
-$CreateUserId = $data->CreateUserId;
-$ModifyUserId = $data->ModifyUserId;
-$Status = $data->Status;
-$StatusId = $data->StatusId;
+$products = $data->products;
+$order = $data->order;
 
 //connect to db
 $database = new Database();
@@ -23,22 +16,37 @@ $db = $database->connect();
 $orders = new Orders($db);
 
 $result = $orders->add(
-    $CompanyId,
-    $ParntersId,
-    $OrderType,
-    $Total,
-    $Paid,
-    $Due,
-    $CreateUserId,
-    $ModifyUserId,
-    $Status,
-    $StatusId
+    $order->CompanyId,
+    $order->ParntersId,
+    $order->OrderType,
+    $order->Total,
+    $order->Paid,
+    $order->Due,
+    $order->CreateUserId,
+    $order->ModifyUserId,
+    $order->Status,
+    $order->StatusId
 );
 
-    
-    echo json_encode($result);
+$OrderId =  $result['OrdersId'];
 
- 
- 
+foreach ($products as $product) {
+    $order_products = new Order_products($db);
+
+    $result = $order_products->add(
+        $OrderId,
+        $product->ProductId,
+        $product->CompanyId,
+        $product->ProductName,
+        $product->UnitPrice,
+        $product->Quantity,
+        $product->subTotal,
+        $product->CreateUserId,
+        $product->ModifyUserId,
+        $product->StatusId
+    );
+}
 
 
+$allorders = $orders->getDetailedCampanyById($order->CompanyId);
+echo json_encode($allorders);
