@@ -18,19 +18,19 @@ if (isset($data)){
   
 
     $msg = '
-<body style="font-family: "Calibri";">
-    <div class="main" style="background: #fff;padding: 4rem 6rem;">
-        <div class="box" style="background: #F5F6FA;padding: 0;">
-            <div class="header" style="background: #104CE5;padding: 2rem;">
+    <body style="font-family: "Calibri";">
+    <div class="main">
+        <div class="box" style="padding: 0;background: #F5F6FA;">
+            <div class="header" style="background: #104CE5;padding: 2%;">
                 <h1 style="text-align: center;color: #fff;font-size: 1.5rem;">
                     YOUR INVOICE IS HERE
                     <span style="display: block;font-size: 1rem;">' .
-        $InvoiceDate
-        . '</span>
+                        $InvoiceDate
+                        . '</span>
                 </h1>
             </div>
 
-            <div class="body" style="padding: 4rem 6rem;">
+            <div class="body" style="padding: 5%;">
                 <p>
                     Dear '. $Customer.'
                 </p>
