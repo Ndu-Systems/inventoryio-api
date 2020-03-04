@@ -22,6 +22,7 @@ $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
 $Images = $data->Images;
+$Attributes = $data->attributes;
 
 //connect to db
 $database = new Database();
@@ -48,15 +49,9 @@ $result = $product->add(
     $StatusId
 );
 
-// echo json_encode($result);
-// echo json_encode("ndu");
 $ProductId = $result['ProductId'];
-//echo json_encode($ProductId );
-//echo json_encode($Images);
 if ($Images) {
-   // echo json_encode($Images);
     foreach ($Images as $url) {
-      //  echo json_encode($url);
         $image = new Image($db);
 
         $addImages = $image->add(
@@ -68,6 +63,37 @@ if ($Images) {
             $StatusId
         );
     }
-   $result["Images"] = $image->getParentIdById($ProductId);
+    $result["Images"] = $image->getParentIdById($ProductId);
+}
+
+if ($Attributes) {
+    foreach ($Attributes as $atrr) {
+        $attribute = new Attribute($db);
+
+        $result = $attribute->add(
+            $atrr->Name,
+            $atrr->AttributeType,
+            $atrr->CompanyId,
+            $ProductId,
+            $atrr->Shop,
+            $atrr->CreateUserId,
+            $atrr->ModifyUserId,
+            $atrr->StatusId
+        );
+
+        $AttributeId =  $result['AttributeId'];
+
+        foreach ($items as $item) {
+            $Attribute_item = new Attribute_item($db);
+            $result = $Attribute_item->add(
+                $AttributeId,
+                $item->AttributeValue,
+                $item->CreateUserId,
+                $item->ModifyUserId,
+                $item->StatusId
+            );
+        }
+    }
+    $result["Attributes"] = $attribute->getByProductId($ProductId);
 }
 echo json_encode($result);

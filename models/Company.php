@@ -158,10 +158,12 @@ class Company
             $image = new Image($this->conn);
             $config = new Config($this->conn);
             $images = $image->getParentIdById($CompanyId);
+            $imagesbanner = $image->getParentIdById($CompanyId.'banner');
             $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
             $address = $config->getCampanyByIdAndType($CompanyId, 'address');
             $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
             $result["Images"] = $images;
+            $result["Banner"] = $imagesbanner;
             $result["Bankings"] = $bankings;
             $result["Address"] = $address;
             $result["Colors"] = $colors;

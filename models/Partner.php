@@ -142,6 +142,25 @@ class Partner
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
+    public function getByEmail($EmailAddress)
+    {
+      
+
+        try {
+            $query = "SELECT * FROM partner WHERE EmailAddress =?";
+
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($EmailAddress));
+    
+            if ($stmt->rowCount()) {
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            }
+            return null;
+        }
+        catch (Exception $e) {
+            return array("ERROR", $e);
+        }
+    }
 
     public function getCampanyById($CompanyId)
     {
