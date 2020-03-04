@@ -2,6 +2,7 @@
 include_once 'Image.php';
 include_once 'Brand.php';
 include_once 'Catergory.php';
+include_once 'Attribute.php';
 
 class Product
 {
@@ -272,6 +273,7 @@ class Product
         $image = new Image($this->conn);
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);
+        $attribute = new Attribute($this->conn);
 
         if ($stmt->rowCount()) {
             $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -281,6 +283,7 @@ class Product
                 $product["images"] = $images;
                 $product["Brand"] = $brand->getById($product["BrandId"]);
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+                $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
                 array_push($productsWithImages, $product);
 
 
@@ -329,6 +332,8 @@ class Product
         $image = new Image($this->conn);
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);
+        $attribute = new Attribute($this->conn);
+
 
         if ($stmt->rowCount()) {
             $product =  $stmt->fetch(PDO::FETCH_ASSOC);
@@ -338,6 +343,8 @@ class Product
                 $product["images"] = $images;
                 $product["Brand"] = $brand->getById($product["BrandId"]);
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+                $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
+
                 //array_push($productsWithImages, $product);
 
 

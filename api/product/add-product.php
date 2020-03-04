@@ -2,6 +2,7 @@
 include_once '../../config/Database.php';
 include_once '../../models/Product.php';
 include_once '../../models/Image.php';
+include_once '../../models/Attribute.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -21,8 +22,8 @@ $LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
-$Images = $data->Images;
-$Attributes = $data->attributes;
+$Images = $data->images;
+$Attributes = $data->Attributes;
 
 //connect to db
 $database = new Database();
@@ -70,7 +71,7 @@ if ($Attributes) {
     foreach ($Attributes as $atrr) {
         $attribute = new Attribute($db);
 
-        $result = $attribute->add(
+        $attribute_attribute = $attribute->add(
             $atrr->Name,
             $atrr->AttributeType,
             $atrr->CompanyId,
@@ -80,12 +81,14 @@ if ($Attributes) {
             $atrr->ModifyUserId,
             $atrr->StatusId
         );
+        $items = $atrr->Values;
 
-        $AttributeId =  $result['AttributeId'];
+        $AttributeId =  $attribute_attribute['AttributeId'];
+
 
         foreach ($items as $item) {
             $Attribute_item = new Attribute_item($db);
-            $result = $Attribute_item->add(
+            $result_item = $Attribute_item->add(
                 $AttributeId,
                 $item->AttributeValue,
                 $item->CreateUserId,
