@@ -170,6 +170,17 @@ class Product
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
+    public function getCompanyByHandler($Handler)
+    {
+        $query = "SELECT * FROM company WHERE Handler =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($Handler));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
 
     public function getCampanyById($CompanyId)
     {

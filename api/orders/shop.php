@@ -3,12 +3,15 @@ include_once '../../config/Database.php';
 include_once '../../models/Orders.php';
 include_once '../../models/Order_products.php';
 include_once '../../models/Partner.php';
+include_once '../../models/Order_options.php';
 
 
 $data = json_decode(file_get_contents("php://input"));
 
 $products = $data->products;
 $order = $data->order;
+$options = $order->options;
+
 $Customer = $order->Customer;
 $EmailAddress = $Customer->EmailAddress;
 
@@ -72,6 +75,31 @@ foreach ($products as $product) {
         $product->StatusId
     );
 }
+
+
+// options
+if ($options) {
+    foreach ($options as $opt) {
+        $attribute = new Order_options($db);
+
+        $attribute_attribute = $attribute->add(
+            $OrderId ,
+            $opt->OptionId,
+            $opt->ValueId,
+            $opt->OptionValue,
+            $opt->OptionName,
+            $opt->ValuePrice,
+            $opt->ValueIdQty,
+            $opt->CompanyId,
+            $opt->CreateUserId,
+            $opt->ModifyUserId,
+            $opt->StatusId
+
+        );
+
+    }
+}
+
 
 
 $thisorder = $orders->getDetailedSingleCampanyById($OrderId);

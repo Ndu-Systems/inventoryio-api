@@ -18,6 +18,16 @@ $product = new Product($db);
 // $result = $product->getDetailedProduct(
 //     $CompanyId
 // );
+//check if it the Handler
+$company = $product->getCompanyByHandler(
+    $CompanyId
+);
+
+if($company){
+    
+    $CompanyId = $company['CompanyId'];
+}
+
 
 $result = $product->getDetailedProductWithImages(
     $CompanyId

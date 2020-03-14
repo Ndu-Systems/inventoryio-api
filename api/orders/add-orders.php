@@ -2,11 +2,13 @@
 include_once '../../config/Database.php';
 include_once '../../models/Orders.php';
 include_once '../../models/Order_products.php';
+include_once '../../models/Order_options.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
 $products = $data->products;
 $order = $data->order;
+$options = $order->options;
 
 //connect to db
 $database = new Database();
@@ -45,6 +47,30 @@ foreach ($products as $product) {
         $product->ModifyUserId,
         $product->StatusId
     );
+}
+
+
+// options
+if ($options) {
+    foreach ($options as $opt) {
+        $attribute = new Order_options($db);
+
+        $attribute_attribute = $attribute->add(
+            $opt->OrderId,
+            $opt->OptionId,
+            $opt->ValueId,
+            $opt->OptionValue,
+            $opt->OptionName,
+            $opt->ValuePrice,
+            $opt->ValueIdQty,
+            $opt->CompanyId,
+            $opt->CreateUserId,
+            $opt->ModifyUserId,
+            $opt->StatusId
+
+        );
+
+    }
 }
 
 

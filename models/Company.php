@@ -61,6 +61,7 @@ class Company
     public function updateCompany(
         $CompanyId,
         $Name,
+        $Handler,
         $Website,
         $TelephoneNumber,
         $ModifyUserId,
@@ -69,6 +70,7 @@ class Company
         $query = "UPDATE company
         SET  
         Name = ?, 
+        Handler = ?, 
         Website =?, 
         TelephoneNumber =?,       
         ModifyDate = NOW(),
@@ -81,6 +83,7 @@ class Company
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $Name,
+                $Handler,
                 $Website,
                 $TelephoneNumber,
                 $ModifyUserId,
@@ -148,25 +151,30 @@ class Company
 
     public function getById($CompanyId)
     {
-        $query = "SELECT * FROM company WHERE CompanyId =?";
+        $query = "SELECT * FROM company WHERE CompanyId =? or Handler = ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($CompanyId));
+        $stmt->execute(array($CompanyId, $CompanyId));
 
         if ($stmt->rowCount()) {
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $image = new Image($this->conn);
             $config = new Config($this->conn);
             $images = $image->getParentIdById($CompanyId);
+            $CompanyId = $result['CompanyId'];
             $imagesbanner = $image->getParentIdById($CompanyId.'banner');
+            $logo = $image->getParentIdById($CompanyId);
             $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
             $address = $config->getCampanyByIdAndType($CompanyId, 'address');
             $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
+            $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
             $result["Images"] = $images;
             $result["Banner"] = $imagesbanner;
             $result["Bankings"] = $bankings;
             $result["Address"] = $address;
             $result["Colors"] = $colors;
+            $result["Theme"] = $theme;
+            $result["Logo"] = $logo;
             return $result;
         }
     }

@@ -7,6 +7,7 @@ $data = json_decode(file_get_contents("php://input"));
 // create user data only
 $CompanyId = $data->CompanyId;
 $Name = $data->Name;
+$Handler = $data->Handler;
 $Website = $data->Website;
 $TelephoneNumber = $data->TelephoneNumber; 
 $ModifyUserId = $data->ModifyUserId;
@@ -21,6 +22,7 @@ $company = new Company($db);
 $result = $company->updateCompany(
     $CompanyId,
     $Name,
+    $Handler,
     $Website,
     $TelephoneNumber,
     $ModifyUserId,
