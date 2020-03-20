@@ -10,7 +10,6 @@ $data = json_decode(file_get_contents("php://input"));
 
 $products = $data->products;
 $order = $data->order;
-$options = $order->options;
 
 $Customer = $order->Customer;
 $EmailAddress = $Customer->EmailAddress;
@@ -62,7 +61,7 @@ $OrderId =  $result['OrdersId'];
 foreach ($products as $product) {
     $order_products = new Order_products($db);
 
-    $result = $order_products->add(
+    $products_result = $order_products->add(
         $OrderId,
         $product->ProductId,
         $product->CompanyId,
@@ -74,29 +73,32 @@ foreach ($products as $product) {
         $product->ModifyUserId,
         $product->StatusId
     );
-}
 
+    $options = $product->Options;
+    $OrderProductId =  $products_result['Id'];
 
-// options
-if ($options) {
-    foreach ($options as $opt) {
-        $attribute = new Order_options($db);
+    // product options
+    if ($options) {
 
-        $attribute_attribute = $attribute->add(
-            $OrderId ,
-            $opt->OptionId,
-            $opt->ValueId,
-            $opt->OptionValue,
-            $opt->OptionName,
-            $opt->ValuePrice,
-            $opt->ValueIdQty,
-            $opt->CompanyId,
-            $opt->CreateUserId,
-            $opt->ModifyUserId,
-            $opt->StatusId
+        foreach ($options as $opt) {
+            $attribute = new Order_options($db);
+            $attribute_attribute = $attribute->add(
+                $OrderId,
+                $opt->ProductId,
+                $OrderProductId,
+                $opt->OptionId,
+                $opt->ValueId,
+                $opt->OptionValue,
+                $opt->OptionName,
+                $opt->ValuePrice,
+                $opt->ValueIdQty,
+                $opt->CompanyId,
+                $opt->CreateUserId,
+                $opt->ModifyUserId,
+                $opt->StatusId
 
-        );
-
+            );
+        }
     }
 }
 

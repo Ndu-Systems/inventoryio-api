@@ -13,6 +13,8 @@ class Order_options
     //Add user
     public function add(
         $OrderId,
+        $ProductId,
+        $OrderProductId,
         $OptionId,
         $ValueId,
         $OptionValue,
@@ -29,6 +31,8 @@ class Order_options
         $query = "
         INSERT INTO order_options(
             OrderId,
+            ProductId,
+            OrderProductId,
             OptionId,
             ValueId,
             OptionValue,
@@ -41,13 +45,15 @@ class Order_options
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $OrderId,
+                $ProductId,
+                $OrderProductId,
                 $OptionId,
                 $ValueId,
                 $OptionValue,
@@ -73,6 +79,8 @@ class Order_options
     public function updateOrder_options(
         $Id,
         $OrderId,
+        $ProductId,
+        $OrderProductId,
         $OptionId,
         $ValueId,
         $OptionValue,
@@ -88,6 +96,8 @@ class Order_options
         order_options
     SET
         OrderId =  ? ,
+        ProductId =  ? ,
+        OrderProductId =  ? ,
         OptionId =  ? ,
         ValueId =  ? ,
         OptionValue =  ? ,
@@ -108,6 +118,8 @@ class Order_options
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $OrderId,
+                $ProductId,
+                $OrderProductId,
                 $OptionId,
                 $ValueId,
                 $OptionValue,
@@ -154,4 +166,15 @@ class Order_options
         }
     }
 
+    public function getByOrderProductId($OrderProductId)
+    {
+        $query = "SELECT * FROM order_options WHERE OrderProductId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($OrderProductId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 }

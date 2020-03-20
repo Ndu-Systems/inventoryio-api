@@ -1,5 +1,6 @@
 <?php
 include_once 'Image.php';
+include_once 'Order_options.php';
 
 
 class Order_products
@@ -196,13 +197,16 @@ class Order_products
         // }
         $productsWithImages = array();
         $image = new Image($this->conn);
+        $order_options = new Order_options($this->conn);
 
         if ($stmt->rowCount()) {
             $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($products as $product) {
 
                 $images = $image->getParentIdById($product["ProductId"]);
+                $options = $order_options->getByOrderProductId($product["Id"]);
                 $product["Images"] = $images;
+                $product["Options"] = $options;
                 array_push($productsWithImages, $product);
             }
         }
