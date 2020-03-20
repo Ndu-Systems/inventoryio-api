@@ -36,6 +36,25 @@ function getDetailedSingleCampanyById($OrdersId, $db)
     return $ordersWithCustomers;
 }
 
+function getOptionsString($options)
+{
+    $result = '';
+    $index = 0;
+    if (!$options) {
+        return $result;
+    }
+    foreach ($options as $option) {
+        $result = $result . $option['OptionName'] . ' : ' . $option['OptionValue'];
+
+        if ($index < count($options) - 1) {
+            $result =  $result . ' , ';
+        }
+        $index = $index + 1;
+    }
+
+    return $result;
+}
+
 // values
 $OrdersId = $_GET['guid'];
 // $OrdersId = 'd0e20298-2ba4-11ea-84fd-48f17f8d4d88';
@@ -137,9 +156,9 @@ if (isset($order["ExpectedDate"])) {
 
 
 $hideBorder = 0;
-$fontSizeSmall = 10;
-$fontSizeMed = 12;
-$fontSizeLarge = 14;
+$fontSizeSmall = 9;
+$fontSizeMed = 10;
+$fontSizeLarge = 12;
 
 class PDF extends FPDF
 {
@@ -148,17 +167,16 @@ class PDF extends FPDF
     }
     function Footer()
     {
-        $this->Image('img/footer.png',0,275,210);
+        $this->Image('img/footer.png', 0, 275, 210);
         // $this->Image('img/Path 6.png',0,250,210);
-        $footerY= 5;
+        $footerY = 5;
         $this->SetY(-18);
         $this->SetFont('Arial', '', 8);
         $this->Cell(120, $footerY, 'Thank you for shoppinmg with us', 0, 0);
         $this->Cell(70, $footerY, 'This invoice created using INVENTORYIO', 0, 1);
         $this->Cell(120, $footerY, 'Please call again', 0, 0);
         $this->Cell(70, $footerY, 'To create yours vistit:   https://inventoryio.co.za', 0, 1);
-        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-
+        $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 }
 
@@ -171,7 +189,7 @@ if (isset($logoUrl)) {
 }
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', 30);
-$pdf->Cell(60, 10, null, $hideBorder, 0);
+$pdf->Cell(80, 10, null, $hideBorder, 0);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(100, 10, $heading, $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
@@ -236,23 +254,38 @@ $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->SetFillColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->SetTextColor($ftColorsArray[0], $ftColorsArray[1], $ftColorsArray[2]);
 
-$pdf->Cell($headeCellWidth * 1.5,  10, 'DESCRIPTION', $hideBorder, 0, null, true);
+$pdf->Cell($headeCellWidth * 2.5,  10, 'DESCRIPTION', $hideBorder, 0, null, true);
 $pdf->Cell($headeCellWidth / 1.5,  10, 'UNIT PRICE', $hideBorder, 0, null, true);
-$pdf->Cell($headeCellWidth / 1.5,  10, 'QUANTITY', $hideBorder, 0, null, true);
-$pdf->Cell($headeCellWidth,  10, 'TOTAL', $hideBorder, 1, null, true);
+$pdf->Cell($headeCellWidth / 2.5,  10, 'QTY', $hideBorder, 0, null, true);
+$pdf->Cell($headeCellWidth / 2,  10, 'TOTAL', $hideBorder, 1, null, true);
 $pdf->SetTextColor(0, 0, 0);
 
-
+$pdf->SetFillColor(236, 240, 241);
+$pdf->Cell(191.111,  4, '', $hideBorder, 1, null, true);
 // add list of products
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
 $rowCount = 1;
+$dataCellHeigt = 5;
+
 foreach ($order["Products"] as $product) {
     $pdf->SetFillColor(236, 240, 241);
+    $pdf->SetFont('Arial', null, $fontSizeMed); // value small
 
-    $pdf->Cell($headeCellWidth * 1.5,  10,  $product["ProductName"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth / 1.5,  10, $currency . $product["UnitPrice"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth / 1.5,  10,  $product["Quantity"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth,  10,  $currency . $product["subTotal"], $hideBorder, 1, null, true);
+
+    $pdf->Cell($headeCellWidth * 2.5, $dataCellHeigt,  $product["ProductName"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 1.5,  $dataCellHeigt, $currency . $product["UnitPrice"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2.5,  $dataCellHeigt,  $product["Quantity"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2,  $dataCellHeigt,  $currency . $product["subTotal"], $hideBorder, 1, null, true);
+
+
+    $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+    $pdf->Cell($headeCellWidth * 2.5, 5, getOptionsString($product["Options"]), $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 1.5,  5, '', $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2.5,  5, '', $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2,  5, '', $hideBorder, 1, null, true);
+
+    $pdf->Cell(191.111,  4, '', $hideBorder, 1, null, true);
+
     $rowCount = $rowCount + 1;
 }
 // total 
@@ -307,7 +340,7 @@ $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
 
 $pdf->SetFont('Arial', 'I', 10);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-$pdf->Cell($headeCellWidth,  $lineHeight,  'Amount Paid: '.$currency . $order["Paid"] , $hideBorder, 1);
+$pdf->Cell($headeCellWidth,  $lineHeight,  'Amount Paid: ' . $currency . $order["Paid"], $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
 
 $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
@@ -327,4 +360,4 @@ $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
 
 
-$pdf->Output('',$PaymentReference.'.pdf', false);
+$pdf->Output('', $PaymentReference . '.pdf', false);
