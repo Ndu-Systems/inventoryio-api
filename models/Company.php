@@ -162,12 +162,16 @@ class Company
             $config = new Config($this->conn);
             $images = $image->getParentIdById($CompanyId);
             $CompanyId = $result['CompanyId'];
+
             $imagesbanner = $image->getParentIdById($CompanyId.'banner');
             $logo = $image->getParentIdById($CompanyId);
+
             $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
             $address = $config->getCampanyByIdAndType($CompanyId, 'address');
+
             $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
             $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
+
             $result["Images"] = $images;
             $result["Banner"] = $imagesbanner;
             $result["Bankings"] = $bankings;

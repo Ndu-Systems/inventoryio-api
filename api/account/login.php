@@ -23,7 +23,7 @@ $result = $user->getUserByEmailandPassword($Email,$Password);
 
 $userCompany = $company->getById($result["CompanyId"] );
 $dp = $image->getParentIdByIdSigle($result["UserId"] );
-
+$result["Password"] = null;
 $result["DP"] = $dp;
 $result["Company"] = $userCompany;
 

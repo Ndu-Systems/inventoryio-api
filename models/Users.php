@@ -24,13 +24,12 @@ class Users
         $CreateUserId,
         $ModifyUserId,
         $StatusId
-
     ) {
         if ($this->getByEmail($Email) > 0) {
             return "user already exists";
         }
         $UserId = getUuid($this->conn);
-
+        
         $query = "
         INSERT INTO users(
             UserId,
@@ -47,8 +46,8 @@ class Users
         )
         VALUES(
            ?,?,?,?,?,?,?,?,?,?,?
-        )
-";
+        )";
+
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
@@ -75,10 +74,10 @@ class Users
     public function getUserByEmailandPassword($email, $password)
     {
         $query = "SELECT  * FROM users WHERE Email =  ? AND BINARY Password = ?";
-
+ 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($email, $password));
-
+ 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);;
         }
