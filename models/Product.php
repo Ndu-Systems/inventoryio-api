@@ -338,8 +338,7 @@ class Product
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($ProductId));
-
-        $productsWithImages = Array();
+        
         $image = new Image($this->conn);
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);

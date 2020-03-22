@@ -16,6 +16,7 @@ class Config
         $CompanyId,
         $Name,
         $Type,
+        $GroupKey,
         $Label,
         $Value,
         $IsRequired,
@@ -34,6 +35,7 @@ class Config
             CompanyId,
             Name,
             Type,
+            GroupKey,
             Label,
             Value,
             IsRequired,
@@ -43,7 +45,7 @@ class Config
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
@@ -53,6 +55,7 @@ class Config
                 $CompanyId,
                 $Name,
                 $Type,
+                $GroupKey,
                 $Label,
                 $Value,
                 $IsRequired,
@@ -77,6 +80,7 @@ class Config
         $CompanyId,
         $Name,
         $Type,
+        $GroupKey,
         $Label,
         $Value,
         $IsRequired,
@@ -91,6 +95,7 @@ class Config
         CompanyId   =  ?,
         Name   =  ?,
         Type   =  ?,
+        GroupKey   =  ?,
         Label   =  ?,
         Value   =  ?,
         IsRequired = ?,
@@ -110,6 +115,7 @@ class Config
                 $CompanyId,
                 $Name,
                 $Type,
+                $GroupKey,
                 $Label,
                 $Value,
                 $IsRequired,

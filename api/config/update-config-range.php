@@ -22,6 +22,7 @@ foreach ($configs as $item) {
         $item->CompanyId,
         $item->Name,
         $item->Type,
+        $item->GroupKey,
         $item->Label,
         $item->Value,
         $item->IsRequired,
