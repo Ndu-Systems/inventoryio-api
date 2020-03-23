@@ -1,0 +1,1 @@
+ALTER TABLE `config` ADD `GroupKey` VARCHAR(100) NULL AFTER `Type`;
