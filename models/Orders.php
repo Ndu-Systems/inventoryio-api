@@ -2,6 +2,7 @@
 include_once 'Partner.php';
 include_once 'Order_products.php';
 include_once 'Company.php';
+// include_once 'Config.php';
 
 
 class Orders
@@ -169,14 +170,19 @@ class Orders
         $stmt->execute(array($CompanyId));
         $ordersWithCustomers = array();
         $partner = new Partner($this->conn);
+        $order_charges = new Config($this->conn);
+
 
         if ($stmt->rowCount()) {
             $orders =  $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($orders as $order) {
 
                 $customer = $partner->getById($order["ParntersId"]);
+                $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
+
                 $order["Customer"] = $customer;
                 $order["CardClass"] = ['card'];
+                $order["Charges"] = $charges;
                 array_push($ordersWithCustomers, $order);
             }
         }
@@ -193,6 +199,7 @@ class Orders
         $partner = new Partner($this->conn);
         $order_products = new Order_products($this->conn);
         $company = new Company($this->conn);
+        $order_charges = new Config($this->conn);
 
 
         if ($stmt->rowCount()) {
@@ -201,10 +208,15 @@ class Orders
             $products = $order_products->getBOrderIdId(
                 $OrdersId
             );
+            $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
+
             $order["Customer"] = $customer;
             $order["Products"] = $products;
+            // $order["Charges"] = $charges;
             $order["Company"] = $company->getById($order["CompanyId"]);
             $order["CardClass"] = ['card'];
+            $order["Charges"] = $charges;
+
             $ordersWithCustomers = $order;
         }
         return $ordersWithCustomers;

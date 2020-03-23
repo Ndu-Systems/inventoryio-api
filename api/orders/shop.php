@@ -12,6 +12,7 @@ $products = $data->products;
 $order = $data->order;
 
 $Customer = $order->Customer;
+$Charges = $order->Charges;
 $EmailAddress = $Customer->EmailAddress;
 
 //connect to db
@@ -20,9 +21,9 @@ $db = $database->connect();
 
 $partner = new Partner($db);
 $findpartner = $partner->getByEmail($EmailAddress);
-if($findpartner){
+if ($findpartner) {
     $order->ParntersId =  $findpartner['PartnerId'];
-}else{
+} else {
     $addpartner =  $partner->add(
         $order->CompanyId,
         $Customer->PartnerType,
@@ -37,7 +38,6 @@ if($findpartner){
         $Customer->StatusId
     );
     $order->ParntersId =  $addpartner['PartnerId'];
- 
 }
 
 // create user first to get UserId
@@ -102,6 +102,29 @@ foreach ($products as $product) {
     }
 }
 
+
+
+// charges
+if ($Charges) {
+
+    foreach ($Charges as $charge) {
+        $connn = new Config($db);
+        $configs = $connn->add(
+            $OrderId,
+            $charge->Name,
+            $charge->Type,
+            'this is the order shipping',
+            $charge->Label,
+            $charge->Value,
+            $charge->IsRequired,
+            $charge->FieldType,
+            $charge->CreateUserId,
+            $charge->ModifyUserId,
+            $charge->StatusId
+
+        );
+    }
+}
 
 
 $thisorder = $orders->getDetailedSingleCampanyById($OrderId);

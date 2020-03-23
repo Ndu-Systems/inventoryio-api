@@ -171,6 +171,7 @@ class Company
 
             $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
             $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
+            $shipping = $config->getCampanyByIdAndType($CompanyId, 'shipping');
 
             $result["Images"] = $images;
             $result["Banner"] = $imagesbanner;
@@ -179,6 +180,7 @@ class Company
             $result["Colors"] = $colors;
             $result["Theme"] = $theme;
             $result["Logo"] = $logo;
+            $result["Shipping"] = $shipping;
             return $result;
         }
     }

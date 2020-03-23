@@ -3,6 +3,7 @@ require('../../../config/dbInvoice.php');
 require('../../../models/Partner.php');
 require('../../../models/Order_products.php');
 require('../../../models/Company.php');
+// require('../../../models/Config.php');
 require('inc/fpdf.php');
 // connect to db
 //connect to db
@@ -19,6 +20,8 @@ function getDetailedSingleCampanyById($OrdersId, $db)
     $partner = new Partner($db);
     $order_products = new Order_products($db);
     $company = new Company($db);
+    $order_charges = new Config($db);
+
 
 
     if ($stmt->rowCount()) {
@@ -27,10 +30,14 @@ function getDetailedSingleCampanyById($OrdersId, $db)
         $products = $order_products->getBOrderIdId(
             $OrdersId
         );
+        $charges = $order_charges->getCampanyByIdAndType($OrdersId, 'shippingFee');
+
         $order["Customer"] = $customer;
         $order["Products"] = $products;
         $order["Company"] = $company->getById($order["CompanyId"]);
         $order["CardClass"] = ['card'];
+        $order["Charges"] = $charges;
+
         $ordersWithCustomers = $order;
     }
     return $ordersWithCustomers;
@@ -61,6 +68,7 @@ $OrdersId = $_GET['guid'];
 
 $order = getDetailedSingleCampanyById($OrdersId, $db);
 $company = $order["Company"];
+$charges = $order["Charges"];
 $prefix = 'INV';
 $heading = 'Invoice';
 $invoiceNo =  $prefix . $order["OrderId"];
@@ -293,8 +301,12 @@ $pdf->SetFont('Arial', 'B', $fontSizeMed * 1.5); // heading small
 $pdf->Ln(10);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(107, 10,    'TOTAL: ' . $currency . $order["Total"], $hideBorder, 1, 'L');
-$pdf->SetTextColor(0, 0, 0);
+$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 
+foreach ($charges as $charge) {
+    $pdf->Cell(107, 10, $charge["Label"] , $hideBorder, 1, 'L');
+    $pdf->SetTextColor(0, 0, 0);
+}
 
 // $pdf->Image('img/footer.png', 0, 210, 210);
 
