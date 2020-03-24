@@ -8,6 +8,8 @@ $data = json_decode(file_get_contents("php://input"));
 
 $products = $data->products;
 $order = $data->order;
+$Charges = $order->Charges;
+
 
 //connect to db
 $database = new Database();
@@ -72,6 +74,30 @@ foreach ($products as $product) {
             );
         }
     }
+
+    
+// charges
+if ($Charges) {
+
+    foreach ($Charges as $charge) {
+        $connn = new Config($db);
+        $configs = $connn->add(
+            $OrderId,
+            $charge->Name,
+            $charge->Type,
+            'this is the order shipping',
+            $charge->Label,
+            $charge->Value,
+            $charge->IsRequired,
+            $charge->FieldType,
+            $charge->CreateUserId,
+            $charge->ModifyUserId,
+            $charge->StatusId
+
+        );
+    }
+}
+
 }
 
 
