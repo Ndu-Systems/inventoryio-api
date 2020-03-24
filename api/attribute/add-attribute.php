@@ -31,7 +31,7 @@ $AttributeId =  $result['AttributeId'];
 foreach ($items as $item) {
     $Attribute_item = new Attribute_item($db);
     $result = $Attribute_item->add(
-        $AttributeId,
+        $AttributeId,'','','',
         $item->AttributeValue,
         $item->CreateUserId,
         $item->ModifyUserId,

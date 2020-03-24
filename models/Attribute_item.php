@@ -78,7 +78,7 @@ class Attribute_item
         AttributeQuantity = ? ,
         CreateUserId = ? ,
         ModifyUserId = ? ,
-        StatusId = ? 
+        StatusId = ? ,
         ModifyDate = NOW()
         WHERE
         Id = ?
@@ -126,6 +126,18 @@ class Attribute_item
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         return null;
+    }
+
+    public function delete($Id)
+    {
+        $query = "DELETE FROM attribute_item WHERE Id =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($Id));
+
+        if ($stmt->rowCount()) {
+            return true;
+        }
     }
 
 }

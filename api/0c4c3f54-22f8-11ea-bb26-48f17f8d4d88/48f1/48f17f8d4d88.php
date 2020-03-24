@@ -302,23 +302,27 @@ $pdf->Ln(10);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(107, 10,    'TOTAL: ' . $currency . $order["Total"], $hideBorder, 1, 'L');
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-
-foreach ($charges as $charge) {
-    $pdf->Cell(107, 10, $charge["Label"] , $hideBorder, 1, 'L');
-    $pdf->SetTextColor(0, 0, 0);
+if ($charges) {
+    foreach ($charges as $charge) {
+        $pdf->Cell(107, 10, $charge["Label"], $hideBorder, 1, 'L');
+        $pdf->SetTextColor(0, 0, 0);
+    }
 }
+
 
 // $pdf->Image('img/footer.png', 0, 210, 210);
 
 // add details headers
-
+$pdf->SetTextColor(0, 0, 0);
 $headeCellWidth = 62;
 $lineHeight = 5;
 $pdf->Ln(10);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($headeCellWidth * 1.40,  10, $bankingHeadingLabel, $hideBorder, 0);
 $pdf->Cell($headeCellWidth * 0.88,  10, $dueByLabel, $hideBorder, 0);
+$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell($headeCellWidth,  10, 'TOTAL DUE', $hideBorder, 1);
+$pdf->SetTextColor(0, 0, 0);
 
 $headeCellWidth = 55;
 $bankLabelFraction = 0.58;
@@ -336,8 +340,9 @@ $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
 $pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
 $pdf->SetFont('Arial', 'B', 18);
 // $pdf->SetTextColor(0, 204, 0);
-$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
+$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
+
 $pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Due"], $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
 

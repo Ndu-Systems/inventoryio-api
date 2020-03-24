@@ -86,7 +86,7 @@ class Attribute
             Shop= ? ,
             CreateUserId= ? ,
             ModifyUserId= ? ,
-            StatusId= ? 
+            StatusId= ? ,
         ModifyDate = NOW()
         WHERE
         AttributeId = ?
@@ -156,6 +156,18 @@ class Attribute
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    public function delete($AttributeId)
+    {
+        $query = "DELETE FROM attribute WHERE AttributeId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($AttributeId));
+
+        if ($stmt->rowCount()) {
+            return true;
         }
     }
 }
