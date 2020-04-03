@@ -17,6 +17,7 @@ class Company
     //Add user
     public function add(
         $Name,
+        $Description,
         $Website,
         $TelephoneNumber,
         $CreateUserId,
@@ -31,6 +32,7 @@ class Company
         INSERT INTO company(
             CompanyId,
             Name,
+            Description,
             Website,
             TelephoneNumber,
             CreateUserId,
@@ -38,7 +40,7 @@ class Company
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?
         )
 ";
         try {
@@ -46,6 +48,7 @@ class Company
             if ($stmt->execute(array(
                 $CompanyId,
                 $Name,
+                $Description,
                 $Website,
                 $TelephoneNumber,
                 $CreateUserId,
@@ -61,6 +64,9 @@ class Company
     public function updateCompany(
         $CompanyId,
         $Name,
+        $Description,
+        $Type,
+        $Shop,
         $Handler,
         $Website,
         $TelephoneNumber,
@@ -70,6 +76,9 @@ class Company
         $query = "UPDATE company
         SET  
         Name = ?, 
+        Description = ?, 
+        Type = ?, 
+        Shop = ?, 
         Handler = ?, 
         Website =?, 
         TelephoneNumber =?,       
@@ -83,6 +92,9 @@ class Company
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $Name,
+                $Description,
+                $Type,
+                $Shop,
                 $Handler,
                 $Website,
                 $TelephoneNumber,
@@ -182,6 +194,47 @@ class Company
             $result["Logo"] = $logo;
             $result["Shipping"] = $shipping;
             return $result;
+        }
+    }
+
+    public function getAll()
+    {
+        $query = "SELECT * FROM company WHERE StatusId = ? and Shop = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array(1,1));
+
+        if ($stmt->rowCount()) {
+            $companies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $detailedShops = Array();
+            foreach ($companies as $result) {
+            $image = new Image($this->conn);
+            $config = new Config($this->conn);
+            $CompanyId = $result['CompanyId'];
+            $images = $image->getParentIdById($CompanyId);
+
+
+            $imagesbanner = $image->getParentIdById($CompanyId.'banner');
+            $logo = $image->getParentIdById($CompanyId);
+
+            $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
+            $address = $config->getCampanyByIdAndType($CompanyId, 'address');
+
+            $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
+            $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
+            $shipping = $config->getCampanyByIdAndType($CompanyId, 'shipping');
+
+            $result["Images"] = $images;
+            $result["Banner"] = $imagesbanner;
+            $result["Bankings"] = $bankings;
+            $result["Address"] = $address;
+            $result["Colors"] = $colors;
+            $result["Theme"] = $theme;
+            $result["Logo"] = $logo;
+            $result["Shipping"] = $shipping;
+            array_push($detailedShops, $result);
+            }
+            return $detailedShops;
         }
     }
 }
