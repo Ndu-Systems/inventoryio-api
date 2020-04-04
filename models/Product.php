@@ -302,6 +302,33 @@ class Product
         }
         return  $productsWithImages;
     }
+
+    public function getDetailedProductForShops($CompanyId)
+    {
+        $query = "SELECT *
+        FROM product 
+        WHERE CompanyId = ? 
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        $productsWithImages = Array();
+        $image = new Image($this->conn);
+        if ($stmt->rowCount()) {
+            $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($products as $product) {
+
+                $images = $image->getParentIdById($product["ProductId"]);
+                $product["Images"] = $images;
+                array_push($productsWithImages, $product);
+
+
+            }
+        }
+        return  $productsWithImages;
+    }
+    
     public function getSigleProductWithImages($ProductId)
     {
         $query = "SELECT 

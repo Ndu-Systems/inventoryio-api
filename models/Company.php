@@ -1,6 +1,7 @@
 <?php
 include_once 'Image.php';
 include_once 'Config.php';
+include_once 'Product.php';
 
 
 class Company
@@ -210,6 +211,7 @@ class Company
             foreach ($companies as $result) {
             $image = new Image($this->conn);
             $config = new Config($this->conn);
+            $product = new Product($this->conn);
             $CompanyId = $result['CompanyId'];
             $images = $image->getParentIdById($CompanyId);
 
@@ -223,6 +225,7 @@ class Company
             $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
             $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
             $shipping = $config->getCampanyByIdAndType($CompanyId, 'shipping');
+            $products = $product->getDetailedProductForShops($CompanyId);
 
             $result["Images"] = $images;
             $result["Banner"] = $imagesbanner;
@@ -232,6 +235,7 @@ class Company
             $result["Theme"] = $theme;
             $result["Logo"] = $logo;
             $result["Shipping"] = $shipping;
+            $result["Products"] = $products;
             array_push($detailedShops, $result);
             }
             return $detailedShops;
