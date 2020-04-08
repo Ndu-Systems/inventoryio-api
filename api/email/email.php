@@ -48,7 +48,7 @@ $msg = "
                 .$Message.
                 "</p>
             </div>
-            <h1 style='font-weight:500;text-transform:capitalize;color:#3F3D56;font-size:20px;'>inventoryio ©2019</h1>
+            <h1 style='font-weight:500;text-transform:capitalize;color:#3F3D56;font-size:20px;'>inventoryio ©2020</h1>
         </div>
     </div>
 ";

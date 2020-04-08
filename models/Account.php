@@ -24,7 +24,9 @@ class Account
                     $token,
                     $Email
                 ))) {
-                    return 1;
+                    $result =  $user->getByEmail($Email);
+                    $result["Password"] = null;
+                    return $result;
                 }
                 else {
                     return "server error, contact system admin.";

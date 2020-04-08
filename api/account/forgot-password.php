@@ -13,5 +13,6 @@ $db = $database->connect();
 $account = new Account($db);
 
 $result = $account->ForgotPasswordGenerateToken($Email);
+ 
 
 echo json_encode($result);

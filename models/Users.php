@@ -146,6 +146,19 @@ class Users
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
+    public function getUserByToken($Token)
+    {
+        $query = "SELECT * FROM users WHERE SecurityToken =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($Token));
+
+        if ($stmt->rowCount()) {
+            $result =$stmt->fetch(PDO::FETCH_ASSOC);
+            $result["Password"] = null;
+            return $result;
+        }
+    }
 
     public function getByEmail($Email)
     {
@@ -322,6 +335,7 @@ class Users
             return array("ERROR", $e);
         }
     }
+
     public function getUserForRole($UserId, $RoleId)
     {
         $query = "
@@ -339,4 +353,5 @@ class Users
             return array("ERROR", $e);
         }
     }
+
 }
