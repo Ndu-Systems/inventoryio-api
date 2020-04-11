@@ -50,7 +50,7 @@ class Creditnote
                 $StatusId
             ))) {
                 $creditnoteId = $this->conn->lastInsertId();
-                return $this->getById($creditnoteId);
+                return $this->getById($CreditnoteId);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);
@@ -110,6 +110,17 @@ class Creditnote
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CreditnoteId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+    }
+    public function getByOrderId($OrderId)
+    {
+        $query = "SELECT * FROM creditnote WHERE OrderId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($OrderId));
 
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
