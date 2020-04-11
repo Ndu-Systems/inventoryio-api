@@ -1,6 +1,8 @@
 <?php
 include_once '../../config/Database.php';
 include_once '../../models/Creditnote.php';
+include_once '../../models/Orders.php';
+
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -32,10 +34,7 @@ $result = $creditnote->add(
     $StatusId
 );
 
-    
+$orders = new Orders($db);
+$cancellOrder = $orders->cancelOrder($OrderId);
+
 echo json_encode($result);
-
- 
- 
-
-

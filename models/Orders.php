@@ -135,12 +135,38 @@ class Orders
                 $StatusId,
                 $OrdersId
             ))) {
-                return $this->getById($OrdersId);
+                return $this->getDetailedSingleCampanyById($OrdersId);
             }
         } catch (Exception $e) {
             return array("ERROR", $e);
         }
     }
+
+    public function cancelOrder(
+        $OrdersId
+    ) {
+
+        $query = "UPDATE
+        orders
+    SET
+        Status = ?
+    WHERE
+    OrdersId = ?
+         ";
+
+        try {
+            $stmt = $this->conn->prepare($query);
+            if ($stmt->execute(array(
+                'Cancelled',
+                $OrdersId
+            ))) {
+                return $this->getDetailedSingleCampanyById($OrdersId);
+            }
+        } catch (Exception $e) {
+            return array("ERROR", $e);
+        }
+    }
+
 
     public function getById($OrdersId)
     {
@@ -228,6 +254,7 @@ class Orders
         $order_products = new Order_products($this->conn);
         $company = new Company($this->conn);
         $order_charges = new Config($this->conn);
+        $creditnote = new Creditnote($this->conn);
 
 
         if ($stmt->rowCount()) {
@@ -237,13 +264,14 @@ class Orders
                 $OrdersId
             );
             $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
+            $creditnotes = $creditnote->getByOrderId($order["OrdersId"]);
 
             $order["Customer"] = $customer;
             $order["Products"] = $products;
-            // $order["Charges"] = $charges;
             $order["Company"] = $company->getById($order["CompanyId"]);
             $order["CardClass"] = ['card'];
             $order["Charges"] = $charges;
+            $order["Creditnotes"] = $creditnotes;
 
             $ordersWithCustomers = $order;
         }
