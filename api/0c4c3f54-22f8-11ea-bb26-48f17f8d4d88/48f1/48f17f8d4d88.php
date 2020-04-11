@@ -191,6 +191,8 @@ class PDF extends FPDF
 
 $pdf = new PDF('p', 'mm', 'A4');
 $pdf->AliasNbPages('{nb}');
+$pdf->SetTitle('Customer Invoice');
+
 $pdf->AddPage();
 if (isset($logoUrl)) {
     $pdf->Image($logoUrl, 10, 25, 25);

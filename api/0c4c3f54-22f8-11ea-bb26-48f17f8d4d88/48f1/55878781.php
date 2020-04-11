@@ -166,6 +166,8 @@ class PDF extends FPDF
 $pdf = new PDF('p', 'mm', 'A4');
 $pdf->AliasNbPages('{nb}');
 $pdf->AddPage();
+$pdf->SetTitle('Customer Quotation');
+
 if (isset($logoUrl)) {
     $pdf->Image($logoUrl, 10, 25, 25);
 }

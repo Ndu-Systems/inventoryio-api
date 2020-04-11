@@ -24,10 +24,13 @@ class Creditnote
     ) {
 
         $CreditnoteId = getUuid($this->conn);
+        $CreditNoteNo = $this->getLastCreditNoteNo($CompanyId) + 1;
+
 
         $query = "
         INSERT INTO creditnote(
             CreditnoteId,
+            CreditNoteNo,
             CompanyId,
             OrderId,
             Total,
@@ -37,13 +40,14 @@ class Creditnote
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $CreditnoteId,
+                $CreditNoteNo,
                 $CompanyId,
                 $OrderId,
                 $Total,
@@ -131,5 +135,20 @@ class Creditnote
         if ($stmt->rowCount()) {
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
+    }
+
+    public function getLastCreditNoteNo($CompanyId)
+    {
+        $query = "SELECT CreditNoteNo FROM creditnote WHERE CompanyId = ?
+                 ORDER BY CreateDate DESC LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        if ($stmt->rowCount()) {
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $item["CreditNoteNo"];
+        }
+        return 0;
     }
 }
