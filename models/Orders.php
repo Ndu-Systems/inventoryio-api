@@ -3,6 +3,7 @@ include_once 'Partner.php';
 include_once 'Order_products.php';
 include_once 'Company.php';
 include_once 'Order_products.php';
+include_once 'Creditnote.php';
 // include_once 'Config.php';
 
 
@@ -191,6 +192,8 @@ class Orders
         $partner = new Partner($this->conn);
         $product = new Order_products($this->conn);
         $order_charges = new Config($this->conn);
+        $creditnote = new Creditnote($this->conn);
+
 
 
         if ($stmt->rowCount()) {
@@ -200,11 +203,14 @@ class Orders
                 $products = $product->getBOrderIdId($order["OrdersId"]);
                 $customer = $partner->getById($order["ParntersId"]);
                 $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
+                $creditnotes = $creditnote->getByOrderId($order["OrdersId"]);
+
 
                 $order["Customer"] = $customer;
                 $order["CardClass"] = ['card'];
                 $order["Charges"] = $charges;
                 $order["Products"] = $products;
+                $order["Creditnotes"] = $creditnotes;
                 array_push($ordersWithCustomers, $order);
             }
         }

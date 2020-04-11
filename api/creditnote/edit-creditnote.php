@@ -9,6 +9,7 @@ $CreditnoteId = $data->CreditnoteId;
 $CompanyId = $data->CompanyId;
 $OrderId = $data->OrderId;
 $Total = $data->Total;
+$Reason = $data->Reason;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -25,6 +26,7 @@ $result = $creditnote->update(
     $CompanyId,
     $OrderId,
     $Total,
+    $Reason,
     $CreateUserId,
     $ModifyUserId,
     $StatusId

@@ -8,6 +8,7 @@ $data = json_decode(file_get_contents("php://input"));
 $CompanyId = $data->CompanyId;
 $OrderId = $data->OrderId;
 $Total = $data->Total;
+$Reason = $data->Reason;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
@@ -23,6 +24,7 @@ $result = $creditnote->add(
     $CompanyId,
     $OrderId,
     $Total,
+    $Reason,
     $CreateUserId,
     $ModifyUserId,
     $StatusId
