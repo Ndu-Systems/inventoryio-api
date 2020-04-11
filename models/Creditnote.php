@@ -17,6 +17,7 @@ class Creditnote
         $OrderId,
         $Total,
         $Reason,
+        $Notes,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -35,12 +36,13 @@ class Creditnote
             OrderId,
             Total,
             Reason,
+            Notes,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
@@ -52,6 +54,7 @@ class Creditnote
                 $OrderId,
                 $Total,
                 $Reason,
+                $Notes,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -73,6 +76,7 @@ class Creditnote
         $OrderId,
         $Total,
         $Reason,
+        $Notes,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -85,6 +89,7 @@ class Creditnote
         OrderId = ?,
         Total = ?,
         Reason = ?,
+        Notes = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
         StatusId= ?
@@ -100,6 +105,7 @@ class Creditnote
                 $OrderId,
                 $Total,
                 $Reason,
+                $Notes,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,

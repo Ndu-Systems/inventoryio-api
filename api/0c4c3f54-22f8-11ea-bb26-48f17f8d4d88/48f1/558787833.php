@@ -3,6 +3,7 @@ require('../../../config/dbInvoice.php');
 require('../../../models/Partner.php');
 require('../../../models/Order_products.php');
 require('../../../models/Company.php');
+require('../../../models/Creditnote.php');
 // require('../../../models/Config.php');
 require('inc/fpdf.php');
 // connect to db
@@ -21,6 +22,8 @@ function getDetailedSingleCampanyById($OrdersId, $db)
     $order_products = new Order_products($db);
     $company = new Company($db);
     $order_charges = new Config($db);
+    $creditnote = new Creditnote($db);
+
 
 
 
@@ -31,12 +34,16 @@ function getDetailedSingleCampanyById($OrdersId, $db)
             $OrdersId
         );
         $charges = $order_charges->getCampanyByIdAndType($OrdersId, 'shippingFee');
+        $creditnotes = $creditnote->getByOrderId($order["OrdersId"]);
+
 
         $order["Customer"] = $customer;
         $order["Products"] = $products;
         $order["Company"] = $company->getById($order["CompanyId"]);
         $order["CardClass"] = ['card'];
         $order["Charges"] = $charges;
+        $order["Creditnotes"] = $creditnotes;
+
 
         $ordersWithCustomers = $order;
     }
@@ -68,6 +75,7 @@ $OrdersId = $_GET['guid'];
 $order = getDetailedSingleCampanyById($OrdersId, $db);
 $company = $order["Company"];
 $charges = $order["Charges"];
+$creditnotes = $order["Creditnotes"];
 $prefix = 'INV';
 $heading = 'Credit Note';
 $invoiceNo =  $prefix . $order["OrderId"];
@@ -197,66 +205,71 @@ if (isset($logoUrl)) {
 }
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', 30);
-$pdf->Cell(80, 10, null, $hideBorder, 0);
+$pdf->Cell(60, 10, null, $hideBorder, 0);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(100, 10, $heading, $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
 
 
 // add client details and company
-$pdf->Ln(15);
-$pdf->SetFont('Arial', null, $fontSizeLarge / 2);
-$pdf->Cell(100, 5, $billedToLabel, $hideBorder, 0);
-$pdf->Cell(85, 5, 'BILLED BY', $hideBorder, 1);
-
-$pdf->SetFont('Arial', 'BU', $fontSizeLarge);
-$pdf->Cell(100, 8, $clientName, $hideBorder, 0);
-$pdf->Cell(85, 8, $companyName, $hideBorder, 1);
 // row top
 $rowTopSpaceMiddle = 40;
 $firstColSize = 30;
-$lastColSize = 90;
+$lastColSize = 60;
 $rowHeigth = 5;
+$pdf->Ln(15);
+$pdf->SetFont('Arial', null, $fontSizeLarge / 2);
+$pdf->Cell(100, 5, $billedToLabel, $hideBorder, 0);
+$pdf->Cell(30, 8, '', $hideBorder, 0);
+$pdf->Cell($lastColSize, 5, 'BILLED BY', $hideBorder, 1);
+
+$pdf->SetFont('Arial', 'BU', $fontSizeLarge);
+$pdf->Cell(100, 8, $clientName, $hideBorder, 0);
+$pdf->Cell(30, 8, '', $hideBorder, 0);
+$pdf->Cell($lastColSize, 8, $companyName, $hideBorder, 1);
+
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize, $rowHeigth, 'Invoice No :', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell($firstColSize,  $rowHeigth, $invoiceNo, $hideBorder, 0);
+$pdf->Cell($firstColSize * 2,  $rowHeigth, $invoiceNo, $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL1, $hideBorder, 1);
 // row  top
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize,  $rowHeigth, 'Date Issued :', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell($firstColSize,  $rowHeigth, $dateIssued, $hideBorder, 0);
+$pdf->Cell($firstColSize * 2,  $rowHeigth, $dateIssued, $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL2, $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($firstColSize,  $rowHeigth, null, $hideBorder, 0);
+$pdf->Cell($firstColSize,  $rowHeigth, 'Cridit Note No:', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell($firstColSize,  $rowHeigth, null, $hideBorder, 0);
+$pdf->Cell($firstColSize * 2,  $rowHeigth, 'CN' . $creditnotes["CreditNoteNo"], $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL3, $hideBorder, 1);
 
 // row  top
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($firstColSize,  $rowHeigth, $dueDateLabel, $hideBorder, 0);
+$pdf->Cell($firstColSize,  $rowHeigth, 'Reason:', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell($firstColSize,  $rowHeigth, $dueDate, $hideBorder, 0);
-$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
+$pdf->Cell($firstColSize * 2,  $rowHeigth,  $creditnotes["Reason"], $hideBorder, 0);
+$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, '', $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyCell, $hideBorder, 1);
 // row  top
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize,  $rowHeigth, null, $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell($firstColSize,  $rowHeigth, null, $hideBorder, 0);
+$pdf->Cell($firstColSize * 2,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyEmail, $hideBorder, 1);
 
 
+
+
 // add details headers
 $headeCellWidth = 47;
-$pdf->Ln(20);
+$pdf->Ln(10);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 // $pdf->SetFillColor(192, 192, 192); rgb(189, 195, 199)
 $pdf->SetFillColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
@@ -282,8 +295,8 @@ foreach ($order["Products"] as $product) {
 
     $pdf->Cell($headeCellWidth * 2.5, $dataCellHeigt,  $product["ProductName"], $hideBorder, 0, null, true);
     $pdf->Cell($headeCellWidth / 1.5,  $dataCellHeigt, $currency . $product["UnitPrice"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth / 2.5,  $dataCellHeigt,  $product["Quantity"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth / 2,  $dataCellHeigt,  $currency . $product["subTotal"], $hideBorder, 1, null, true);
+    $pdf->Cell($headeCellWidth / 2.5,  $dataCellHeigt,  '-' . $product["Quantity"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2,  $dataCellHeigt,  '-' . $currency . $product["subTotal"], $hideBorder, 1, null, true);
 
 
     $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
@@ -300,7 +313,7 @@ foreach ($order["Products"] as $product) {
 $pdf->SetFont('Arial', 'B', $fontSizeMed * 1.5); // heading small
 $pdf->Ln(10);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-$pdf->Cell(107, 10,    'TOTAL: ' . $currency . $order["Total"], $hideBorder, 1, 'L');
+$pdf->Cell(107, 10,    'TOTAL: -' . $currency . $order["Total"], $hideBorder, 1, 'L');
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 if ($charges) {
     foreach ($charges as $charge) {
@@ -308,71 +321,76 @@ if ($charges) {
         $pdf->SetTextColor(0, 0, 0);
     }
 }
+$pdf->Cell(191.111,  4, '', $hideBorder, 1, null, true);
+
+if ($creditnotes["Notes"]) {
+    $pdf->SetFont('Arial', 'B', $fontSizeMed); 
+    $pdf->Cell(191.111,  7,  'Notes', $hideBorder, 1, null, true);
+    $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+    $pdf->Cell(191.111,  10,  $creditnotes["Notes"], $hideBorder, 1, null, true);
+}
 
 
-// $pdf->Image('img/footer.png', 0, 210, 210);
+// $pdf->SetTextColor(0, 0, 0);
+// $headeCellWidth = 62;
+// $lineHeight = 5;
+// $pdf->Ln(10);
+// $pdf->SetFont('Arial', 'B', $fontSizeMed); 
+// $pdf->Cell($headeCellWidth * 1.40,  10, $bankingHeadingLabel, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth * 0.88,  10, $dueByLabel, $hideBorder, 0);
+// $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
+// $pdf->Cell($headeCellWidth,  10, 'TOTAL DUE', $hideBorder, 1);
+// $pdf->SetTextColor(0, 0, 0);
 
-// add details headers
-$pdf->SetTextColor(0, 0, 0);
-$headeCellWidth = 62;
-$lineHeight = 5;
-$pdf->Ln(10);
-$pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($headeCellWidth * 1.40,  10, $bankingHeadingLabel, $hideBorder, 0);
-$pdf->Cell($headeCellWidth * 0.88,  10, $dueByLabel, $hideBorder, 0);
-$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-$pdf->Cell($headeCellWidth,  10, 'TOTAL DUE', $hideBorder, 1);
-$pdf->SetTextColor(0, 0, 0);
+// $headeCellWidth = 55;
+// $bankLabelFraction = 0.58;
 
-$headeCellWidth = 55;
-$bankLabelFraction = 0.58;
+// $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
+// $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountNumberLabel, $hideBorder, 0);
+// $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+// $pdf->Cell($headeCellWidth,  $lineHeight, $accountNumber, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountNumberLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $accountNumber, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
+// $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
+// $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $bankNameLabel, $hideBorder, 0);
+// $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+// $pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
+// $pdf->SetFont('Arial', 'B', 18);
+// // $pdf->SetTextColor(0, 204, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
+// $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $bankNameLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
-$pdf->SetFont('Arial', 'B', 18);
-// $pdf->SetTextColor(0, 204, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
-$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-
-$pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Due"], $hideBorder, 1);
-$pdf->SetTextColor(0, 0, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Due"], $hideBorder, 1);
+// $pdf->SetTextColor(0, 0, 0);
 
 
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountHolderLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $accountHolder, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
+// $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
+// $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountHolderLabel, $hideBorder, 0);
+// $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+// $pdf->Cell($headeCellWidth,  $lineHeight, $accountHolder, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
 
 
 
-$pdf->SetFont('Arial', 'I', 10);
-$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-$pdf->Cell($headeCellWidth,  $lineHeight,  'Amount Paid: ' . $currency . $order["Paid"], $hideBorder, 1);
-$pdf->SetTextColor(0, 0, 0);
+// $pdf->SetFont('Arial', 'I', 10);
+// $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
+// $pdf->Cell($headeCellWidth,  $lineHeight,  'Amount Paid: ' . $currency . $order["Paid"], $hideBorder, 1);
+// $pdf->SetTextColor(0, 0, 0);
 
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $branchCodeLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $branchCode, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
+// $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
+// $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $branchCodeLabel, $hideBorder, 0);
+// $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+// $pdf->Cell($headeCellWidth,  $lineHeight, $branchCode, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $referenceLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $PaymentReference, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
+// $pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
+// $pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $referenceLabel, $hideBorder, 0);
+// $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+// $pdf->Cell($headeCellWidth,  $lineHeight, $PaymentReference, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
+// $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
 
 
