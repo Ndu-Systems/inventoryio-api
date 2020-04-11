@@ -2,6 +2,7 @@
 include_once 'Partner.php';
 include_once 'Order_products.php';
 include_once 'Company.php';
+include_once 'Order_products.php';
 // include_once 'Config.php';
 
 
@@ -188,6 +189,7 @@ class Orders
         $stmt->execute(array($CompanyId));
         $ordersWithCustomers = array();
         $partner = new Partner($this->conn);
+        $product = new Order_products($this->conn);
         $order_charges = new Config($this->conn);
 
 
@@ -195,12 +197,14 @@ class Orders
             $orders =  $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($orders as $order) {
 
+                $products = $product->getBOrderIdId($order["OrdersId"]);
                 $customer = $partner->getById($order["ParntersId"]);
                 $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
 
                 $order["Customer"] = $customer;
                 $order["CardClass"] = ['card'];
                 $order["Charges"] = $charges;
+                $order["Products"] = $products;
                 array_push($ordersWithCustomers, $order);
             }
         }
