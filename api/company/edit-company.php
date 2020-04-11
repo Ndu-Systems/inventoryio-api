@@ -13,6 +13,8 @@ $Shop = $data->Shop;
 $Handler = $data->Handler;
 $Website = $data->Website;
 $TelephoneNumber = $data->TelephoneNumber; 
+$Prefix = $data->Prefix; 
+$ParentId = $data->ParentId; 
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
 
@@ -31,6 +33,8 @@ $result = $company->updateCompany(
     $Handler,
     $Website,
     $TelephoneNumber,
+    $Prefix,
+    $ParentId,
     $ModifyUserId,
     $StatusId
 );

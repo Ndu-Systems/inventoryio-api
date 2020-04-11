@@ -71,6 +71,8 @@ class Company
         $Handler,
         $Website,
         $TelephoneNumber,
+        $Prefix,
+        $ParentId,
         $ModifyUserId,
         $StatusId
     ) {
@@ -83,6 +85,8 @@ class Company
         Handler = ?, 
         Website =?, 
         TelephoneNumber =?,       
+        Prefix =?,       
+        ParentId =?,       
         ModifyDate = NOW(),
         ModifyUserId = ?, 
         StatusId =? 
@@ -99,6 +103,8 @@ class Company
                 $Handler,
                 $Website,
                 $TelephoneNumber,
+                $Prefix,
+                $ParentId,
                 $ModifyUserId,
                 $StatusId,
                 $CompanyId

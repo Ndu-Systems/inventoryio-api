@@ -31,6 +31,7 @@ class Orders
     ) {
 
         $OrdersId = getUuid($this->conn);
+        $OrderId = $this->getLastOrderId($CompanyId) + 1;
         $Total = number_format((float) $Total, 2, '.', '');
         $Paid = number_format((float) $Paid, 2, '.', '');
         $Due = number_format((float) $Due, 2, '.', '');
@@ -40,6 +41,7 @@ class Orders
         $query = "
         INSERT INTO orders(
             OrdersId,
+            OrderId,
             CompanyId,
             ParntersId,
             OrderType,
@@ -52,13 +54,14 @@ class Orders
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $OrdersId,
+                $OrderId,
                 $CompanyId,
                 $ParntersId,
                 $OrderType,
@@ -148,6 +151,21 @@ class Orders
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
         return null;
+    }
+
+    public function getLastOrderId($CompanyId)
+    {
+        $query = "SELECT OrderId FROM orders WHERE CompanyId = ?
+                 ORDER BY CreateDate DESC LIMIT 1";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId));
+
+        if ($stmt->rowCount()) {
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $item["OrderId"];
+        }
+        return 0;
     }
 
     public function getCampanyById($CompanyId)
