@@ -76,9 +76,10 @@ $order = getDetailedSingleCampanyById($OrdersId, $db);
 $company = $order["Company"];
 $charges = $order["Charges"];
 $creditnotes = $order["Creditnotes"];
-$prefix = 'INV';
+$prefix = 'CN';
+$prefixInvoice = 'INV';
 $heading = 'Credit Note';
-$invoiceNo =  $prefix . $order["OrderId"];
+$invoiceNo =  $prefixInvoice . $order["OrderId"];
 $companyName = $company["Name"];
 $currency = 'R ';
 
@@ -199,7 +200,10 @@ class PDF extends FPDF
 $pdf = new PDF('p', 'mm', 'A4');
 $pdf->AliasNbPages('{nb}');
 $pdf->AddPage();
-$pdf->SetTitle('Credit Note');
+if (!$clientName) {
+    $clientName = 'Guest';
+}
+$pdf->SetTitle($invoiceNo . ' ' . $clientName . ' |  Credit Note');
 if (isset($logoUrl)) {
     $pdf->Image($logoUrl, 10, 25, 25);
 }
@@ -245,7 +249,7 @@ $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL2, $hideBorder, 1);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize,  $rowHeigth, 'Cridit Note No:', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell($firstColSize * 2,  $rowHeigth, 'CN' . $creditnotes["CreditNoteNo"], $hideBorder, 0);
+$pdf->Cell($firstColSize * 2,  $rowHeigth, $prefix . $creditnotes["CreditNoteNo"], $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL3, $hideBorder, 1);
 
@@ -324,7 +328,7 @@ if ($charges) {
 $pdf->Cell(191.111,  4, '', $hideBorder, 1, null, true);
 
 if ($creditnotes["Notes"]) {
-    $pdf->SetFont('Arial', 'B', $fontSizeMed); 
+    $pdf->SetFont('Arial', 'B', $fontSizeMed);
     $pdf->Cell(191.111,  7,  'Notes', $hideBorder, 1, null, true);
     $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
     $pdf->Cell(191.111,  10,  $creditnotes["Notes"], $hideBorder, 1, null, true);
@@ -394,5 +398,5 @@ if ($creditnotes["Notes"]) {
 
 
 
-
-$pdf->Output('', $PaymentReference . '.pdf', false);
+$docNote = $invoiceNo . ' ' . $clientName . ' Credit Note';
+$pdf->Output('', $docNote . '.pdf', false);

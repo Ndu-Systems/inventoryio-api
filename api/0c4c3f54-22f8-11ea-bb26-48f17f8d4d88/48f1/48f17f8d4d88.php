@@ -191,7 +191,10 @@ class PDF extends FPDF
 
 $pdf = new PDF('p', 'mm', 'A4');
 $pdf->AliasNbPages('{nb}');
-$pdf->SetTitle('Customer Invoice');
+if (!$clientName) {
+    $clientName = 'Guest';
+}
+$pdf->SetTitle($prefix . $order["OrderId"] . ' ' . $clientName . ' Invoice');
 
 $pdf->AddPage();
 if (isset($logoUrl)) {
@@ -377,6 +380,6 @@ $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
 $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
 
+$docName = $prefix . $order["OrderId"] . ' ' . $clientName . ' Invoice';
 
-
-$pdf->Output('', $PaymentReference . '.pdf', false);
+$pdf->Output('', $docName . '.pdf', false);
