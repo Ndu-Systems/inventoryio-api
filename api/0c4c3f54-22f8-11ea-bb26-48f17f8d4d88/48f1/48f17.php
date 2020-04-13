@@ -1,8 +1,9 @@
 <?php
 require('../../../config/dbInvoice.php');
 require('../../../models/Partner.php');
-require('../../../models/Quotation_products.php');
+require('../../../models/Order_products.php');
 require('../../../models/Company.php');
+// require('../../../models/Config.php');
 require('inc/fpdf.php');
 // connect to db
 //connect to db
@@ -11,29 +12,54 @@ $db = $database->connect();
 
 function getDetailedSingleCampanyById($OrdersId, $db)
 {
-    $query = "SELECT * FROM quotation WHERE QuotationId =?";
+    $query = "SELECT * FROM orders WHERE OrdersId =?";
 
     $stmt = $db->prepare($query);
     $stmt->execute(array($OrdersId));
     $ordersWithCustomers = null;
     $partner = new Partner($db);
-    $quotation_products = new Quotation_products($db);
+    $order_products = new Order_products($db);
     $company = new Company($db);
+    $order_charges = new Config($db);
+
 
 
     if ($stmt->rowCount()) {
         $order =  $stmt->fetch(PDO::FETCH_ASSOC);
         $customer = $partner->getById($order["ParntersId"]);
-        $products = $quotation_products->getBQuotationId(
+        $products = $order_products->getBOrderIdId(
             $OrdersId
         );
+        $charges = $order_charges->getCampanyByIdAndType($OrdersId, 'shippingFee');
+
         $order["Customer"] = $customer;
         $order["Products"] = $products;
         $order["Company"] = $company->getById($order["CompanyId"]);
         $order["CardClass"] = ['card'];
+        $order["Charges"] = $charges;
+
         $ordersWithCustomers = $order;
     }
     return $ordersWithCustomers;
+}
+
+function getOptionsString($options)
+{
+    $result = '';
+    $index = 0;
+    if (!$options) {
+        return $result;
+    }
+    foreach ($options as $option) {
+        $result = $result . $option['OptionName'] . ' : ' . $option['OptionValue'];
+
+        if ($index < count($options) - 1) {
+            $result =  $result . ' , ';
+        }
+        $index = $index + 1;
+    }
+
+    return $result;
 }
 
 // values
@@ -42,19 +68,19 @@ $OrdersId = $_GET['guid'];
 
 $order = getDetailedSingleCampanyById($OrdersId, $db);
 $company = $order["Company"];
-$prefix = 'QT';
-$heading = 'Quotation';
-$invoiceNo =  $prefix . $order["QuoteId"];
+$charges = $order["Charges"];
+$prefix = 'INV';
+$heading = 'Purchase Order';
+$invoiceNo =  $prefix . $order["OrderId"];
 $companyName = $company["Name"];
 $currency = 'R ';
 
 // customer 
 $clientName = '';
-$billedToLabel = 'BILLED TO';
+$billedToLabel = 'ORDER TO';
 $customer = $order["Customer"];
 if (isset($customer['Name'])) {
     $clientName = $customer['Name'];
-   
 }
 $dateIssued = date('d M Y', strtotime($order["CreateDate"]));
 
@@ -88,21 +114,7 @@ $accountHolderLabel =  null;
 $referenceLabel =  null;
 $PaymentReference = 'invoice';
 
-if (isset($bankDetials)) {
-    $bankName = $bankDetials[0]["Value"];
-    $accountNumber = $bankDetials[1]["Value"];
-    $branchCode = $bankDetials[2]["Value"];
-    $accountHolder = $bankDetials[3]["Value"];
-    $PaymentReference = $clientName . $invoiceNo;
 
-
-    $bankingHeadingLabel = "BANK INFO";
-    $accountNumberLabel = "Bank Name :";
-    $bankNameLabel = "Account No :";
-    $branchCodeLabel = "Branch Code :";
-    $accountHolderLabel = "Account Holder :";
-    $referenceLabel = "Reference :";
-}
 // colors  details
 $bankColors = $company["Colors"];
 $bgColors = "189,195,199";
@@ -137,9 +149,9 @@ if (isset($order["ExpectedDate"])) {
 
 
 $hideBorder = 0;
-$fontSizeSmall = 10;
-$fontSizeMed = 12;
-$fontSizeLarge = 14;
+$fontSizeSmall = 9;
+$fontSizeMed = 10;
+$fontSizeLarge = 12;
 
 class PDF extends FPDF
 {
@@ -148,35 +160,34 @@ class PDF extends FPDF
     }
     function Footer()
     {
-        $this->Image('img/footer.png',0,275,210);
+        $this->Image('img/footer.png', 0, 275, 210);
         // $this->Image('img/Path 6.png',0,250,210);
-        $footerY= 5;
+        $footerY = 5;
         $this->SetY(-18);
         $this->SetFont('Arial', '', 8);
         $this->Cell(120, $footerY, 'Thank you for shoppinmg with us', 0, 0);
-        $this->Cell(70, $footerY, 'This invoice created using INVENTORYIO', 0, 1);
+        $this->Cell(70, $footerY, 'This Purchase Order created using INVENTORYIO', 0, 1);
         $this->Cell(120, $footerY, 'Please call again', 0, 0);
         $this->Cell(70, $footerY, 'To create yours vistit:   https://inventoryio.co.za', 0, 1);
-        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-
+        $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 }
 
 
 $pdf = new PDF('p', 'mm', 'A4');
 $pdf->AliasNbPages('{nb}');
-$pdf->AddPage();
-if(! $clientName){
-    $clientName = 'Guest';
+if (!$clientName) {
+    $clientName = 'Guest supplier';
 }
-$pdf->SetTitle( $invoiceNo.' '.$clientName.' Quotation');
+$pdf->SetTitle($prefix . $order["OrderId"] . ' ' . $clientName . '  Purchase Order ');
 
+$pdf->AddPage();
 if (isset($logoUrl)) {
     $pdf->Image($logoUrl, 10, 25, 25);
 }
 $pdf->Ln(20);
 $pdf->SetFont('Arial', 'B', 30);
-$pdf->Cell(60, 10, null, $hideBorder, 0);
+$pdf->Cell(50, 10, null, $hideBorder, 0);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(100, 10, $heading, $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
@@ -185,8 +196,8 @@ $pdf->SetTextColor(0, 0, 0);
 // add client details and company
 $pdf->Ln(15);
 $pdf->SetFont('Arial', null, $fontSizeLarge / 2);
-$pdf->Cell(100, 5, 'SADA', $hideBorder, 0);
-$pdf->Cell(85, 5, 'BILLED BY', $hideBorder, 1);
+$pdf->Cell(100, 5, $billedToLabel, $hideBorder, 0);
+$pdf->Cell(85, 5, 'DELIVERY ADDRESS', $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'BU', $fontSizeLarge);
 $pdf->Cell(100, 8, $clientName, $hideBorder, 0);
@@ -197,7 +208,7 @@ $firstColSize = 30;
 $lastColSize = 90;
 $rowHeigth = 5;
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($firstColSize, $rowHeigth, 'Invoice No :', $hideBorder, 0);
+$pdf->Cell($firstColSize, $rowHeigth, 'Order No :', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
 $pdf->Cell($firstColSize,  $rowHeigth, $invoiceNo, $hideBorder, 0);
 $pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
@@ -241,23 +252,38 @@ $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->SetFillColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->SetTextColor($ftColorsArray[0], $ftColorsArray[1], $ftColorsArray[2]);
 
-$pdf->Cell($headeCellWidth * 1.5,  10, 'DESCRIPTION', $hideBorder, 0, null, true);
+$pdf->Cell($headeCellWidth * 2.5,  10, 'DESCRIPTION', $hideBorder, 0, null, true);
 $pdf->Cell($headeCellWidth / 1.5,  10, 'UNIT PRICE', $hideBorder, 0, null, true);
-$pdf->Cell($headeCellWidth / 1.5,  10, 'QUANTITY', $hideBorder, 0, null, true);
-$pdf->Cell($headeCellWidth,  10, 'TOTAL', $hideBorder, 1, null, true);
+$pdf->Cell($headeCellWidth / 2.5,  10, 'QTY', $hideBorder, 0, null, true);
+$pdf->Cell($headeCellWidth / 2,  10, 'TOTAL', $hideBorder, 1, null, true);
 $pdf->SetTextColor(0, 0, 0);
 
-
+$pdf->SetFillColor(236, 240, 241);
+$pdf->Cell(191.111,  4, '', $hideBorder, 1, null, true);
 // add list of products
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
 $rowCount = 1;
+$dataCellHeigt = 5;
+
 foreach ($order["Products"] as $product) {
     $pdf->SetFillColor(236, 240, 241);
+    $pdf->SetFont('Arial', null, $fontSizeMed); // value small
 
-    $pdf->Cell($headeCellWidth * 1.5,  10,  $product["ProductName"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth / 1.5,  10, $currency . $product["UnitPrice"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth / 1.5,  10,  $product["Quantity"], $hideBorder, 0, null, true);
-    $pdf->Cell($headeCellWidth,  10,  $currency . $product["subTotal"], $hideBorder, 1, null, true);
+
+    $pdf->Cell($headeCellWidth * 2.5, $dataCellHeigt,  $product["ProductName"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 1.5,  $dataCellHeigt, $currency . $product["UnitPrice"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2.5,  $dataCellHeigt,  $product["Quantity"], $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2,  $dataCellHeigt,  $currency . $product["subTotal"], $hideBorder, 1, null, true);
+
+
+    $pdf->SetFont('Arial', null, $fontSizeSmall); // value small
+    $pdf->Cell($headeCellWidth * 2.5, 5, getOptionsString($product["Options"]), $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 1.5,  5, '', $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2.5,  5, '', $hideBorder, 0, null, true);
+    $pdf->Cell($headeCellWidth / 2,  5, '', $hideBorder, 1, null, true);
+
+    $pdf->Cell(191.111,  4, '', $hideBorder, 1, null, true);
+
     $rowCount = $rowCount + 1;
 }
 // total 
@@ -265,65 +291,17 @@ $pdf->SetFont('Arial', 'B', $fontSizeMed * 1.5); // heading small
 $pdf->Ln(10);
 $pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->Cell(107, 10,    'TOTAL: ' . $currency . $order["Total"], $hideBorder, 1, 'L');
-$pdf->SetTextColor(0, 0, 0);
-
-
-// $pdf->Image('img/footer.png', 0, 210, 210);
-
-// add details headers
-
-$headeCellWidth = 62;
-$lineHeight = 5;
-$pdf->Ln(10);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
-$pdf->Cell($headeCellWidth * 1.40,  10, $bankingHeadingLabel, $hideBorder, 0);
-$pdf->Cell($headeCellWidth * 0.88,  10, $dueByLabel, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  10, 'TOTAL DUE', $hideBorder, 1);
-
-$headeCellWidth = 55;
-$bankLabelFraction = 0.58;
-
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountNumberLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $accountNumber, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
-
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $bankNameLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $bankName, $hideBorder, 0);
-$pdf->SetFont('Arial', 'B', 18);
-// $pdf->SetTextColor(0, 204, 0);
-$pdf->SetTextColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
-$pdf->Cell($headeCellWidth,  $lineHeight, $dueDate, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, $currency . $order["Total"], $hideBorder, 1);
-$pdf->SetTextColor(0, 0, 0);
-
-
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $accountHolderLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $accountHolder, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
-
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $branchCodeLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $branchCode, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
-
-$pdf->SetFont('Arial', 'B', $fontSizeSmall); // heading small
-$pdf->Cell($headeCellWidth * $bankLabelFraction,  $lineHeight, $referenceLabel, $hideBorder, 0);
-$pdf->SetFont('Arial', null, $fontSizeSmall); // value small
-$pdf->Cell($headeCellWidth,  $lineHeight, $PaymentReference, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 0);
-$pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
+if ($charges) {
+    foreach ($charges as $charge) {
+        $pdf->Cell(107, 10, $charge["Label"], $hideBorder, 1, 'L');
+        $pdf->SetTextColor(0, 0, 0);
+    }
+}
 
 
 
-$docName =$invoiceNo.' '.$clientName.' Quotation';
-$pdf->Output('',$docName.'.pdf', false);
+
+$docName = $prefix . $order["OrderId"] . ' ' . $clientName . '  Purchase Order';
+
+$pdf->Output('', $docName . '.pdf', false);
