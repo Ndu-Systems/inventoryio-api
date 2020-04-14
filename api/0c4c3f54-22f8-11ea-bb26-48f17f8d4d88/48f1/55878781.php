@@ -53,8 +53,7 @@ $clientName = '';
 $billedToLabel = 'BILLED TO';
 $customer = $order["Customer"];
 if (isset($customer['Name'])) {
-    $clientName = $customer['Name'];
-   
+    $clientName = $customer['Name'] . ' ' . $customer['Surname'];
 }
 $dateIssued = date('d M Y', strtotime($order["CreateDate"]));
 
@@ -148,17 +147,16 @@ class PDF extends FPDF
     }
     function Footer()
     {
-        $this->Image('img/footer.png',0,275,210);
+        $this->Image('img/footer.png', 0, 275, 210);
         // $this->Image('img/Path 6.png',0,250,210);
-        $footerY= 5;
+        $footerY = 5;
         $this->SetY(-18);
         $this->SetFont('Arial', '', 8);
         $this->Cell(120, $footerY, 'Thank you for shoppinmg with us', 0, 0);
         $this->Cell(70, $footerY, 'This invoice created using INVENTORYIO', 0, 1);
         $this->Cell(120, $footerY, 'Please call again', 0, 0);
         $this->Cell(70, $footerY, 'To create yours vistit:   https://inventoryio.co.za', 0, 1);
-        $this->Cell(0,10,'Page '.$this->PageNo().'/{nb}',0,0,'C');
-
+        $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 }
 
@@ -166,10 +164,10 @@ class PDF extends FPDF
 $pdf = new PDF('p', 'mm', 'A4');
 $pdf->AliasNbPages('{nb}');
 $pdf->AddPage();
-if(! $clientName){
+if (!$clientName) {
     $clientName = 'Guest';
 }
-$pdf->SetTitle( $invoiceNo.' '.$clientName.' Quotation');
+$pdf->SetTitle($invoiceNo . ' ' . $clientName . ' Quotation');
 
 if (isset($logoUrl)) {
     $pdf->Image($logoUrl, 10, 25, 25);
@@ -325,5 +323,5 @@ $pdf->Cell($headeCellWidth,  $lineHeight, null, $hideBorder, 1);
 
 
 
-$docName =$invoiceNo.' '.$clientName.' Quotation';
-$pdf->Output('',$docName.'.pdf', false);
+$docName = $invoiceNo . ' ' . $clientName . ' Quotation';
+$pdf->Output('', $docName . '.pdf', false);

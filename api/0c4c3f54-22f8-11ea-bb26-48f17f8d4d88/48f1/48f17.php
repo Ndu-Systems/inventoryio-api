@@ -80,7 +80,7 @@ $clientName = '';
 $billedToLabel = 'ORDER TO';
 $customer = $order["Customer"];
 if (isset($customer['Name'])) {
-    $clientName = $customer['Name'];
+    $clientName = $customer['Name']. ' '. $customer['Surname'];
 }
 $dateIssued = date('d M Y', strtotime($order["CreateDate"]));
 
@@ -253,7 +253,7 @@ $pdf->SetFillColor($bgColorsArray[0], $bgColorsArray[1], $bgColorsArray[2]);
 $pdf->SetTextColor($ftColorsArray[0], $ftColorsArray[1], $ftColorsArray[2]);
 
 $pdf->Cell($headeCellWidth * 2.5,  10, 'DESCRIPTION', $hideBorder, 0, null, true);
-$pdf->Cell($headeCellWidth / 1.5,  10, 'UNIT PRICE', $hideBorder, 0, null, true);
+$pdf->Cell($headeCellWidth / 1.5,  10, 'UNIT COST', $hideBorder, 0, null, true);
 $pdf->Cell($headeCellWidth / 2.5,  10, 'QTY', $hideBorder, 0, null, true);
 $pdf->Cell($headeCellWidth / 2,  10, 'TOTAL', $hideBorder, 1, null, true);
 $pdf->SetTextColor(0, 0, 0);
