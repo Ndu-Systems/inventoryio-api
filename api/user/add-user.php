@@ -1,6 +1,6 @@
 <?php
 include_once '../../config/Database.php';
-include_once '../../models/Users.php'; 
+include_once '../../models/Users.php';
 include_once '../../models/Roles.php';
 include_once '../../models/Company.php';
 include_once '../../models/Permissions.php';
@@ -10,11 +10,14 @@ $Email = $data->Email;
 $Name = $data->Name;
 $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
-$Password = $data->Password; 
-$CompanyName = $data->CompanyName; 
+$Password = $data->Password;
+$CompanyName = $data->CompanyName;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
+$Description = '';
+$Website = '';
+$TelephoneNumber = '';
 
 
 //connect to db
@@ -28,12 +31,13 @@ $role = new Roles($db);
 $permission = new Permissions($db);
 // add company
 $companyResult = $company->add(
-    $CompanyName,
-    'na',
-    'na',
+    $Name,
+    $Description,
+    $Website,
+    $TelephoneNumber,
     $CreateUserId,
     $ModifyUserId,
-    $StatusId     
+    $StatusId
 );
 
 $roleResult = $role->add(
@@ -41,7 +45,7 @@ $roleResult = $role->add(
     'Owner',
     $CreateUserId,
     $ModifyUserId,
-    $StatusId   
+    $StatusId
 );
 
 $permissionResult = $permission->add(
@@ -52,7 +56,7 @@ $permissionResult = $permission->add(
     $StatusId
 );
 
-$rolePermissionResult= $role->addRolePermission(
+$rolePermissionResult = $role->addRolePermission(
     $roleResult["RoleId"],
     $permissionResult["PermissionId"],
     $CreateUserId,
@@ -73,12 +77,7 @@ $result = $user->add(
     $roleResult["RoleId"],
     $CreateUserId,
     $ModifyUserId,
-    $StatusId     
+    $StatusId
 );
 
 echo json_encode($result);
-
- 
- 
-
-
