@@ -116,7 +116,7 @@ class Company
         }
     }
 
-    
+
 
 
 
@@ -182,7 +182,7 @@ class Company
             $images = $image->getParentIdById($CompanyId);
             $CompanyId = $result['CompanyId'];
 
-            $imagesbanner = $image->getParentIdById($CompanyId.'banner');
+            $imagesbanner = $image->getParentIdById($CompanyId . 'banner');
             $logo = $image->getParentIdById($CompanyId);
 
             $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
@@ -206,43 +206,64 @@ class Company
 
     public function getAll()
     {
-        $query = "SELECT * FROM company WHERE StatusId = ? and Shop = ?";
+        $query = "SELECT
+                c.CompanyId,
+                c.Name,
+                c.Description,
+                c.Type,
+                c.Website,
+                c.Shop,
+                c.Handler,
+                c.TelephoneNumber,
+                c.CreateDate,
+                c.CreateUserId,
+                c.ModifyDate,
+                c.ModifyUserId,
+                c.StatusId,
+                i.Url
+    FROM
+        company c
+    INNER JOIN image i ON
+        CONCAT(c.CompanyId,'banner') = i.OtherId
+         WHERE c.StatusId = ? and c.Shop = ?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array(1,1));
+        $stmt->execute(array(1, 1));
 
         if ($stmt->rowCount()) {
             $companies = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $detailedShops = Array();
+            $detailedShops = array();
             foreach ($companies as $result) {
-            $image = new Image($this->conn);
-            $config = new Config($this->conn);
-            $product = new Product($this->conn);
-            $CompanyId = $result['CompanyId'];
-            $images = $image->getParentIdById($CompanyId);
+                $image = new Image($this->conn);
+                $config = new Config($this->conn);
+                $product = new Product($this->conn);
+                $CompanyId = $result['CompanyId'];
+                $images = $image->getParentIdById($CompanyId);
 
 
-            $imagesbanner = $image->getParentIdById($CompanyId.'banner');
-            $logo = $image->getParentIdById($CompanyId);
+                $imagesbanner = $image->getParentIdById($CompanyId . 'banner');
+                $logo = $image->getParentIdById($CompanyId);
 
-            $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
-            $address = $config->getCampanyByIdAndType($CompanyId, 'address');
+                $bankings = $config->getCampanyByIdAndType($CompanyId, 'bank');
+                $address = $config->getCampanyByIdAndType($CompanyId, 'address');
 
-            $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
-            $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
-            $shipping = $config->getCampanyByIdAndType($CompanyId, 'shipping');
-            $products = $product->getDetailedProductForShops($CompanyId);
+                $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
+                $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
+                $shipping = $config->getCampanyByIdAndType($CompanyId, 'shipping');
+                $products = $product->getDetailedProductForShops($CompanyId);
 
-            $result["Images"] = $images;
-            $result["Banner"] = $imagesbanner;
-            $result["Bankings"] = $bankings;
-            $result["Address"] = $address;
-            $result["Colors"] = $colors;
-            $result["Theme"] = $theme;
-            $result["Logo"] = $logo;
-            $result["Shipping"] = $shipping;
-            $result["Products"] = $products;
-            array_push($detailedShops, $result);
+                $result["Images"] = $images;
+                $result["Banner"] = $imagesbanner;
+                $result["Bankings"] = $bankings;
+                $result["Address"] = $address;
+                $result["Colors"] = $colors;
+                $result["Theme"] = $theme;
+                $result["Logo"] = $logo;
+                $result["Shipping"] = $shipping;
+                $result["Products"] = $products;
+                if (count($products)) {
+                    array_push($detailedShops, $result);
+                }
             }
             return $detailedShops;
         }
