@@ -15,6 +15,7 @@ $Name = $data->name;
 $Surname = '';
 $PhotUrl = $data->photoUrl;
 $CellphoneNumber = '';
+$Addresss = '';
 $Password = $data->id;
 
 //connect to db
@@ -41,7 +42,7 @@ if ($result) {
     echo json_encode($result);
 } else {
     // create user
-    $CompanyName = $Name . ' Company';
+    $CompanyName ='My Company';
     $Description = '';
     $Website = '';
     $TelephoneNumber = '';
@@ -91,6 +92,7 @@ if ($result) {
         $Name,
         $Surname,
         $CellphoneNumber,
+        $Addresss,
         $Password,
         $companyResult["CompanyId"],
         $roleResult["RoleId"],

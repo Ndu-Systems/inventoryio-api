@@ -291,7 +291,7 @@ class Product
             foreach ($products as $product) {
 
                 $images = $image->getParentIdById($product["ProductId"]);
-                $product["images"] = $images;
+                $product["Images"] = $images;
                 $product["Brand"] = $brand->getById($product["BrandId"]);
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
                 $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
@@ -377,7 +377,7 @@ class Product
          //   foreach ($products as $product) {
 
                 $images = $image->getParentIdById($product["ProductId"]);
-                $product["images"] = $images;
+                $product["Images"] = $images;
                 $product["Brand"] = $brand->getById($product["BrandId"]);
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
                 $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);

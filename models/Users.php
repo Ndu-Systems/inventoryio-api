@@ -18,6 +18,7 @@ class Users
         $Name,
         $Surname,
         $CellphoneNumber,
+        $Address,
         $Password,
         $CompanyId,
         $RoleId,
@@ -37,6 +38,7 @@ class Users
             Name,
             Surname,
             CellphoneNumber,
+            Address,
             Password,
             CompanyId,
             RoleId,          
@@ -45,7 +47,7 @@ class Users
             StatusId
         )
         VALUES(
-           ?,?,?,?,?,?,?,?,?,?,?
+           ?,?,?,?,?,?,?,?,?,?,?,?
         )";
 
         try {
@@ -56,6 +58,7 @@ class Users
                 $Name,
                 $Surname,
                 $CellphoneNumber,
+                $Address,
                 $Password,
                 $CompanyId,
                 $RoleId,
@@ -101,6 +104,7 @@ class Users
         $Name,
         $Surname,
         $CellphoneNumber,
+        $Address,
         $Password,
         $RoleId,
         $CompanyId,
@@ -115,6 +119,7 @@ class Users
         Name = ?,
         Surname = ?,
         CellphoneNumber = ?,
+        Address = ?,
         Password = ?,
         RoleId = ?,
         CompanyId = ?,      
@@ -132,6 +137,7 @@ class Users
                 $Name,
                 $Surname,
                 $CellphoneNumber,
+                $Address,
                 $Password,
                 $RoleId,
                 $CompanyId,

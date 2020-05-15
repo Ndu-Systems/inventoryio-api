@@ -20,7 +20,7 @@ $database = new Database();
 $db = $database->connect();
 
 $partner = new Partner($db);
-$findpartner = $partner->getByEmail($EmailAddress);
+$findpartner = $partner->getByEmailAndCompanyId($EmailAddress, $order->CompanyId);
 if ($findpartner) {
     $order->ParntersId =  $findpartner['PartnerId'];
 } else {
@@ -46,6 +46,7 @@ $orders = new Orders($db);
 $result = $orders->add(
     $order->CompanyId,
     $order->ParntersId,
+    $order->ParntersEmail,
     $order->OrderType,
     $order->Total,
     $order->Paid,

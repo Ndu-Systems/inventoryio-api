@@ -1,4 +1,5 @@
 <?php
+include_once 'Image.php';
 
 
 class Partner
@@ -142,22 +143,21 @@ class Partner
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
-    public function getByEmail($EmailAddress)
+    public function getByEmailAndCompanyId($EmailAddress, $CompanyId)
     {
-      
+
 
         try {
-            $query = "SELECT * FROM partner WHERE EmailAddress =?";
+            $query = "SELECT * FROM partner WHERE EmailAddress =? and CompanyId =?";
 
             $stmt = $this->conn->prepare($query);
-            $stmt->execute(array($EmailAddress));
-    
+            $stmt->execute(array($EmailAddress, $CompanyId));
+
             if ($stmt->rowCount()) {
                 return $stmt->fetch(PDO::FETCH_ASSOC);
             }
             return null;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return array("ERROR", $e);
         }
     }
@@ -169,11 +169,37 @@ class Partner
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
+        $image = new Image($this->conn);
+        $parters = array();
+
 
         if ($stmt->rowCount()) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }else{
-            return Array();
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($items as $item) {
+                $images = $image->getParentIdById($item["PartnerId"]);
+                $item["Images"] = $images;
+                array_push($parters, $item);
+            }
+            return $parters;
+        } else {
+            return array();
+        }
+    }
+
+
+    public function getByPartnerId($PartnerId)
+    {
+        $query = "SELECT * FROM partner WHERE PartnerId =?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($PartnerId));
+        $image = new Image($this->conn);
+
+        if ($stmt->rowCount()) {
+            $partner = $stmt->fetch(PDO::FETCH_ASSOC);
+            $images = $image->getParentIdById($partner["PartnerId"]);
+            $partner["Images"] = $images;
+            return $partner;
         }
     }
 }

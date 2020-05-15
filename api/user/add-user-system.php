@@ -8,6 +8,7 @@ $Email = $data->Email;
 $Name = $data->Name;
 $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
+$Address = $data->Address;
 $Password = $data->Password; 
 $CompanyId = $data->CompanyId; 
 $RoleId = $data->RoleId; 
@@ -29,6 +30,7 @@ $result = $user->add(
     $Name,
     $Surname,
     $CellphoneNumber,
+    $Address,
     $Password,
     $CompanyId,
     $RoleId,

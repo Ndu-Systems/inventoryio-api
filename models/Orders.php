@@ -21,6 +21,7 @@ class Orders
     public function add(
         $CompanyId,
         $ParntersId,
+        $ParntersEmail,
         $OrderType,
         $Total,
         $Paid,
@@ -46,6 +47,7 @@ class Orders
             OrderId,
             CompanyId,
             ParntersId,
+            ParntersEmail,
             OrderType,
             Total,
             Paid,
@@ -56,7 +58,7 @@ class Orders
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
@@ -66,6 +68,7 @@ class Orders
                 $OrderId,
                 $CompanyId,
                 $ParntersId,
+                $ParntersEmail,
                 $OrderType,
                 $Total,
                 $Paid,
@@ -227,7 +230,42 @@ class Orders
             foreach ($orders as $order) {
 
                 $products = $product->getBOrderIdId($order["OrdersId"]);
-                $customer = $partner->getById($order["ParntersId"]);
+                $customer = $partner->getByPartnerId($order["ParntersId"]);
+                $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
+                $creditnotes = $creditnote->getByOrderId($order["OrdersId"]);
+
+
+                $order["Customer"] = $customer;
+                $order["CardClass"] = ['card'];
+                $order["Charges"] = $charges;
+                $order["Products"] = $products;
+                $order["Creditnotes"] = $creditnotes;
+                array_push($ordersWithCustomers, $order);
+            }
+        }
+        return $ordersWithCustomers;
+    }
+
+    public function getDetailedCustomerEmail($ParntersEmail)
+    {
+        $query = "SELECT * FROM orders WHERE ParntersEmail =? order by CreateDate desc";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($ParntersEmail));
+        $ordersWithCustomers = array();
+        $partner = new Partner($this->conn);
+        $product = new Order_products($this->conn);
+        $order_charges = new Config($this->conn);
+        $creditnote = new Creditnote($this->conn);
+
+
+
+        if ($stmt->rowCount()) {
+            $orders =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($orders as $order) {
+
+                $products = $product->getBOrderIdId($order["OrdersId"]);
+                $customer = $partner->getByPartnerId($order["ParntersId"]);
                 $charges = $order_charges->getCampanyByIdAndType($order["OrdersId"], 'shippingFee');
                 $creditnotes = $creditnote->getByOrderId($order["OrdersId"]);
 
@@ -259,7 +297,7 @@ class Orders
 
         if ($stmt->rowCount()) {
             $order =  $stmt->fetch(PDO::FETCH_ASSOC);
-            $customer = $partner->getById($order["ParntersId"]);
+            $customer = $partner->getByPartnerId($order["ParntersId"]);
             $products = $order_products->getBOrderIdId(
                 $OrdersId
             );

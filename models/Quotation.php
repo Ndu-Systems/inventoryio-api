@@ -1,6 +1,7 @@
 <?php
 include_once 'Partner.php';
 include_once 'Order_products.php';
+include_once 'Quotation_products.php';
 include_once 'Company.php';
 
 
@@ -166,14 +167,20 @@ class Quotation
         $stmt->execute(array($CompanyId));
         $quotationWithCustomers = array();
         $partner = new Partner($this->conn);
+        $quotation_products = new Quotation_products($this->conn);
+
 
         if ($stmt->rowCount()) {
             $quotation =  $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($quotation as $order) {
 
-                $customer = $partner->getById($order["ParntersId"]);
+                $customer = $partner->getByPartnerId($order["ParntersId"]);
+                $products = $quotation_products->getBQuotationId($order["QuotationId"]);
+
                 $order["Customer"] = $customer;
                 $order["CardClass"] = ['card'];
+                $order["Products"] = $products;
+
                 array_push($quotationWithCustomers, $order);
             }
         }

@@ -9,6 +9,7 @@ $Email = $data->Email;
 $Name = $data->Name;
 $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
+$Address = $data->Address;
 $Password = $data->Password; 
 $RoleId = $data->RoleId; 
 $CompanyId = $data->CompanyId; 
@@ -28,16 +29,15 @@ $result = $user->updateUser(
     $Name,
     $Surname,
     $CellphoneNumber,
+    $Address,
     $Password,
     $RoleId,
-    $CompanyId,  
+    $CompanyId,
     $ModifyUserId,
     $StatusId,
     $UserId
 );
-
-    
-    echo json_encode($result);
+ echo json_encode($result);
 
  
  

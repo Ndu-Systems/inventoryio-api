@@ -12,6 +12,7 @@ $Email = $data->Email;
 $Name = $data->Name;
 $Surname = $data->Surname;
 $CellphoneNumber = $data->CellphoneNumber;
+$Address = $data->Address;
 $Password = $data->Password;
 $CompanyName = $data->CompanyName;
 $CreateUserId = $data->CreateUserId;
@@ -76,6 +77,7 @@ $result = $user->add(
     $Name,
     $Surname,
     $CellphoneNumber,
+    $Address,
     $Password,
     $companyResult["CompanyId"],
     $roleResult["RoleId"],

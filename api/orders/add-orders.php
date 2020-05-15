@@ -21,6 +21,7 @@ $orders = new Orders($db);
 $result = $orders->add(
     $order->CompanyId,
     $order->ParntersId,
+    $order->ParntersEmail,
     $order->OrderType,
     $order->Total,
     $order->Paid,
