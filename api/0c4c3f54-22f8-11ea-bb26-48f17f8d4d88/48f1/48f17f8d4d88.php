@@ -165,9 +165,9 @@ if (isset($order["ExpectedDate"])) {
 
 
 
-$hideBorder = 1;
-$fontSizeSmall = 9;
-$fontSizeMed = 10;
+$hideBorder = 0;
+$fontSizeSmall = 8;
+$fontSizeMed = 9;
 $fontSizeLarge = 12;
 
 class PDF extends FPDF
@@ -210,20 +210,21 @@ $pdf->Cell(100, 10, $heading, $hideBorder, 1);
 $pdf->SetTextColor(0, 0, 0);
 
 // row top
+$addressSpace = 80;
 $rowTopSpaceMiddle = 20;
 $firstColSize = 30;
-$secondColSize = 80;
+$secondColSize = 60;
 $lastColSize = 50;
 $rowHeigth = 5;
 
 // add client details and company
 $pdf->Ln(15);
 $pdf->SetFont('Arial', null, $fontSizeLarge / 2);
-$pdf->Cell(130, 5, $billedToLabel, $hideBorder, 0);
+$pdf->Cell(110, 5, $billedToLabel, $hideBorder, 0);
 $pdf->Cell(85, 5, 'BILLED BY', $hideBorder, 1);
 
 $pdf->SetFont('Arial', 'BU', $fontSizeLarge);
-$pdf->Cell(130, 8, $clientName, $hideBorder, 0);
+$pdf->Cell(110, 8, $clientName, $hideBorder, 0);
 $pdf->Cell(50, 8, $companyName, $hideBorder, 1);
 
 
@@ -244,7 +245,8 @@ $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL2, $hideBorder, 1);
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize,  $rowHeigth, 'Email :', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell(100,  $rowHeigth, $customer["EmailAddress"], $hideBorder, 0);
+$pdf->Cell($secondColSize,  $rowHeigth, $customer["EmailAddress"], $hideBorder, 0);
+$pdf->Cell($rowTopSpaceMiddle,  $rowHeigth, null, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyAddressL3, $hideBorder, 1);
 
 // row  top
@@ -269,14 +271,14 @@ if (count($clientAdressLines) <= 4) {
 if (count($clientAdressLines) > 4) {
     for ($i = 0; $i < count($clientAdressLines); $i++) {
         if ($i <= 4) {
-            $clientAdressLine1 = $clientAdressLine1 . ' ' . $clientAdressLines[$i];
+            $clientAdressLine1 = $clientAdressLine1 . '' . $clientAdressLines[$i];
         }
 
         if ($i > 4 && $i <= 8) {
-            $clientAdressLine2 = $clientAdressLine2 . ' ' . $clientAdressLines[$i];
+            $clientAdressLine2 = $clientAdressLine2 . '' . $clientAdressLines[$i];
         }
         if ($i > 8) {
-            $clientAdressLine3 = $clientAdressLine3 . ' ' . $clientAdressLines[$i];
+            $clientAdressLine3 = $clientAdressLine3 . '' . $clientAdressLines[$i];
         }
     }
 }
@@ -285,17 +287,17 @@ if (count($clientAdressLines) > 4) {
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 $pdf->Cell($firstColSize,  $rowHeigth, 'Address : ', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell(100,  $rowHeigth, $clientAdressLine1, $hideBorder, 0);
+$pdf->Cell($addressSpace,  $rowHeigth, $clientAdressLine1, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, $companyEmail, $hideBorder, 1);
 
 $pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell(100,  $rowHeigth, $clientAdressLine2, $hideBorder, 0);
+$pdf->Cell($addressSpace,  $rowHeigth, $clientAdressLine2, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, '', $hideBorder, 1);
 
 $pdf->Cell($firstColSize,  $rowHeigth, '', $hideBorder, 0);
 $pdf->SetFont('Arial', null, $fontSizeMed); // value small
-$pdf->Cell(100,  $rowHeigth, $clientAdressLine3, $hideBorder, 0);
+$pdf->Cell($addressSpace,  $rowHeigth, $clientAdressLine3, $hideBorder, 0);
 $pdf->Cell($lastColSize,  $rowHeigth, '', $hideBorder, 1);
 
 
