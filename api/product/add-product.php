@@ -22,7 +22,7 @@ $LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
-$Images = $data->images;
+$Images = $data->Images;
 $Attributes = $data->Attributes;
 
 //connect to db
@@ -52,9 +52,9 @@ $result = $product->add(
 
 $ProductId = $result['ProductId'];
 if ($Images) {
+    $image = new Image($db);
     foreach ($Images as $url) {
-        $image = new Image($db);
-
+      
         $addImages = $image->add(
             $CompanyId,
             $ProductId,

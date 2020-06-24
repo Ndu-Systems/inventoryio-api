@@ -1,1 +1,0 @@
-ALTER TABLE `orders` ADD `ParntersEmail` VARCHAR(225) NULL DEFAULT NULL AFTER `ParntersId`;

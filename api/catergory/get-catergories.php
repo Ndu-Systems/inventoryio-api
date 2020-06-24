@@ -15,7 +15,7 @@ $db = $database->connect();
 // create user first to get UserId
 $Catergory = new Catergory($db);
 
-$result = $Catergory->getCampanyById(
+$result = $Catergory->getActiveId(
     $CompanyId
 );
  

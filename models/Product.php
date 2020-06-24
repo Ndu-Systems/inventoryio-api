@@ -280,7 +280,7 @@ class Product
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
 
-        $productsWithImages = Array();
+        $productsWithImages = array();
         $image = new Image($this->conn);
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);
@@ -296,8 +296,63 @@ class Product
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
                 $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
                 array_push($productsWithImages, $product);
+            }
+        }
+        return  $productsWithImages;
+    }
 
+    public function getDetailedProductWithImagesByCatergoryId($CatergoryId)
+    {
+        $query = "SELECT 
+        p.ProductId,
+        p.BrandId,
+        p.CatergoryId,
+        p.CompanyId,
+        p.SupplierId,
+        p.Name,
+        p.Description,
+        p.UnitPrice,
+        p.UnitCost,
+        p.Code,
+        p.SKU,
+        p.Quantity,
+        p.LowStock,
+        p.CreateDate,
+        p.CreateUserId,
+        p.ModifyDate,
+        p.ModifyUserId,
+        p.StatusId,
+        (p.UnitPrice-p.UnitCost) as Profit,
+        round((100-(p.UnitCost / p.UnitPrice)*100), 2) as Margin,
 
+        CASE 
+        WHEN p.Quantity > p.LowStock THEN 'stock good' 
+        WHEN p.Quantity <= p.LowStock THEN 'stock warn' 
+        WHEN p.Quantity <= 0  THEN 'stock error' 
+        END AS Class
+        FROM product p
+        WHERE p.CatergoryId = ? 
+        ";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CatergoryId));
+
+        $productsWithImages = array();
+        $image = new Image($this->conn);
+        $brand = new Brand($this->conn);
+        $catergory = new Catergory($this->conn);
+        $attribute = new Attribute($this->conn);
+
+        if ($stmt->rowCount()) {
+            $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($products as $product) {
+
+                $images = $image->getParentIdById($product["ProductId"]);
+                $product["Images"] = $images;
+                $product["Brand"] = $brand->getById($product["BrandId"]);
+                $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+                $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
+                array_push($productsWithImages, $product);
             }
         }
         return  $productsWithImages;
@@ -313,7 +368,7 @@ class Product
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($CompanyId));
 
-        $productsWithImages = Array();
+        $productsWithImages = array();
         $image = new Image($this->conn);
         if ($stmt->rowCount()) {
             $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -321,14 +376,14 @@ class Product
 
                 $images = $image->getParentIdById($product["ProductId"]);
                 $product["Images"] = $images;
-                array_push($productsWithImages, $product);
-
-
+                if ($images) {
+                    array_push($productsWithImages, $product);
+                }
             }
         }
         return  $productsWithImages;
     }
-    
+
     public function getSigleProductWithImages($ProductId)
     {
         $query = "SELECT 
@@ -365,7 +420,7 @@ class Product
 
         $stmt = $this->conn->prepare($query);
         $stmt->execute(array($ProductId));
-        
+
         $image = new Image($this->conn);
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);
@@ -374,18 +429,18 @@ class Product
 
         if ($stmt->rowCount()) {
             $product =  $stmt->fetch(PDO::FETCH_ASSOC);
-         //   foreach ($products as $product) {
+            //   foreach ($products as $product) {
 
-                $images = $image->getParentIdById($product["ProductId"]);
-                $product["Images"] = $images;
-                $product["Brand"] = $brand->getById($product["BrandId"]);
-                $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
-                $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
+            $images = $image->getParentIdById($product["ProductId"]);
+            $product["Images"] = $images;
+            $product["Brand"] = $brand->getById($product["BrandId"]);
+            $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+            $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
 
-                //array_push($productsWithImages, $product);
+            //array_push($productsWithImages, $product);
 
 
-          //  }
+            //  }
         }
         return  $product;
     }

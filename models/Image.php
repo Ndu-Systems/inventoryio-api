@@ -11,7 +11,6 @@ class Image
         $this->conn = $db;
     }
 
-    //Add user
     public function add(
         $CompanyId,
         $OtherId,

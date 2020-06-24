@@ -2,6 +2,7 @@
 include_once 'Image.php';
 include_once 'Config.php';
 include_once 'Product.php';
+include_once 'Catergory.php';
 
 
 class Company
@@ -219,12 +220,9 @@ class Company
                 c.CreateUserId,
                 c.ModifyDate,
                 c.ModifyUserId,
-                c.StatusId,
-                i.Url
+                c.StatusId
     FROM
         company c
-    INNER JOIN image i ON
-        CONCAT(c.CompanyId,'banner') = i.OtherId
          WHERE c.StatusId = ? and c.Shop = ?";
 
         $stmt = $this->conn->prepare($query);
@@ -237,8 +235,10 @@ class Company
                 $image = new Image($this->conn);
                 $config = new Config($this->conn);
                 $product = new Product($this->conn);
+                $catergory = new Catergory($this->conn);
                 $CompanyId = $result['CompanyId'];
                 $images = $image->getParentIdById($CompanyId);
+                $catergories = $catergory->getActiveId($CompanyId);
 
 
                 $imagesbanner = $image->getParentIdById($CompanyId . 'banner');
@@ -261,6 +261,7 @@ class Company
                 $result["Logo"] = $logo;
                 $result["Shipping"] = $shipping;
                 $result["Products"] = $products;
+                $result["Catergories"] = $catergories;
                 if (count($products)) {
                     array_push($detailedShops, $result);
                 }

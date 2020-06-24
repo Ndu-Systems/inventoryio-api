@@ -1,4 +1,6 @@
 <?php
+include_once 'Image.php';
+include_once 'Product.php';
 
 
 class Catergory
@@ -81,7 +83,7 @@ class Catergory
             $stmt = $this->conn->prepare($query);
             if ($stmt->execute(array(
                 $CompanyId,
-                $Name,               
+                $Name,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
@@ -115,6 +117,28 @@ class Catergory
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
+    public function getActiveId($CompanyId)
+    {
+        $query = "SELECT * FROM catergory WHERE CompanyId =? and StatusId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId, 1));
+        $image = new Image($this->conn);
+        $product = new Product($this->conn);
+        $catergories = array();
+        if ($stmt->rowCount()) {
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($items as $item) {
+                $images = $image->getParentIdById($item["CatergoryId"]);
+                $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
+                $item["Images"] = $images;
+                $item["Products"] = $products;
+                array_push($catergories, $item);
+            }
+            return $catergories;
         }
     }
 

@@ -152,10 +152,10 @@ class PDF extends FPDF
         $footerY = 5;
         $this->SetY(-18);
         $this->SetFont('Arial', '', 8);
-        $this->Cell(120, $footerY, 'Thank you for shoppinmg with us', 0, 0);
-        $this->Cell(70, $footerY, 'This invoice created using INVENTORYIO', 0, 1);
-        $this->Cell(120, $footerY, 'Please call again', 0, 0);
-        $this->Cell(70, $footerY, 'To create yours vistit:   https://inventoryio.co.za', 0, 1);
+        $this->Cell(120, $footerY, 'Thank you for shopping with us', 0, 0);
+        // $this->Cell(70, $footerY, 'This invoice created using INVENTORYIO', 0, 1);
+        // $this->Cell(120, $footerY, 'Please call again', 0, 0);
+        // $this->Cell(70, $footerY, 'To create yours vistit:   https://inventoryio.co.za', 0, 1);
         $this->Cell(0, 10, 'Page ' . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 }
