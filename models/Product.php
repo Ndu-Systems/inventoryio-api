@@ -3,6 +3,7 @@ include_once 'Image.php';
 include_once 'Brand.php';
 include_once 'Catergory.php';
 include_once 'Attribute.php';
+include_once 'Productoptions.php';
 
 class Product
 {
@@ -285,6 +286,7 @@ class Product
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);
         $attribute = new Attribute($this->conn);
+        $productoptions = new Productoptions($this->conn);
 
         if ($stmt->rowCount()) {
             $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -295,6 +297,7 @@ class Product
                 $product["Brand"] = $brand->getById($product["BrandId"]);
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
                 $product["Attributes"] = $attribute->getByProductId($product["ProductId"]);
+                $product["Productoptions"] = $productoptions->getByProductId($product["ProductId"]);
                 array_push($productsWithImages, $product);
             }
         }
