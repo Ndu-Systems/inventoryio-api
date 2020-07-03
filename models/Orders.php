@@ -29,6 +29,7 @@ class Orders
         $CreateUserId,
         $ModifyUserId,
         $Status,
+        $Notes,
         $StatusId
 
     ) {
@@ -55,10 +56,11 @@ class Orders
             CreateUserId,
             ModifyUserId,
             Status,
+            Notes,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
@@ -76,6 +78,7 @@ class Orders
                 $CreateUserId,
                 $ModifyUserId,
                 $Status,
+                $Notes,
                 $StatusId
             ))) {
                 return $this->getById($OrdersId);

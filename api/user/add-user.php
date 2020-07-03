@@ -21,6 +21,8 @@ $StatusId = $data->StatusId;
 $Description = '';
 $Website = '';
 $TelephoneNumber = '';
+$UserType = '';
+
 
 
 //connect to db
@@ -34,65 +36,88 @@ $role = new Roles($db);
 $permission = new Permissions($db);
 $image = new Image($db);
 
-// add company
-$companyResult = $company->add(
-    $CompanyName,
-    $Description,
-    $Website,
-    $TelephoneNumber,
-    $CreateUserId,
-    $ModifyUserId,
-    $StatusId
-);
+if (isset($CompanyName) && $CompanyName != '') {
+    $UserType = 'Business';
+    $companyResult = $company->add(
+        $CompanyName,
+        $Description,
+        $Website,
+        $TelephoneNumber,
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    );
 
-$roleResult = $role->add(
-    $companyResult["CompanyId"],
-    'Owner',
-    $CreateUserId,
-    $ModifyUserId,
-    $StatusId
-);
+    $roleResult = $role->add(
+        $companyResult["CompanyId"],
+        'Owner',
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    );
 
-$permissionResult = $permission->add(
-    'can_configure',
-    $companyResult["CompanyId"],
-    $CreateUserId,
-    $ModifyUserId,
-    $StatusId
-);
+    $permissionResult = $permission->add(
+        'can_configure',
+        $companyResult["CompanyId"],
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    );
 
-$rolePermissionResult = $role->addRolePermission(
-    $roleResult["RoleId"],
-    $permissionResult["PermissionId"],
-    $CreateUserId,
-    $ModifyUserId,
-    $StatusId
-);
+    $rolePermissionResult = $role->addRolePermission(
+        $roleResult["RoleId"],
+        $permissionResult["PermissionId"],
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    );
 
-
-
-
-$result = $user->add(
-    $Email,
-    $Name,
-    $Surname,
-    $CellphoneNumber,
-    $Address,
-    $Password,
-    $companyResult["CompanyId"],
-    $roleResult["RoleId"],
-    $CreateUserId,
-    $ModifyUserId,
-    $StatusId
-);
+    $result = $user->add(
+        $Email,
+        $Name,
+        $UserType,
+        $Surname,
+        $CellphoneNumber,
+        $Address,
+        $Password,
+        $companyResult["CompanyId"],
+        $roleResult["RoleId"],
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    );
 
 
-$userCompany = $company->getById($result["CompanyId"] );
-$dp = $image->getParentIdByIdSigle($result["UserId"] );
-$roleResult = $role->getById($result["RoleId"], $result["CompanyId"]);
-$result["Password"] = null;
-$result["DP"] = $dp;
-$result["Company"] = $userCompany;
-$result["SystemRole"] = $roleResult["Name"];
+    $userCompany = $company->getById($result["CompanyId"]);
+    $dp = $image->getParentIdByIdSigle($result["UserId"]);
+    $roleResult = $role->getById($result["RoleId"], $result["CompanyId"]);
+    $result["Password"] = null;
+    $result["DP"] = $dp;
+    $result["Company"] = $userCompany;
+    $result["SystemRole"] = $roleResult["Name"];
 
-echo json_encode($result);
+    echo json_encode($result);
+}
+if (isset($Address) && $Address != '') {
+    $UserType = 'Customer';
+    $result = $user->add(
+        $Email,
+        $Name,
+        $UserType,
+        $Surname,
+        $CellphoneNumber,
+        $Address,
+        $Password,
+        '0',
+        '0',
+        $CreateUserId,
+        $ModifyUserId,
+        $StatusId
+    );
+    $result["Password"] = null;
+    $result["DP"] =  null;
+    $result["Company"] = null;
+    $result["SystemRole"] = null;
+
+    echo json_encode($result);
+}

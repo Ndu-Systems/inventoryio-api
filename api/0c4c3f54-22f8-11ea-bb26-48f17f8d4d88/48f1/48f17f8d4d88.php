@@ -271,14 +271,14 @@ if (count($clientAdressLines) <= 4) {
 if (count($clientAdressLines) > 4) {
     for ($i = 0; $i < count($clientAdressLines); $i++) {
         if ($i <= 4) {
-            $clientAdressLine1 = $clientAdressLine1 . '' . $clientAdressLines[$i];
+            $clientAdressLine1 = $clientAdressLine1 . ' ' . $clientAdressLines[$i];
         }
 
         if ($i > 4 && $i <= 8) {
-            $clientAdressLine2 = $clientAdressLine2 . '' . $clientAdressLines[$i];
+            $clientAdressLine2 = $clientAdressLine2 . ' ' . $clientAdressLines[$i];
         }
         if ($i > 8) {
-            $clientAdressLine3 = $clientAdressLine3 . '' . $clientAdressLines[$i];
+            $clientAdressLine3 = $clientAdressLine3 . ' ' . $clientAdressLines[$i];
         }
     }
 }
@@ -351,9 +351,14 @@ $pdf->Cell(107, 10,    'TOTAL: ' . $currency . $order["Total"], $hideBorder, 1, 
 $pdf->SetFont('Arial', 'B', $fontSizeMed); // heading small
 if ($charges) {
     foreach ($charges as $charge) {
-        $pdf->Cell(107, 10, $charge["Label"], $hideBorder, 1, 'L');
+        $pdf->Cell(107, 5, $charge["Label"], $hideBorder, 1, 'L');
         $pdf->SetTextColor(0, 0, 0);
     }
+}
+if ($order["Notes"]) {
+    $pdf->SetTextColor(255, 0, 0);
+    $pdf->Cell(107, 5, $order["Notes"], $hideBorder, 1, 'L');
+    $pdf->SetTextColor(0, 0, 0);
 }
 
 

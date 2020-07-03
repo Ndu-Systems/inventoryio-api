@@ -16,6 +16,7 @@ class Users
     public function add(
         $Email,
         $Name,
+        $UserType,
         $Surname,
         $CellphoneNumber,
         $Address,
@@ -36,6 +37,7 @@ class Users
             UserId,
             Email,
             Name,
+            UserType,
             Surname,
             CellphoneNumber,
             Address,
@@ -47,7 +49,7 @@ class Users
             StatusId
         )
         VALUES(
-           ?,?,?,?,?,?,?,?,?,?,?,?
+           ?,?,?,?,?,?,?,?,?,?,?,?,?
         )";
 
         try {
@@ -56,6 +58,7 @@ class Users
                 $UserId,
                 $Email,
                 $Name,
+                $UserType,
                 $Surname,
                 $CellphoneNumber,
                 $Address,
@@ -102,6 +105,7 @@ class Users
     public function updateUser(
         $Email,
         $Name,
+        $UserType,
         $Surname,
         $CellphoneNumber,
         $Address,
@@ -117,6 +121,7 @@ class Users
     SET
     Email = ?,
         Name = ?,
+        UserType = ?,
         Surname = ?,
         CellphoneNumber = ?,
         Address = ?,
@@ -135,6 +140,7 @@ class Users
             if ($stmt->execute(array(
                 $Email,
                 $Name,
+                $UserType,
                 $Surname,
                 $CellphoneNumber,
                 $Address,

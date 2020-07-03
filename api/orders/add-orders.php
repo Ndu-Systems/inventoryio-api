@@ -29,6 +29,7 @@ $result = $orders->add(
     $order->CreateUserId,
     $order->ModifyUserId,
     $order->Status,
+    $order->Notes,
     $order->StatusId
 );
 
