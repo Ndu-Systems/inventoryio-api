@@ -53,7 +53,7 @@ $msg = "
     </div>
 ";
 
-$to = "mrnnmthembu@gmail.com ,Freedom.Khanyile1@gmail.com";
+$to = "mrnnmthembu@gmail.com ,ndu.systems@gmail.com";
 $subject = $EmailType . ' ' . $Subject;
 $from = $Email;
 

@@ -54,7 +54,7 @@ if (isset($data)) {
 
 ';
 
-    $to = $Email . ", mrnnmthembu@gmail.com ,Freedom.Khanyile1@gmail.com";
+    $to = $Email . ", mrnnmthembu@gmail.com ,ndu.systems@gmail.com";
     $subject =  $Subject;
     $from = 'invoicing@inventoryio.co.za';
 
