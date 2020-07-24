@@ -122,15 +122,28 @@ class Productoptions
         $query = "UPDATE
         productoptions
     SET
+        ProductId = ?,
         CompanyId = ?,
-        OtherId = ?,
-        Url = ?,
+        Name1 = ?,
+        Name2 = ?,
+        Name3 = ?,
+        Name4 = ?,
+        Name5 = ?,
+        Value1 = ?,
+        Value2 = ?,
+        Value3 = ?,
+        Value4 = ?,
+        Value5 = ?,
+        ImageUrl1 = ?,
+        ImageUrl2 = ?,
+        ImageUrl3 = ?,
+        Quantity = ?,
         CreateUserId = ?,
         ModifyUserId = ?,
         StatusId = ?,
         ModifyDate = NOW()
     WHERE
-    productoptionsId = ?
+    Id = ?
          ";
 
         try {

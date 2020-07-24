@@ -180,6 +180,8 @@ class Company
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             $image = new Image($this->conn);
             $config = new Config($this->conn);
+            $catergory = new Catergory($this->conn);
+
             $images = $image->getParentIdById($CompanyId);
             $CompanyId = $result['CompanyId'];
 
@@ -192,6 +194,7 @@ class Company
             $colors = $config->getCampanyByIdAndType($CompanyId, 'logocolors');
             $theme = $config->getCampanyByIdAndType($CompanyId, 'shop');
             $shipping = $config->getCampanyByIdAndType($CompanyId, 'shipping');
+            $catergories = $catergory->getActiveId($CompanyId);
 
             $result["Images"] = $images;
             $result["Banner"] = $imagesbanner;
@@ -201,6 +204,7 @@ class Company
             $result["Theme"] = $theme;
             $result["Logo"] = $logo;
             $result["Shipping"] = $shipping;
+            $result["Catergories"] = $catergories;
             return $result;
         }
     }

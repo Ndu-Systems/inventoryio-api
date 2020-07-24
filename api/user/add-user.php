@@ -48,30 +48,6 @@ if (isset($CompanyName) && $CompanyName != '') {
         $StatusId
     );
 
-    $roleResult = $role->add(
-        $companyResult["CompanyId"],
-        'Owner',
-        $CreateUserId,
-        $ModifyUserId,
-        $StatusId
-    );
-
-    $permissionResult = $permission->add(
-        'can_configure',
-        $companyResult["CompanyId"],
-        $CreateUserId,
-        $ModifyUserId,
-        $StatusId
-    );
-
-    $rolePermissionResult = $role->addRolePermission(
-        $roleResult["RoleId"],
-        $permissionResult["PermissionId"],
-        $CreateUserId,
-        $ModifyUserId,
-        $StatusId
-    );
-
     $result = $user->add(
         $Email,
         $Name,
@@ -81,7 +57,7 @@ if (isset($CompanyName) && $CompanyName != '') {
         $Address,
         $Password,
         $companyResult["CompanyId"],
-        $roleResult["RoleId"],
+        1,
         $CreateUserId,
         $ModifyUserId,
         $StatusId

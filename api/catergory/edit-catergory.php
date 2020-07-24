@@ -10,7 +10,10 @@ $Name = $data->Name;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
-
+$ImageUrl = $data->ImageUrl;
+$Parent = $data->Parent;
+$CatergoryType = $data->CatergoryType;
+$Description = $data->Description;
 //connect to db
 $database = new Database();
 $db = $database->connect();
@@ -22,14 +25,13 @@ $result = $Catergory->updateCatergory(
     $CatergoryId,
     $CompanyId,
     $Name,
+    $ImageUrl,
+    $Parent,
+    $CatergoryType,
+    $Description,
     $CreateUserId,
     $ModifyUserId,
     $StatusId
 );
 
 echo json_encode($result);
-
- 
- 
-
-

@@ -17,6 +17,10 @@ class Catergory
     public function add(
         $CompanyId,
         $Name,
+        $ImageUrl,
+        $Parent,
+        $CatergoryType,
+        $Description,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -30,12 +34,16 @@ class Catergory
             CatergoryId,
             CompanyId,
             Name,
+            ImageUrl,
+            Parent,
+            CatergoryType,
+            Description,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?
          )
 ";
         try {
@@ -44,6 +52,10 @@ class Catergory
                 $CatergoryId,
                 $CompanyId,
                 $Name,
+                $ImageUrl,
+                $Parent,
+                $CatergoryType,
+                $Description,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -62,6 +74,10 @@ class Catergory
         $CatergoryId,
         $CompanyId,
         $Name,
+        $ImageUrl,
+        $Parent,
+        $CatergoryType,
+        $Description,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -70,7 +86,11 @@ class Catergory
         Catergory
     SET
         CompanyId = ?,
-        Name = ?,        
+        Name = ?, 
+        ImageUrl = ?, 
+        Parent = ?, 
+        CatergoryType = ?, 
+        Description = ?,       
         ModifyDate = NOW(),
         CreateUserId = ?,
         ModifyUserId = ?,
@@ -84,6 +104,10 @@ class Catergory
             if ($stmt->execute(array(
                 $CompanyId,
                 $Name,
+                $ImageUrl,
+                $Parent,
+                $CatergoryType,
+                $Description,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
@@ -107,6 +131,61 @@ class Catergory
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
     }
+
+    public function getChilndren($CatergoryId)
+    {
+        $query = "SELECT * FROM catergory WHERE Parent =? AND StatusId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CatergoryId, 1));
+
+        $product = new Product($this->conn);
+        $catergories = array();
+        if ($stmt->rowCount()) {
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($items as $item) {
+                $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
+                $item["Products"] = $products;
+                array_push($catergories, $item);
+            }
+            return $catergories;
+        }
+        return null;
+    }
+
+    public function getActiveById($CatergoryId)
+    {
+        $query = "SELECT * FROM catergory WHERE CatergoryId =? AND StatusId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CatergoryId, 1));
+
+        $product = new Product($this->conn);
+        if ($stmt->rowCount()) {
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
+            $item["Products"] = $products;
+            return $item;
+        }
+        return null;
+    }
+
+
+
+
+
+    public function getParent($CompanyId)
+    {
+        $query = "SELECT * FROM catergory WHERE CompanyId =? and CatergoryType = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId, 'Parent'));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
+
 
     public function getCampanyById($CompanyId)
     {
@@ -136,6 +215,9 @@ class Catergory
                 $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
                 $item["Images"] = $images;
                 $item["Products"] = $products;
+                if ($item["CatergoryType"] == 'parent') {
+                    $item["Children"] = $this->getChilndren($item["CatergoryId"]);
+                }
                 array_push($catergories, $item);
             }
             return $catergories;

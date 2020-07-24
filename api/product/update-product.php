@@ -1,7 +1,7 @@
 <?php
 include_once '../../config/Database.php';
 include_once '../../models/Product.php';
-include_once '../../models/Attribute.php';
+include_once '../../models/Productoptions.php';
 
 
 $data = json_decode(file_get_contents("php://input"));
@@ -23,7 +23,7 @@ $LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
-$Attributes = $data->Attributes;
+$Productoptions = $data->Productoptions;
 
 
 //connect to db
@@ -32,7 +32,7 @@ $db = $database->connect();
 
 // create user first to get UserId
 $product = new Product($db);
-
+$db_productoptions = new Productoptions($db);
 $result = $product->update(
     $ProductId,
     $BrandId,
@@ -53,68 +53,58 @@ $result = $product->update(
 );
 
 
-if ($Attributes) {
-    foreach ($Attributes as $atrr) {
-        $attribute = new Attribute($db);
+if ($Productoptions) {
+    foreach ($Productoptions as $option) {
 
-        if (strlen($atrr->AttributeId) < 20) {
-            $attribute_attribute = $attribute->add(
-                $atrr->Name,
-                $atrr->AttributeType,
-                $atrr->CompanyId,
+        if (strlen($option->Id) < 15) {
+            $attribute_attribute = $db_productoptions->add(
                 $ProductId,
-                $atrr->Shop,
-                $atrr->CreateUserId,
-                $atrr->ModifyUserId,
-                $atrr->StatusId
+                $option->CompanyId,
+                $option->Name1,
+                $option->Name2,
+                $option->Name3,
+                $option->Name4,
+                $option->Name5,
+                $option->Value1,
+                $option->Value2,
+                $option->Value3,
+                $option->Value4,
+                $option->Value5,
+                $option->ImageUrl1,
+                $option->ImageUrl2,
+                $option->ImageUrl3,
+                $option->Quantity,
+                $option->CreateUserId,
+                $option->ModifyUserId,
+                $option->StatusId
             );
         } else {
 
 
-            $attribute_attribute = $attribute->updateattribute(
-                $atrr->AttributeId,
-                $atrr->Name,
-                $atrr->AttributeType,
-                $atrr->CompanyId,
+            $attribute_attribute = $db_productoptions->updateproductoptions(
+                $option->Id,
                 $ProductId,
-                $atrr->Shop,
-                $atrr->CreateUserId,
-                $atrr->ModifyUserId,
-                $atrr->StatusId
+                $option->CompanyId,
+                $option->Name1,
+                $option->Name2,
+                $option->Name3,
+                $option->Name4,
+                $option->Name5,
+                $option->Value1,
+                $option->Value2,
+                $option->Value3,
+                $option->Value4,
+                $option->Value5,
+                $option->ImageUrl1,
+                $option->ImageUrl2,
+                $option->ImageUrl3,
+                $option->Quantity,
+                $option->CreateUserId,
+                $option->ModifyUserId,
+                $option->StatusId
             );
         }
-
-        $items = $atrr->Values;
-
-       $AttributeId =  $attribute_attribute['AttributeId'];
-
-
-        foreach ($items as $item) {
-            $Attribute_item = new Attribute_item($db);
-            if (intval($item->Id) == 0) {
-                $result_item = $Attribute_item->add(
-                    $AttributeId,
-                    $item->AttributeValue,
-                    $item->AttributePrice,
-                    $item->AttributeQuantity,
-                    $item->CreateUserId,
-                    $item->ModifyUserId,
-                    $item->StatusId
-                );
-            } else {
-                $result_item = $Attribute_item->updateattribute_item(
-                    $item->Id,
-                    $AttributeId,
-                    $item->AttributeValue,
-                    $item->AttributePrice,
-                    $item->AttributeQuantity,
-                    $item->CreateUserId,
-                    $item->ModifyUserId,
-                    $item->StatusId
-                );
-            }
-        }
     }
-    $result["Attributes"] = $attribute->getByProductId($ProductId);
+    $result["Productoptions"] = $db_productoptions->getByProductId($ProductId);
 }
 echo json_encode($result);

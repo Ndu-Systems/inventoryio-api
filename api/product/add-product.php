@@ -2,7 +2,7 @@
 include_once '../../config/Database.php';
 include_once '../../models/Product.php';
 include_once '../../models/Image.php';
-include_once '../../models/Attribute.php';
+include_once '../../models/Productoptions.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -22,8 +22,7 @@ $LowStock = $data->LowStock;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
-$Images = $data->Images;
-$Attributes = $data->Attributes;
+$Productoptions = $data->Productoptions;
 
 //connect to db
 $database = new Database();
@@ -31,6 +30,7 @@ $db = $database->connect();
 
 // create user first to get UserId
 $product = new Product($db);
+$db_productoptions = new Productoptions($db);
 
 $result = $product->add(
     $BrandId,
@@ -51,54 +51,31 @@ $result = $product->add(
 );
 
 $ProductId = $result['ProductId'];
-if ($Images) {
-    $image = new Image($db);
-    foreach ($Images as $url) {
-      
-        $addImages = $image->add(
-            $CompanyId,
+
+if ($Productoptions) {
+    foreach ($Productoptions as $option) {
+        $insert_options = $db_productoptions->add(
             $ProductId,
-            $url,
-            $CreateUserId,
-            $ModifyUserId,
-            $StatusId
+            $option->CompanyId,
+            $option->Name1,
+            $option->Name2,
+            $option->Name3,
+            $option->Name4,
+            $option->Name5,
+            $option->Value1,
+            $option->Value2,
+            $option->Value3,
+            $option->Value4,
+            $option->Value5,
+            $option->ImageUrl1,
+            $option->ImageUrl2,
+            $option->ImageUrl3,
+            $option->Quantity,
+            $option->CreateUserId,
+            $option->ModifyUserId,
+            $option->StatusId
         );
     }
-    $result["Images"] = $image->getParentIdById($ProductId);
-}
-
-if ($Attributes) {
-    foreach ($Attributes as $atrr) {
-        $attribute = new Attribute($db);
-
-        $attribute_attribute = $attribute->add(
-            $atrr->Name,
-            $atrr->AttributeType,
-            $atrr->CompanyId,
-            $ProductId,
-            $atrr->Shop,
-            $atrr->CreateUserId,
-            $atrr->ModifyUserId,
-            $atrr->StatusId
-        );
-        $items = $atrr->Values;
-
-        $AttributeId =  $attribute_attribute['AttributeId'];
-
-
-        foreach ($items as $item) {
-            $Attribute_item = new Attribute_item($db);
-            $result_item = $Attribute_item->add(
-                $AttributeId,
-                $item->AttributeValue,
-                $item->AttributePrice,
-                $item->AttributeQuantity,
-                $item->CreateUserId,
-                $item->ModifyUserId,
-                $item->StatusId
-            );
-        }
-    }
-    $result["Attributes"] = $attribute->getByProductId($ProductId);
+    $result["Productoptions"] = $db_productoptions->getByProductId($ProductId);
 }
 echo json_encode($result);

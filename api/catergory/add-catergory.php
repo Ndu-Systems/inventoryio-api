@@ -9,6 +9,10 @@ $Name = $data->Name;
 $CreateUserId = $data->CreateUserId;
 $ModifyUserId = $data->ModifyUserId;
 $StatusId = $data->StatusId;
+$ImageUrl = $data->ImageUrl;
+$Parent = $data->Parent;
+$CatergoryType = $data->CatergoryType;
+$Description = $data->Description;
 
 //connect to db
 $database = new Database();
@@ -20,6 +24,10 @@ $Catergory = new Catergory($db);
 $result = $Catergory->add(
     $CompanyId,
     $Name,
+    $ImageUrl,
+    $Parent,
+    $CatergoryType,
+    $Description,
     $CreateUserId,
     $ModifyUserId,
     $StatusId
