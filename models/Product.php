@@ -341,7 +341,7 @@ class Product
         $image = new Image($this->conn);
         $brand = new Brand($this->conn);
         $catergory = new Catergory($this->conn);
-
+        $productoptions = new Productoptions($this->conn);
         if ($stmt->rowCount()) {
             $products =  $stmt->fetchAll(PDO::FETCH_ASSOC);
             foreach ($products as $product) {
@@ -350,6 +350,7 @@ class Product
                 $product["Images"] = $images;
                 $product["Brand"] = $brand->getById($product["BrandId"]);
                 $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+                $product["Productoptions"] = $productoptions->getByProductId($product["ProductId"]);
                 array_push($productsWithImages, $product);
             }
         }
