@@ -209,6 +209,24 @@ class Company
         }
     }
 
+
+
+    public function getCompany($CompanyId)
+    {
+        $query = "SELECT * FROM company WHERE CompanyId =? or Handler = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CompanyId, $CompanyId));
+
+        if ($stmt->rowCount()) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        return null;
+    }
+
+
+
+
     public function getAll()
     {
         $query = "SELECT

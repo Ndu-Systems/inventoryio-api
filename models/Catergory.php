@@ -133,7 +133,7 @@ class Catergory
         }
     }
 
-    public function getChilndren($CatergoryId)
+    public function getChildren($CatergoryId)
     {
         $query = "SELECT * FROM catergory WHERE Parent =? AND StatusId = ?";
 
@@ -168,7 +168,24 @@ class Catergory
             $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
             $item["Products"] = $products;
             $item["ParentCaterory"] = $this->getById($item["Parent"]);
-            $item["Company"] = $company->getById($item["CompanyId"]);
+            $item["Company"] = $company->getCompany($item["CompanyId"]);
+            return $item;
+        }
+        return null;
+    }
+
+
+    public function getActiveParentById($CatergoryId)
+    {
+        $query = "SELECT * FROM catergory WHERE CatergoryId =? AND StatusId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array($CatergoryId, 1));
+        $company = new Company($this->conn);
+        if ($stmt->rowCount()) {
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+            $item["Children"] = $this->getChildren($item["CatergoryId"]);
+            $item["Company"] = $company->getCompany($item["CompanyId"]);
             return $item;
         }
         return null;
@@ -220,7 +237,7 @@ class Catergory
                 $item["Images"] = $images;
                 $item["Products"] = $products;
                 if ($item["CatergoryType"] == 'parent') {
-                    $item["Children"] = $this->getChilndren($item["CatergoryId"]);
+                    $item["Children"] = $this->getChildren($item["CatergoryId"]);
                 }
                 array_push($catergories, $item);
             }
