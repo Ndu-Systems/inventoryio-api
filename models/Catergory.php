@@ -1,6 +1,7 @@
 <?php
 include_once 'Image.php';
 include_once 'Product.php';
+include_once 'Company.php';
 
 
 class Catergory
@@ -161,10 +162,13 @@ class Catergory
         $stmt->execute(array($CatergoryId, 1));
 
         $product = new Product($this->conn);
+        $company = new Company($this->conn);
         if ($stmt->rowCount()) {
             $item = $stmt->fetch(PDO::FETCH_ASSOC);
             $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
             $item["Products"] = $products;
+            $item["ParentCaterory"] = $this->getById($item["Parent"]);
+            $item["Company"] = $company->getById($item["CompanyId"]);
             return $item;
         }
         return null;
@@ -174,12 +178,12 @@ class Catergory
 
 
 
-    public function getParent($CompanyId)
+    public function getParent($Parent)
     {
-        $query = "SELECT * FROM catergory WHERE CompanyId =? and CatergoryType = ?";
+        $query = "SELECT * FROM catergory WHERE Parent =?";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute(array($CompanyId, 'Parent'));
+        $stmt->execute(array($Parent));
 
         if ($stmt->rowCount()) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
