@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 28, 2020 at 09:55 AM
+-- Generation Time: Jul 29, 2020 at 08:51 AM
 -- Server version: 10.4.8-MariaDB
 -- PHP Version: 7.3.11
 
@@ -351,7 +351,7 @@ INSERT INTO `product` (`ProductId`, `BrandId`, `CatergoryId`, `CompanyId`, `Supp
 ('35322ba8-c9f6-11ea-ae4d-48f17f8d4d88', '', 'e5ac2975-d0a6-11ea-919f-48f17f8d4d88', '048895c3-c80d-11ea-8523-48f17f8d4d88', NULL, 'Red and white tracksuit', '', '350', '0', '6', '', 1, NULL, 25, 0, '2020-07-19 21:29:47', '', '2020-07-28 09:50:21', '', 0),
 ('45d34ac2-c9f9-11ea-ae4d-48f17f8d4d88', '', '3b246c4b-cfc6-11ea-8a5b-48f17f8d4d88', 'c8e913aa-c9f7-11ea-ae4d-48f17f8d4d88', NULL, 'Suit', '', '2000', '0', '5', '', 1, NULL, 100, 0, '2020-07-19 21:51:44', '', '2020-07-27 07:05:34', '', 0),
 ('493fbc53-c9bb-11ea-a345-48f17f8d4d88', '', 'f71e3c07-d0a6-11ea-919f-48f17f8d4d88', '048895c3-c80d-11ea-8523-48f17f8d4d88', NULL, 'Val-vet dress polo neck dress', '', '350', '0', '1', '', 1, NULL, 15, 0, '2020-07-19 14:28:01', '', '2020-07-28 09:50:46', '', 0),
-('61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', '3b246c4b-cfc6-11ea-8a5b-48f17f8d4d88', 'c8e913aa-c9f7-11ea-ae4d-48f17f8d4d88', NULL, 'Yellow suit', '', '500', '0', '1', '', 1, NULL, 30, 0, '2020-07-19 21:45:21', '', '2020-07-27 07:05:41', '', 0),
+('61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', '3b246c4b-cfc6-11ea-8a5b-48f17f8d4d88', 'c8e913aa-c9f7-11ea-ae4d-48f17f8d4d88', NULL, 'Yellow suit', '', '500', '0', '1', '', 1, NULL, 15, 0, '2020-07-19 21:45:21', '', '2020-07-29 07:01:44', '', 0),
 ('619ae6b9-c9bf-11ea-ae4d-48f17f8d4d88', '', 'f71e3c07-d0a6-11ea-919f-48f17f8d4d88', '048895c3-c80d-11ea-8523-48f17f8d4d88', NULL, 'Hot maroon midi dress', '', '600', '0', '4', '', 1, NULL, 15, 0, '2020-07-19 14:57:20', '', '2020-07-28 09:50:40', '', 0),
 ('8d18ec8e-cfdc-11ea-8a5b-48f17f8d4d88', '', '0cb6d51d-cfc6-11ea-8a5b-48f17f8d4d88', 'c8e913aa-c9f7-11ea-ae4d-48f17f8d4d88', NULL, 'Midi brown dress', '', '1100', '0', '7', '', 1, NULL, 15, 0, '2020-07-27 09:41:15', '', '2020-07-27 09:41:15', '', 0),
 ('93340ec0-c9f4-11ea-ae4d-48f17f8d4d88', '', 'e5ac2975-d0a6-11ea-919f-48f17f8d4d88', '048895c3-c80d-11ea-8523-48f17f8d4d88', NULL, 'Black polo neck', '', '380', '0', '5', '', 1, NULL, 20, 0, '2020-07-19 21:18:06', '', '2020-07-28 09:50:26', '', 0),
@@ -410,9 +410,9 @@ INSERT INTO `productoptions` (`Id`, `ProductId`, `CompanyId`, `Name1`, `Name2`, 
 ('4940db11-c9bb-11ea-a345-48f17f8d4d88', '', '', 'Size', 'Colour', '', '', '', 'S', 'black', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1595161653115d0a1d-6852-42a6-baa3-70f8209a4656.jpg', '', '', '5', '2020-07-19 14:28:01', '', '2020-07-19 14:28:01', '', 1),
 ('49411998-c9bb-11ea-a345-48f17f8d4d88', '', '', 'Size', 'Colour', '', '', '', 'S', 'brown', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15951616742734f234-e443-433b-b739-4225c576ebd3.jpg', '', '', '5', '2020-07-19 14:28:01', '', '2020-07-19 14:28:01', '', 1),
 ('5b3f4534-c9b8-11ea-a345-48f17f8d4d88', 'ce6f0b20-c848-11ea-8523-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', 'M', 'maroon', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15959219278fbf07ab-ee84-451d-ba3c-b4f5324b041f.jpg', '', '', '2', '2020-07-19 14:07:03', '', '2020-07-28 09:50:32', '', 1),
-('61751d49-c9f8-11ea-ae4d-48f17f8d4d88', '61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '1', '1', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15958228783.png', '', '', '10', '2020-07-19 21:45:21', '', '2020-07-27 07:05:41', '', 1),
-('61757147-c9f8-11ea-ae4d-48f17f8d4d88', '61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '1', '1', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15958228860706685308_2_3_1.webp', '', '', '10', '2020-07-19 21:45:21', '', '2020-07-27 07:05:41', '', 1),
-('6175de26-c9f8-11ea-ae4d-48f17f8d4d88', '61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '1', '1', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15958228890706685308_2_2_1.webp', '', '', '10', '2020-07-19 21:45:21', '', '2020-07-27 07:05:41', '', 1),
+('61751d49-c9f8-11ea-ae4d-48f17f8d4d88', '61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '30', 'Gold', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15958228783.png', '', '', '5', '2020-07-19 21:45:21', '', '2020-07-29 07:01:44', '', 1),
+('61757147-c9f8-11ea-ae4d-48f17f8d4d88', '61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '32', 'Gold', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15958228860706685308_2_3_1.webp', '', '', '5', '2020-07-19 21:45:21', '', '2020-07-29 07:01:44', '', 1),
+('6175de26-c9f8-11ea-ae4d-48f17f8d4d88', '61746230-c9f8-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '34', 'Gold', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/15958228890706685308_2_2_1.webp', '', '', '5', '2020-07-19 21:45:21', '', '2020-07-29 07:01:44', '', 1),
 ('619be609-c9bf-11ea-ae4d-48f17f8d4d88', '619ae6b9-c9bf-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', '32', '', '', '', '', 'http://localhost:8200/inventoryio-api/api/upload/uploads/1595921815d396d66f-5d12-4490-a674-f61648d0cc56.jpg', '', '', '5', '2020-07-19 14:57:20', '', '2020-07-28 09:50:40', '', 1),
 ('619c4844-c9bf-11ea-ae4d-48f17f8d4d88', '619ae6b9-c9bf-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', 'S', 'white', '', '', '', '', '', '', '10', '2020-07-19 14:57:20', '', '2020-07-19 14:59:25', '', 2),
 ('6eed45db-c9f2-11ea-ae4d-48f17f8d4d88', '619ae6b9-c9bf-11ea-ae4d-48f17f8d4d88', '', 'Size', 'Colour', '', '', '', 's', 'white', '', '', '', '', '', '', '100', '2020-07-19 21:02:46', '', '2020-07-19 21:02:53', '', 2),

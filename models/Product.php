@@ -432,7 +432,7 @@ class Product
             $images = $image->getParentIdById($product["ProductId"]);
             $product["Images"] = $images;
             $product["Brand"] = $brand->getById($product["BrandId"]);
-            $product["Catergory"] = $catergory->getById($product["CatergoryId"]);
+            $product["Catergory"] = $catergory->getActiveById($product["CatergoryId"]);
             $product["Productoptions"] = $productoptions->getByProductId($product["ProductId"]);
 
             //array_push($productsWithImages, $product);
