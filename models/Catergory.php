@@ -245,6 +245,31 @@ class Catergory
         }
     }
 
+    public function getForAllActiveCompanies()
+    {
+        $query = "SELECT * FROM catergory WHERE StatusId = ?";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(array(1));
+        $image = new Image($this->conn);
+        $product = new Product($this->conn);
+        $catergories = array();
+        if ($stmt->rowCount()) {
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($items as $item) {
+                $images = $image->getParentIdById($item["CatergoryId"]);
+                $products = $product->getDetailedProductWithImagesByCatergoryId($item["CatergoryId"]);
+                $item["Images"] = $images;
+                $item["Products"] = $products;
+                if ($item["CatergoryType"] == 'parent') {
+                    $item["Children"] = $this->getChildren($item["CatergoryId"]);
+                }
+                array_push($catergories, $item);
+            }
+            return $catergories;
+        }
+    }
+
     public function getByName($Name)
     {
         $query = "SELECT * FROM catergory WHERE Name =?";
