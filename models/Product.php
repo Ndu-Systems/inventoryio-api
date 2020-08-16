@@ -28,6 +28,8 @@ class Product
         $TrackInventory,
         $Quantity,
         $LowStock,
+        $ProductAvailability,
+        $PreparingDays,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -51,12 +53,14 @@ class Product
             TrackInventory,
             Quantity,
             LowStock,
+            ProductAvailability,
+            PreparingDays,
             CreateUserId,
             ModifyUserId,
             StatusId
         )
         VALUES(
-        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
         )
 ";
         try {
@@ -75,6 +79,8 @@ class Product
                 $TrackInventory,
                 $Quantity,
                 $LowStock,
+                $ProductAvailability,
+                $PreparingDays,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId
@@ -103,6 +109,8 @@ class Product
         $TrackInventory,
         $Quantity,
         $LowStock,
+        $ProductAvailability,
+        $PreparingDays,
         $CreateUserId,
         $ModifyUserId,
         $StatusId
@@ -122,6 +130,8 @@ class Product
         TrackInventory = ? ,
         Quantity = ? ,
         LowStock = ? ,
+        ProductAvailability=?,
+        PreparingDays=?,
         CreateUserId = ? ,
         ModifyUserId = ? ,
         StatusId = ? ,
@@ -145,6 +155,8 @@ class Product
                 $TrackInventory,
                 $Quantity,
                 $LowStock,
+                $ProductAvailability,
+                $PreparingDays,
                 $CreateUserId,
                 $ModifyUserId,
                 $StatusId,
@@ -211,6 +223,8 @@ class Product
         p.SKU,
         p.Quantity,
         p.LowStock,
+        p.ProductAvailability,
+        p.PreparingDays,
         p.CreateDate,
         p.CreateUserId,
         p.ModifyDate,
@@ -260,6 +274,8 @@ class Product
         p.SKU,
         p.Quantity,
         p.LowStock,
+        p.ProductAvailability,
+        p.PreparingDays,
         p.CreateDate,
         p.CreateUserId,
         p.ModifyDate,
@@ -317,6 +333,8 @@ class Product
         p.SKU,
         p.Quantity,
         p.LowStock,
+        p.ProductAvailability,
+        p.PreparingDays,
         p.CreateDate,
         p.CreateUserId,
         p.ModifyDate,
@@ -400,6 +418,8 @@ class Product
         p.TrackInventory,
         p.Quantity,
         p.LowStock,
+        p.ProductAvailability,
+        p.PreparingDays,
         p.CreateDate,
         p.CreateUserId,
         p.ModifyDate,
